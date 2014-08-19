@@ -43,22 +43,7 @@ public class BDPerfiles {
         }
     }
     
-    public static boolean actualizar(Perfil perfil) throws SQLException {
-        Connection conexion = Conexion_BD.getConnection();
-        PreparedStatement sentencia_actualizar = null;
-
-        sentencia_actualizar = conexion.prepareStatement("update perfiles set descripcion=? where codigo=" + perfil.getCodigo());
-        sentencia_actualizar.setString(1, perfil.getDescripcion());
-        int rowsUpdated = sentencia_actualizar.executeUpdate();
-           conexion.close();
-           sentencia_actualizar.close();
-        if (rowsUpdated > 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-    //método que busca usuario por codigo
+        //método que busca usuario por codigo
     public static Perfil buscarId(int codigo) throws SQLException {
         Connection conexion = Conexion_BD.getConnection();
         if(conexion != null)

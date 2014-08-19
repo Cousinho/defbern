@@ -75,7 +75,7 @@ public class D_Perfil extends javax.swing.JDialog {
     }
     
     //método que actualiza datos si esto es una edición
-    private boolean Actualizar(){
+    /*private boolean Actualizar(){
         perfil_actual.setCodigo(Integer.parseInt(texto_codigo.getText()));
         perfil_actual.setDescripcion(textoa_descripcion.getText());
         try {
@@ -84,7 +84,7 @@ public class D_Perfil extends javax.swing.JDialog {
             return false;
         }
         return true;
-    } 
+    } */
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -201,7 +201,7 @@ public class D_Perfil extends javax.swing.JDialog {
             estado=Guardar();
         }
         else{
-            estado=Actualizar();
+            estado=Guardar();//Actualizar();
         }
         if(estado){
             this.dispose();
