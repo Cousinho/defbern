@@ -140,7 +140,7 @@ public class BDRegistros {
             PreparedStatement sentencia_mostrar = null;
             ArrayList<Registro> lista = new ArrayList<Registro>();
 
-            sentencia_mostrar = conexion.prepareStatement("select * from usuarios");
+            sentencia_mostrar = conexion.prepareStatement("select * from registros");
             ResultSet resultado = sentencia_mostrar.executeQuery();
             while (resultado.next()) {
                 Registro registro = new Registro() {

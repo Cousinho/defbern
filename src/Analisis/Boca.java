@@ -80,7 +80,7 @@ public class Boca {
                             if(ojo1.x<rect.x+(rect.width/2)&&ojo2.x>rect.x+(rect.width/2)&&rect.y+(rect.width/2)>nariz.y){
                                 if(nariz.y<rect.y+(rect.height/2)&&rect.width>tamañoojo.x*1.6&&rect.width<tamañoojo.x*3){
                                     listabocas[nu][1]=rect.x+(rect.width/2);
-                                    listabocas[nu][2]=rect.y+(rect.height/2);
+                                    listabocas[nu][2]=rect.y+(rect.height);
                                     listabocas[nu][3]=rect.width;
                                     listabocas[nu][4]=rect.height;
                                     //Core.rectangle(image, new Point(rect.x ,rect.y), new Point(rect.x +rect.width, rect.y + rect.height), new Scalar(0, 240, 0));

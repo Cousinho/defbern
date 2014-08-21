@@ -2,12 +2,20 @@ package Pantallas;
 
 import Entidades.Usuario;
 import java.beans.PropertyVetoException;
-import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ *
+ * @author alejandroalen
+ */
 public class P_Principal extends javax.swing.JFrame {
     Usuario usuario;
+
+    /**
+     *
+     * @param parametro_usuario
+     */
     public P_Principal(Usuario parametro_usuario) {
         this.setTitle("Sistema de Analisis");
         usuario=parametro_usuario;

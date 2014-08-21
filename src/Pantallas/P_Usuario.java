@@ -1,13 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package Pantallas;
 
 import BaseDeDatos.BDUsuarios;
-import Entidades.Perfil;
 import Entidades.Usuario;
 import Util.TablaModelo;
 import java.awt.event.WindowAdapter;
@@ -19,15 +12,8 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableRowSorter;
 
-/**
- *
- * @author Cousiño
- */
 public class P_Usuario extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form P_Usuario
-     */
     public P_Usuario() {
         initComponents();
     }
@@ -86,6 +72,8 @@ public class P_Usuario extends javax.swing.JInternalFrame {
         b_modificar = new javax.swing.JButton();
         b_borrar = new javax.swing.JButton();
 
+        setClosable(true);
+
         tabla_usuarios.setModel(LUsuarios);
         jScrollPane1.setViewportView(tabla_usuarios);
 
@@ -120,9 +108,9 @@ public class P_Usuario extends javax.swing.JInternalFrame {
                     .addComponent(b_modificar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(b_borrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(b_agregar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(57, 57, 57)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 547, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -136,7 +124,7 @@ public class P_Usuario extends javax.swing.JInternalFrame {
                         .addComponent(b_modificar)
                         .addGap(18, 18, 18)
                         .addComponent(b_borrar)))
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         pack();
@@ -144,7 +132,7 @@ public class P_Usuario extends javax.swing.JInternalFrame {
 
     private void b_agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_agregarActionPerformed
         D_Usuario insertar = null;
-        insertar = new D_Usuario(pantalla_padre,true,usuario_actual);
+        insertar = new D_Usuario(pantalla_padre,true);
         insertar.setLocationRelativeTo(null);
         insertar.setResizable(false);
         insertar.setVisible(true);

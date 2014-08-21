@@ -9,7 +9,6 @@ package Pantallas;
 import BaseDeDatos.BDRegistros;
 import Entidades.Registro;
 import Util.TablaModelo;
-import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
@@ -122,8 +121,8 @@ public class D_EntrevistaGrupal extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(b_modificar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(b_borrar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 104, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 442, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 536, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -185,7 +184,7 @@ public class D_EntrevistaGrupal extends javax.swing.JFrame {
     }//GEN-LAST:event_b_borrarActionPerformed
 
     private void b_agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_agregarActionPerformed
-        D_EntrevistaIndividual insertar  = new D_EntrevistaIndividual(pantalla,true);
+        D_Entrevista insertar  = new D_Entrevista(pantalla,true);
         insertar.setLocationRelativeTo(null);
         insertar.setResizable(false);
         insertar.setVisible(true);
@@ -205,7 +204,7 @@ public class D_EntrevistaGrupal extends javax.swing.JFrame {
                 Registro r_envia=new Registro() {};
                 Object valor = tabla_registros.getValueAt(columna, 0);
                 r_envia=BDRegistros.buscarId(Integer.parseInt(valor.toString()));
-                D_EntrevistaIndividual editar= new D_EntrevistaIndividual(pantalla,true,r_envia);
+                D_Entrevista editar= new D_Entrevista(pantalla,true,r_envia);
                 editar.setLocationRelativeTo(null);
                 editar.setResizable(false);
                 editar.setVisible(true);

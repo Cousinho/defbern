@@ -57,6 +57,8 @@ public class P_Entrevista extends javax.swing.JInternalFrame {
         b_eliminar = new javax.swing.JButton();
         b_laminas = new javax.swing.JButton();
 
+        setClosable(true);
+
         tabla.setModel(LTabla);
         jScrollPane1.setViewportView(tabla);
 

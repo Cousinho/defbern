@@ -8,20 +8,12 @@ package Pantallas;
 
 import BaseDeDatos.BDPerfiles;
 import Entidades.Perfil;
-import Util.Alfanumerico;
 import Util.Numerico;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author jose
- */
 public class D_Perfil extends javax.swing.JDialog {
 
-    /**
-     * Creates new form D_Perfil
-     */
     boolean nuevo;
     Perfil perfil_actual=new Perfil() {};
     public D_Perfil(java.awt.Frame parent, boolean modal) {
@@ -75,7 +67,7 @@ public class D_Perfil extends javax.swing.JDialog {
     }
     
     //método que actualiza datos si esto es una edición
-    /*private boolean Actualizar(){
+    private boolean Actualizar(){
         perfil_actual.setCodigo(Integer.parseInt(texto_codigo.getText()));
         perfil_actual.setDescripcion(textoa_descripcion.getText());
         try {
@@ -84,7 +76,7 @@ public class D_Perfil extends javax.swing.JDialog {
             return false;
         }
         return true;
-    } */
+    } 
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -201,7 +193,7 @@ public class D_Perfil extends javax.swing.JDialog {
             estado=Guardar();
         }
         else{
-            estado=Guardar();//Actualizar();
+            estado=Actualizar();
         }
         if(estado){
             this.dispose();

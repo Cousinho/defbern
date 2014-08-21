@@ -28,10 +28,10 @@ public class Analisis {
     int bocay = 0;
     int alto = 0;
     int ancho = 0;
-    String NombreArchivo = "";
+    String NombreArchivo = "";  
     String NombreMuestra="";    
     public void run() {
-        for (int x = 1; x <= 15;x++) {
+        for (int x = 1; x <= 2;x++) {
             NombreArchivo = "Rostro"+String.valueOf(x);
             NombreMuestra=String.valueOf(x);
             Rostro SelectorRostro = new Rostro();
@@ -56,11 +56,11 @@ public class Analisis {
             tamañoboca = selectorboca.Tamaño();
             if(ojo1.x!=0 && ojo2.x!=0 && ceja1.x!=0 && ceja2.x!=0 && boca.x!=0){
                 linea();
-                Distancia();
+                ImprimirDistancia();
                 //System.out.println(x);
             }else{
                 linea2();
-                Distancia();
+                ImprimirDistancia();
             }
         }
 
@@ -80,16 +80,31 @@ public class Analisis {
         Core.line(image, ojo1, ceja1, new Scalar(0, 240, 0));
         Core.line(image, ojo2, ceja2, new Scalar(0, 240, 0));
         Core.line(image, nariz, boca, new Scalar(0, 240, 0));
-        Core.rectangle(image, new Point(boca.x-tamañoboca.x/2 , boca.y-tamañoboca.y/2) , new Point(boca.x+tamañoboca.x/2, boca.y+tamañoboca.y/2), 
-        new Scalar(0, 240, 0));
+        Core.rectangle(image, new Point(boca.x-tamañoboca.x/2 , boca.y-tamañoboca.y) , new Point(boca.x+tamañoboca.x/2, boca.y), new Scalar(0, 240, 0)); 
+        Core.rectangle(image, new Point (ojo1.x-(tamañoojo1.x/2), ojo1.y-(tamañoojo1.y/2)),new Point (ojo1.x+(tamañoojo1.x/2), ojo1.y+(tamañoojo1.y/2)) , new Scalar(0, 240, 0));
+        Core.rectangle(image, new Point (ojo2.x-(tamañoojo2.x/2), ojo2.y-(tamañoojo2.y/2)),new Point (ojo2.x+(tamañoojo2.x/2), ojo2.y+(tamañoojo2.y/2)) , new Scalar(0, 240, 0));
         Highgui.imwrite("imagen/linea/" + NombreArchivo + ".png", image);
     }
     
-    public void Distancia() {
-        System.out.println(Math.pow(ojo1.x, ojo2.x));
-        System.out.println(ojo2);
-        double DistanciaOjos = Math.sqrt( Math.pow(ojo1.x, ojo2.x)+ Math.pow(ojo1.y, ojo2.y));
-        System.out.println(DistanciaOjos);
+    public void ImprimirDistancia() {
+       double P=Distancia(ojo1,ojo2);
+       System.out.print(" "+tamañoboca.x/P);
+       System.out.print(" "+tamañoojo1.x/P);
+       System.out.print(" "+Distancia(ojo1,boca)/P);
+       System.out.print(" "+Distancia(ojo2,boca)/P);
+       System.out.print(" "+Distancia(ceja1,boca)/P);
+       System.out.print(" "+Distancia(ceja2,boca)/P);
+       System.out.print(" "+Distancia(ojo1,ceja1)/P);
+       System.out.print(" "+Distancia(ojo2,ceja2)/P);
+       System.out.print(" "+Distancia(ceja1,nariz)/P);
+       System.out.print(" "+Distancia(ceja2,nariz)/P);
+       System.out.println();
+        
+    }
+    
+    public double Distancia(Point x1, Point x2){
+        double Distancia = Math.sqrt( Math.pow((x1.x-x2.x),2)+ Math.pow((x1.y-x2.y),2));
+        return Distancia;
     }
     
     public void linea2() {

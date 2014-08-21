@@ -4,6 +4,7 @@ import BaseDeDatos.BDEntrevistas;
 import BaseDeDatos.BDLaminas;
 import Entidades.Entrevista;
 import Entidades.Lamina;
+import Util.Directorios;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -19,13 +20,13 @@ import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.WindowConstants;
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfRect;
 import org.opencv.highgui.Highgui;
 import org.opencv.highgui.VideoCapture;
-import org.opencv.objdetect.CascadeClassifier;
 
 public class P_Presentacion extends javax.swing.JFrame {
+    private int listamuestras[]=new int[20];
     int angle=0;
     Image img;
     double alto;
@@ -35,29 +36,32 @@ public class P_Presentacion extends javax.swing.JFrame {
     ArrayList<Lamina> Lista ;
     int TamañoLista=0;
     int IndiceLista=0;
+    int Id_perfil=0;
     VideoCapture cap = new VideoCapture(0);
     Mat imagen=new Mat();
     int IndiceMuestra=0;
-    int NumeroMuestras=30;
+    int NumeroMuestras=15;
     boolean primero=true;
-    public P_Presentacion(int id_entrevista) throws SQLException {
+    public P_Presentacion(int id_entrevista, int id_perfil) throws SQLException {
         initComponents();
+        Id_perfil=1;
+        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         entrevista=BDEntrevistas.buscarId(1);
         Lista= BDLaminas.Lista(entrevista.getCodigo());
         TamañoLista=Lista.size();
+        CrearDirectorio();    
         this.setExtendedState(MAXIMIZED_BOTH);
         angulo=90;
         Image imagen = null;
-        
         if(TamañoLista!=0){
              imagen= Lista.get(IndiceLista).getImagen();
-             IndiceLista++;
         }
         CargarImagen(imagen);
         if(primero){
-            Grabar("");
+            Grabar();
         }
-
+        IndiceLista++;
+      
     }
 
 @SuppressWarnings("unchecked")
@@ -109,39 +113,43 @@ public class P_Presentacion extends javax.swing.JFrame {
         lamina.setIcon(icono);
         this.repaint();
     }
-    private void Grabar(final String Directorio){
-        final CascadeClassifier faceDetector = new CascadeClassifier("null");
-        final MatOfRect faceDetections = new MatOfRect();
+    private void Grabar(){
+        
         final Timer t = new Timer();
         TimerTask tt = new TimerTask() {
             @Override
             public void run() {
                 if(IndiceMuestra<NumeroMuestras){
                     if(cap.isOpened()){
-                     
                             try {
                                 if(primero){
                                    Thread.sleep(2000);
                                    primero=false;
                                 }
                                 cap.read(imagen);
-                                faceDetector.detectMultiScale(imagen, faceDetections);
-                                //Mat region = new Mat(imagen,rect);
-                                Highgui.imwrite("imagen/Muestras/"+Directorio+IndiceMuestra+".png", imagen);
-                                IndiceMuestra++;
+                                if(imagen.empty()){
+                                    System.out.println("vacia");
+                                }
+                                Highgui.imwrite("imagen/Muestras/"+Id_perfil+"/"+IndiceLista+"/"+IndiceMuestra+".png", imagen);
+                                System.out.println("imagen/Muestras/"+Id_perfil+"/"+IndiceLista+"/"+IndiceMuestra+".png");
+                                
+                                if(!imagen.empty()){
+                                    IndiceMuestra++;
+                                }
+                                
                             } catch (Exception ex) {
                             }
                         
                     }
         
                 }else{
-                    IndiceMuestra=0;
                     this.cancel();
+                  
                 } 
                     
             }
         };
-        t.schedule(tt,2,100);
+        t.schedule(tt,1,200);
         
 
     }
@@ -161,18 +169,20 @@ public class P_Presentacion extends javax.swing.JFrame {
     }//GEN-LAST:event_b_rotarActionPerformed
 
     private void b_siguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_siguienteActionPerformed
-        angulo=90;
-        lamina.setFont(new Font("Monospaced", Font.PLAIN, 24));
-        lamina.setBorder(BorderFactory.createEtchedBorder());
-        Image img2 =Lista.get(IndiceLista).getImagen();
-        if(IndiceLista==TamañoLista-1){
+        IndiceMuestra=0;
+        if(IndiceLista>=TamañoLista){
             b_siguiente.disable();
         }else{
+            angulo=90;
+            lamina.setFont(new Font("Monospaced", Font.PLAIN, 24));
+            lamina.setBorder(BorderFactory.createEtchedBorder());
+            Image img2 =Lista.get(IndiceLista).getImagen();
             IndiceLista++;
+            img=img2;
+            CargarImagen(img2);
+            Grabar();
         }
-        img=img2;
-        CargarImagen(img2);
-        Grabar("1/");
+        
     }//GEN-LAST:event_b_siguienteActionPerformed
 
     private void CambiarAngulo( int ang){
@@ -257,9 +267,10 @@ public class P_Presentacion extends javax.swing.JFrame {
         Icon icon = new ImageIcon( salida.getScaledInstance((int)lamina.getWidth(),(int)lamina.getHeight(), Image.SCALE_DEFAULT) );
         lamina.setIcon(icon);
     }
-    /**
-     * @param args the command line arguments
-     */
+    private void CrearDirectorio(){
+       Directorios carpeta=new Directorios();
+       carpeta.Crear(TamañoLista,Id_perfil);
+    }
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -290,7 +301,8 @@ public class P_Presentacion extends javax.swing.JFrame {
                 System.loadLibrary("opencv_java249");
                 try {
                     int id_entrevista = 0;
-                    new P_Presentacion(id_entrevista).setVisible(true);
+                    int id_perfil = 0;
+                    new P_Presentacion(id_entrevista, id_perfil).setVisible(true);
                 } catch (SQLException ex) {
                     Logger.getLogger(P_Presentacion.class.getName()).log(Level.SEVERE, null, ex);
                 }

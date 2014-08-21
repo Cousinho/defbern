@@ -8,6 +8,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableRowSorter;
 
@@ -22,13 +24,13 @@ public class P_Lamina extends javax.swing.JInternalFrame {
         initComponents();
         Seleccionar();
         tabla.setRowSorter(sorter);
-        
-        
+        actualizartabla();
     }
     
     public void Seleccionar(){
         seleccion=false;
         D_SeleccionaEntrevista seleccionar=new D_SeleccionaEntrevista(pantalla_padre,this,true);
+        seleccionar.setLocationRelativeTo(null);
         seleccionar.setVisible(true);
         seleccionar.addWindowListener(new WindowAdapter() {
             public void windowClosed(WindowEvent e) {
@@ -79,19 +81,37 @@ public class P_Lamina extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tabla1 = new javax.swing.JTable();
+        tabla_laminas = new javax.swing.JTable();
         b_nuevo = new javax.swing.JButton();
+        b_modificar = new javax.swing.JButton();
+        b_eliminar = new javax.swing.JButton();
 
         tabla.setModel(LTabla);
         jScrollPane1.setViewportView(tabla);
 
-        tabla1.setModel(LTabla);
-        jScrollPane2.setViewportView(tabla1);
+        setClosable(true);
+
+        tabla_laminas.setModel(LTabla);
+        jScrollPane2.setViewportView(tabla_laminas);
 
         b_nuevo.setText("Nuevo");
         b_nuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 b_nuevoActionPerformed(evt);
+            }
+        });
+
+        b_modificar.setText("Modificar");
+        b_modificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_modificarActionPerformed(evt);
+            }
+        });
+
+        b_eliminar.setText("Eliminar");
+        b_eliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_eliminarActionPerformed(evt);
             }
         });
 
@@ -101,25 +121,29 @@ public class P_Lamina extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(b_nuevo)
-                .addContainerGap(424, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(95, 95, 95)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)
-                    .addContainerGap()))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(b_nuevo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(b_modificar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(b_eliminar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(b_nuevo)
-                .addContainerGap(428, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 448, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(15, Short.MAX_VALUE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(b_nuevo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(b_modificar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(b_eliminar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(11, 11, 11)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 448, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(4, 4, 4))
         );
 
         pack();
@@ -140,12 +164,81 @@ public class P_Lamina extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_b_nuevoActionPerformed
 
+    private void b_modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_modificarActionPerformed
+        int columna=tabla_laminas.getSelectedRow();
+        if (columna!=-1){
+            try {
+                Lamina l_envia=new Lamina() {};
+                Object valor = tabla_laminas.getValueAt(columna, 0);
+                l_envia=BDLaminas.buscarId(Integer.parseInt(valor.toString()));
+                D_Lamina editar= new D_Lamina(pantalla_padre,true,l_envia);
+                editar.setLocationRelativeTo(null);
+                editar.setResizable(false);
+                editar.setVisible(true);
+                //Actualiza tabla despues de cerrar ventana modificar
+                editar.addWindowListener(new WindowAdapter() {
+                    public void windowClosed(WindowEvent e) {
+                        actualizartabla();
+                    }
+                });
+            } catch (SQLException ex) {
+                Logger.getLogger(P_Usuario.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Seleccione una fila de la tabla");
+        }
+
+    }//GEN-LAST:event_b_modificarActionPerformed
+
+    private void b_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_eliminarActionPerformed
+                //recibe numero de fila seleccionada
+        int fila=tabla_laminas.getSelectedRow();
+        
+        //verifica que este seleccionada una fila
+        if (fila!=-1){
+            int seleccion = JOptionPane.showOptionDialog(
+                this, // Componente padre
+                "¿Desea eliminar este lamina?",
+                "Seleccione una opción",
+                JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,    // null para icono por defecto.
+                new Object[] { "Si", "No"},    // null para YES, NO y CANCEL
+                "Si");
+            if (seleccion != -1)
+            {
+                if((seleccion + 1)==1)
+                {
+                    //recupera el objeto fila de la tabla a modificar
+                    Object valor = tabla_laminas.getValueAt(fila, 0);
+                    try {
+                        //solicita eliminar fila selecionada
+                        BDLaminas.eliminar(Integer.parseInt(valor.toString()));
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(null, "No se puede eliminar lamina");
+
+                    }
+
+                    //actualiza tabla despues de eliminar fila
+                    actualizartabla();
+                }
+              }
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Seleccione una fila de la tabla");
+        }
+
+    }//GEN-LAST:event_b_eliminarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton b_eliminar;
+    private javax.swing.JButton b_modificar;
     private javax.swing.JButton b_nuevo;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable tabla;
-    private javax.swing.JTable tabla1;
+    private javax.swing.JTable tabla_laminas;
     // End of variables declaration//GEN-END:variables
 }

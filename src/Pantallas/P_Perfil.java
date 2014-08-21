@@ -77,7 +77,8 @@ public class P_Perfil extends javax.swing.JInternalFrame {
         b_modificar = new javax.swing.JButton();
         b_borrar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setClosable(true);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         tabla_perfiles.setModel(LPerfiles);
         jScrollPane1.setViewportView(tabla_perfiles);
@@ -113,8 +114,8 @@ public class P_Perfil extends javax.swing.JInternalFrame {
                     .addComponent(b_modificar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(b_borrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(b_agregar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 104, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 552, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 638, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -136,7 +137,7 @@ public class P_Perfil extends javax.swing.JInternalFrame {
 
     private void b_agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_agregarActionPerformed
         D_Perfil insertar = null;
-        insertar = new D_Perfil(pantalla_padre,true,perfil_actual);
+        insertar = new D_Perfil(pantalla_padre,true);
         insertar.setLocationRelativeTo(null);
         insertar.setResizable(false);
         insertar.setVisible(true);
@@ -183,7 +184,7 @@ public class P_Perfil extends javax.swing.JInternalFrame {
             //solita confirmación de acción
             int seleccion = JOptionPane.showOptionDialog(
                 this, // Componente padre
-                "¿Desea eliminar esta categoria?",
+                "¿Desea eliminar este perfil?",
                 "Seleccione una opción",
                 JOptionPane.YES_NO_CANCEL_OPTION,
                 JOptionPane.QUESTION_MESSAGE,

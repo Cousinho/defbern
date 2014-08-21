@@ -14,8 +14,8 @@ public class BDPerfiles {
         boolean insertar=true;
         Connection conexion = Conexion_BD.getConnection();
         PreparedStatement sentencia_insertar= null;
-        sentencia_insertar = conexion.prepareStatement("insert into perfiles (codigo, descripcion,) VALUES (?,?)");
-        sentencia_insertar.setInt(1, perfil.getCodigo());
+        sentencia_insertar = conexion.prepareStatement("insert into perfiles (codigo, descripcion) VALUES (?,?)");
+        sentencia_insertar.setInt(1, mayor()+1);
         sentencia_insertar.setString(2, perfil.getDescripcion());
         try {
             sentencia_insertar.executeUpdate();
@@ -43,7 +43,25 @@ public class BDPerfiles {
         }
     }
     
-        //método que busca usuario por codigo
+     //método que recibe objeto usuario y actualiza datos en base de datos
+    public static boolean actualizar(Perfil perfil) throws SQLException {
+        Connection conexion = Conexion_BD.getConnection();
+        PreparedStatement sentencia_actualizar = null;
+
+        sentencia_actualizar = conexion.prepareStatement("update perfiles set descripcion=? where codigo=" + perfil.getCodigo());
+        sentencia_actualizar.setString(1, perfil.getDescripcion());
+        int rowsUpdated = sentencia_actualizar.executeUpdate();
+           conexion.close();
+           sentencia_actualizar.close();
+        if (rowsUpdated > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    
+    //método que busca usuario por codigo
     public static Perfil buscarId(int codigo) throws SQLException {
         Connection conexion = Conexion_BD.getConnection();
         if(conexion != null)
@@ -59,7 +77,7 @@ public class BDPerfiles {
                     };
                 }
                 perfil.setCodigo(codigo);
-                perfil.setDescripcion("descripcion");
+                perfil.setDescripcion(resultado.getString("descripcion"));
             }
             conexion.close();
             sentencia_buscar.close();
@@ -90,4 +108,19 @@ public class BDPerfiles {
             return lista;
         }
     
+    
+      private static int mayor() throws SQLException{
+        int mayor;
+        Connection conexion = Conexion_BD.getConnection();
+        PreparedStatement sentencia_mayor = null;
+        sentencia_mayor = conexion.prepareStatement("select max(codigo) as maximo from perfiles");
+        ResultSet resultado = sentencia_mayor.executeQuery();
+        if (!resultado.next()){
+           mayor=0; 
+        }else{
+            mayor=resultado.getInt("maximo");
+            
+        }   
+            return mayor;
+        }
 }

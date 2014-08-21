@@ -23,7 +23,7 @@ public class Rostro {
             int nu = 1;
             while (nu <= tamaño) {
                 //Genera una imagen de muestra
-                Highgui.imwrite("imagen/Rostros/"+nombre+numero+".png", region.adjustROI(nu, tamaño+rect.height/5, nu, nu));
+                Highgui.imwrite("imagen/Rostros/"+nombre+numero+".png", region.adjustROI(nu, tamaño+rect.height/10, nu, nu));
                 nu++;
             }
         }
