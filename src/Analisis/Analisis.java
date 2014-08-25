@@ -7,6 +7,15 @@ import org.opencv.core.Scalar;
 import org.opencv.highgui.Highgui;
 
 public class Analisis {
+    double distancia11, distancia12;
+    double distancia21, distancia22;
+    double distancia31, distancia32;
+    double distancia41, distancia42;
+    double distancia51, distancia52;
+    double distancia61, distancia62;
+    double distancia71, distancia72;
+    boolean primero=true;
+                            
     private String nombre;
     Point nariz = new Point();
     Point ojo1 = new Point();
@@ -28,10 +37,10 @@ public class Analisis {
     int bocay = 0;
     int alto = 0;
     int ancho = 0;
-    String NombreArchivo = "";  
+    String NombreArchivo = "";      
     String NombreMuestra="";    
     public void run() {
-        for (int x = 1; x <= 2;x++) {
+        for (int x = 1; x <= 8;x++) {
             NombreArchivo = "Rostro"+String.valueOf(x);
             NombreMuestra=String.valueOf(x);
             Rostro SelectorRostro = new Rostro();
@@ -56,11 +65,11 @@ public class Analisis {
             tamañoboca = selectorboca.Tamaño();
             if(ojo1.x!=0 && ojo2.x!=0 && ceja1.x!=0 && ceja2.x!=0 && boca.x!=0){
                 linea();
-                ImprimirDistancia();
+                   CalcularDistancia();
                 //System.out.println(x);
             }else{
                 linea2();
-                ImprimirDistancia();
+                CalcularDistancia();
             }
         }
 
@@ -86,22 +95,40 @@ public class Analisis {
         Highgui.imwrite("imagen/linea/" + NombreArchivo + ".png", image);
     }
     
-    public void ImprimirDistancia() {
-       double P=Distancia(ojo1,ojo2);
-       System.out.print(" "+tamañoboca.x/P);
-       System.out.print(" "+tamañoojo1.x/P);
-       System.out.print(" "+Distancia(ojo1,boca)/P);
-       System.out.print(" "+Distancia(ojo2,boca)/P);
-       System.out.print(" "+Distancia(ceja1,boca)/P);
-       System.out.print(" "+Distancia(ceja2,boca)/P);
-       System.out.print(" "+Distancia(ojo1,ceja1)/P);
-       System.out.print(" "+Distancia(ojo2,ceja2)/P);
-       System.out.print(" "+Distancia(ceja1,nariz)/P);
-       System.out.print(" "+Distancia(ceja2,nariz)/P);
-       System.out.println();
+    public void CalcularDistancia() {
+       if(primero){
+           double P=Distancia(ojo1,ojo2);
+           distancia11=P/tamañoboca.x;
+           distancia21=P/tamañoojo1.x;
+           distancia31=P/((Distancia(ojo1,boca)+Distancia(ojo1,boca))/2);
+           distancia41=P/((Distancia(ceja1,boca)+Distancia(ceja2,boca))/2);
+           distancia51=P/((Distancia(ojo1,ceja1)+Distancia(ojo2,ceja2))/2);
+           distancia61=P/((Distancia(ceja1,nariz)+Distancia(ceja2,nariz))/2);
+           primero=false;
+       }else{
+           double P=Distancia(ojo1,ojo2);
+           distancia12=P/tamañoboca.x;
+           distancia22=P/tamañoojo1.x;
+           distancia32=P/((Distancia(ojo1,boca)+Distancia(ojo1,boca))/2);
+           distancia42=P/((Distancia(ceja1,boca)+Distancia(ceja2,boca))/2);
+           distancia52=P/((Distancia(ojo1,ceja1)+Distancia(ojo2,ceja2))/2);
+           distancia62=P/((Distancia(ceja1,nariz)+Distancia(ceja2,nariz))/2);
+           primero=true;
+           Imprimir();
+       }
+       
         
     }
-    
+    public void Imprimir(){
+       System.out.print(" "+(distancia11/distancia12));
+       System.out.print(" "+(distancia21/distancia22));
+       System.out.print(" "+(distancia31/distancia32));
+       System.out.print(" "+(distancia41/distancia42));
+       System.out.print(" "+(distancia51/distancia52));
+       System.out.print(" "+(distancia61/distancia62));
+       System.out.println();
+         
+    }
     public double Distancia(Point x1, Point x2){
         double Distancia = Math.sqrt( Math.pow((x1.x-x2.x),2)+ Math.pow((x1.y-x2.y),2));
         return Distancia;
