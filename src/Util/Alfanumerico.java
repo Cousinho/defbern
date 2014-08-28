@@ -1,5 +1,6 @@
 package Util;
 
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
@@ -10,6 +11,7 @@ import javax.swing.text.PlainDocument;
 public class Alfanumerico extends PlainDocument
 {
    private JTextField editor;
+   private JTextArea editor2;
     
    private int numeroMaximoCaracteres;
 
@@ -18,13 +20,20 @@ public class Alfanumerico extends PlainDocument
         this.editor=editor;
         this.numeroMaximoCaracteres=numeroMaximoCaracteres;
     }
+
+    public Alfanumerico(JTextArea editor2, int numeroMaximoCaracteres) {
+        this.editor2=editor2;
+        this.numeroMaximoCaracteres=numeroMaximoCaracteres;
+    }
     
     public void insertString(int arg0, String arg1, AttributeSet arg2) throws BadLocationException
     {
        if ((editor.getText().length()+arg1.length())>this.numeroMaximoCaracteres){
            return;      
        }
-       
+       if ((editor2.getText().length()+arg1.length())>this.numeroMaximoCaracteres){
+           return;      
+       }
        for (int i=0;i<arg1.length();i++){
            if((!Character.isLetter(arg1.charAt(i)))&&(!Character.isDigit(arg1.charAt(i))) ){
              return;   
@@ -32,9 +41,6 @@ public class Alfanumerico extends PlainDocument
             
        }
         super.insertString(arg0, arg1, arg2);    
-            
-            
-        
     }
     
 } 

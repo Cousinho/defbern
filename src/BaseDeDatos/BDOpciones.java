@@ -130,7 +130,7 @@ public class BDOpciones {
             
         }   
             return mayor;
-        }
+    }
      
     //retorna el tamaño del array en la base de datos 
     private static int tamaño(int id_lamina) throws SQLException{

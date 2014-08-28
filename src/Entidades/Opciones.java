@@ -6,6 +6,7 @@ public class Opciones {
     private ArrayList<String> lista = new ArrayList<String>();
     private int id_lamina;
     private int codigo;
+    
     public ArrayList<String> getLista() {
         return lista;
     }
