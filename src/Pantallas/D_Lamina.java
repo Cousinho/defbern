@@ -2,11 +2,9 @@ package Pantallas;
 
 import BaseDeDatos.BDLaminas;
 import BaseDeDatos.BDOpciones2;
-import BaseDeDatos.BDUsuarios;
 import Entidades.Entrevista;
 import Entidades.Lamina;
 import Entidades.Opciones2;
-import Entidades.Usuario;
 import Util.TablaModelo;
 import java.awt.Image;
 import java.awt.event.WindowAdapter;
@@ -37,6 +35,7 @@ public class D_Lamina extends javax.swing.JDialog {
         nuevo=true;
         entrevista_actual=entrevista;
         initComponents();
+        actualizartabla();
     }
     
 
@@ -49,6 +48,7 @@ public class D_Lamina extends javax.swing.JDialog {
         lamina_actual=lamina;
         initComponents();
         CargarDatos();
+        actualizartabla();
     }
     
       
@@ -89,7 +89,7 @@ public class D_Lamina extends javax.swing.JDialog {
         String titulos[] = {"Codigo","Descripción","Nomenclatura"};
         LOpciones.setColumnIdentifiers(titulos);
         try {
-            for (Iterator<Opciones2> it = BDOpciones2.Lista() .iterator(); it.hasNext();) {
+            for (Iterator<Opciones2> it = BDOpciones2.Lista(lamina_actual.getCodigo()) .iterator(); it.hasNext();) {
                 Opciones2 opciones = it.next();
                 String Datos[] = {String.valueOf(opciones.getCodigo()),
                                   opciones.getDescripcion(),opciones.getNomenclatura()
@@ -163,7 +163,7 @@ public class D_Lamina extends javax.swing.JDialog {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(16, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addContainerGap())
         );
@@ -177,7 +177,7 @@ public class D_Lamina extends javax.swing.JDialog {
             }
         });
 
-        lamina.setText("Lamina");
+        lamina.setText("                                         Lamina");
 
         tabla_opciones.setModel(LOpciones);
         jScrollPane1.setViewportView(tabla_opciones);
@@ -209,22 +209,23 @@ public class D_Lamina extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1024, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(55, 55, 55)
+                .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel8)
-                    .addComponent(jLabel2))
-                .addGap(52, 52, 52)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(texto_peso, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE)
-                        .addComponent(b_imagen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addComponent(b_aceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(b_cancelar)))
-                    .addComponent(lamina, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel2))
+                        .addGap(52, 52, 52)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(texto_peso, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE)
+                            .addComponent(b_imagen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(b_aceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(44, 44, 44)
+                        .addComponent(b_cancelar))
+                    .addComponent(lamina, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 573, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 643, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(b_modificar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -248,20 +249,19 @@ public class D_Lamina extends javax.swing.JDialog {
                             .addComponent(b_imagen))
                         .addGap(18, 18, 18)
                         .addComponent(lamina, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(b_cancelar)
-                            .addComponent(b_aceptar)))
-                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(b_agregar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(b_modificar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(b_borrar)))
-                        .addContainerGap())))
+                            .addComponent(b_cancelar)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(b_aceptar)
+                                .addContainerGap())))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(b_agregar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(b_modificar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(b_borrar))))
         );
 
         layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {b_aceptar, b_cancelar});
@@ -302,7 +302,7 @@ public class D_Lamina extends javax.swing.JDialog {
 
     private void b_agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_agregarActionPerformed
         D_Opciones2 insertar = null;
-        insertar = new D_Opciones2(pantalla_padre,true);
+        insertar = new D_Opciones2(pantalla_padre,true,lamina_actual);
         insertar.setLocationRelativeTo(null);
         insertar.setResizable(false);
         insertar.setVisible(true);
@@ -320,8 +320,8 @@ public class D_Lamina extends javax.swing.JDialog {
             try {
                 Opciones2 p_envia=new Opciones2() {};
                 Object valor = tabla_opciones.getValueAt(columna, 0);
-                p_envia=BDOpciones2.buscarId(Integer.parseInt(valor.toString()));
-                D_Opciones2 editar= new D_Opciones2(pantalla_padre,true,p_envia);
+                p_envia=BDOpciones2.buscarId(Integer.parseInt(valor.toString()),lamina_actual.getCodigo());
+                D_Opciones2 editar= new D_Opciones2(pantalla_padre,true,p_envia,lamina_actual);
                 editar.setLocationRelativeTo(null);
                 editar.setResizable(false);
                 editar.setVisible(true);

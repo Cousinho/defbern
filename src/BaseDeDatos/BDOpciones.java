@@ -1,12 +1,10 @@
 package BaseDeDatos;
 
 import Entidades.Opciones;
-import Entidades.Registro;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
@@ -130,7 +128,7 @@ public class BDOpciones {
             
         }   
             return mayor;
-    }
+        }
      
     //retorna el tamaño del array en la base de datos 
     private static int tamaño(int id_lamina) throws SQLException{

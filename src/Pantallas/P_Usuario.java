@@ -178,7 +178,7 @@ public class P_Usuario extends javax.swing.JInternalFrame {
         if (fila!=-1){
             int seleccion = JOptionPane.showOptionDialog(
                 this, // Componente padre
-                "¿Desea eliminar este usuario?",
+                "¿Desea eliminar este producto?",
                 "Seleccione una opción",
                 JOptionPane.YES_NO_CANCEL_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
@@ -195,7 +195,7 @@ public class P_Usuario extends javax.swing.JInternalFrame {
                         //solicita eliminar fila selecionada
                         BDUsuarios.eliminar(Integer.parseInt(valor.toString()));
                     } catch (SQLException ex) {
-                        JOptionPane.showMessageDialog(null, "No se puede eliminar usuario");
+                        JOptionPane.showMessageDialog(null, "No se puede eliminar producto");
 
                     }
 

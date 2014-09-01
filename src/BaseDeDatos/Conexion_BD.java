@@ -12,9 +12,9 @@ public abstract class Conexion_BD {
         //datos de la conexion
         try {
             Class.forName("org.postgresql.Driver");
-            String url = "jdbc:postgresql://localhost/defbern";
+            String url = "jdbc:postgresql://localhost/Defbern";
             String user = "postgres";
-            String password = "123";
+            String password = "MC";
             conexion= DriverManager.getConnection(url, user, password);
         } catch (ClassNotFoundException e) {
             conexion=null;

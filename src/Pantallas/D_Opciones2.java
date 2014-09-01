@@ -7,9 +7,13 @@
 package Pantallas;
 
 import BaseDeDatos.BDOpciones2;
+import Entidades.Lamina;
 import Entidades.Opciones2;
 import Util.Alfanumerico;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -22,22 +26,24 @@ public class D_Opciones2 extends javax.swing.JDialog {
      */
     boolean nuevo;
     Opciones2 opcion_actual=new Opciones2() {};
-    public D_Opciones2(java.awt.Frame parent, boolean modal) {
+    public D_Opciones2(java.awt.Frame parent, boolean modal,Lamina lamina) {
         //bloque la ventana padre de jdialog
         super(parent, modal);
         //varible que se usa para indicar que el es una edición de datos o una inserción
         nuevo=true;
+        opcion_actual.setLamina(lamina);
         initComponents();
         //llama a metodo que formatea metodo de ingreso de campos
         FormatoCampos();
     }
     
-    public D_Opciones2(java.awt.Frame parent, boolean modal, Opciones2 opcion){
+    public D_Opciones2(java.awt.Frame parent, boolean modal, Opciones2 opcion,Lamina lamina){
         //bloque la ventana padre de jdialog
         super(parent,modal);
         //varible que se usa para indicar que el es una edición de datos o una inserción
         nuevo=false;
         opcion_actual=opcion;
+        opcion_actual.setLamina(lamina);
         initComponents();
         //llama a metodo que formatea metodo de ingreso de campos
         FormatoCampos();
@@ -59,27 +65,19 @@ public class D_Opciones2 extends javax.swing.JDialog {
     }
      
     //método que carga guardo datos nuevos
-    private boolean Guardar(){
+    private boolean Guardar() throws SQLException{
         boolean guardar;
         opcion_actual.setNomenclatura(texto_nomenclatura.getText());
         opcion_actual.setDescripcion(textoa_descripcion.getText());
-        try {
-            guardar=BDOpciones2.insertar(opcion_actual);
-        } catch (SQLException ex) {
-            return false;
-        }
+        guardar=BDOpciones2.insertar(opcion_actual);
          return guardar;
     }
     
     //método que actualiza datos si esto es una edición
-    private boolean Actualizar(){
+    private boolean Actualizar() throws SQLException{
         opcion_actual.setNomenclatura(texto_nomenclatura.getText());
         opcion_actual.setDescripcion(textoa_descripcion.getText());
-        try {
-            BDOpciones2.actualizar(opcion_actual);
-        } catch (SQLException ex) {
-            return false;
-        }
+        BDOpciones2.actualizar(opcion_actual);
         return true;
     } 
     /**
@@ -124,7 +122,7 @@ public class D_Opciones2 extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel3)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         jLabel1.setText("Descripción");
@@ -136,6 +134,11 @@ public class D_Opciones2 extends javax.swing.JDialog {
         jScrollPane1.setViewportView(textoa_descripcion);
 
         jButton1.setText("Aceptar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Cancelar");
 
@@ -183,6 +186,29 @@ public class D_Opciones2 extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        boolean estado = false;
+        if(nuevo){
+            try {
+                estado=Guardar();
+            } catch (SQLException ex) {
+                Logger.getLogger(D_Opciones2.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else{
+            try {
+                estado=Actualizar();
+            } catch (SQLException ex) {
+                Logger.getLogger(D_Opciones2.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if(estado){
+            this.dispose();
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "No se pudo guardar datos");
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -213,7 +239,8 @@ public class D_Opciones2 extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                D_Opciones2 dialog = new D_Opciones2(new javax.swing.JFrame(), true);
+                Lamina lamina = null;
+                D_Opciones2 dialog = new D_Opciones2(new javax.swing.JFrame(), true,lamina);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

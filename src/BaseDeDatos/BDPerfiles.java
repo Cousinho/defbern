@@ -119,6 +119,7 @@ public class BDPerfiles {
            mayor=0; 
         }else{
             mayor=resultado.getInt("maximo");
+            
         }   
             return mayor;
         }
