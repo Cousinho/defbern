@@ -6,25 +6,29 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class BDPerfiles {
 
     //método que recibe objeto usuario y lo inserta en la base de datos
-    public static boolean insertar(Perfil perfil) throws SQLException  {
-        boolean insertar=true;
+    public static int insertar(Perfil perfil) throws SQLException{
+        int codigo;
+        codigo=mayor()+1;
         Connection conexion = Conexion_BD.getConnection();
         PreparedStatement sentencia_insertar= null;
         sentencia_insertar = conexion.prepareStatement("insert into perfiles (codigo, descripcion) VALUES (?,?)");
-        sentencia_insertar.setInt(1, mayor()+1);
+        sentencia_insertar.setInt(1, codigo);
         sentencia_insertar.setString(2, perfil.getDescripcion());
         try {
             sentencia_insertar.executeUpdate();
         } catch (SQLException ex) {
-            insertar=false;
-        }
+            codigo=0;
+            Logger.getLogger(BDPerfiles.class.getName()).log(Level.SEVERE, null, ex);
+       }
         conexion.close();
         sentencia_insertar.close();
-        return insertar;
+        return codigo ;
     }
     
     //metodo que recibe le identificador de la usuario a ser eliminado

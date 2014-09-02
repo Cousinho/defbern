@@ -14,7 +14,7 @@ public class BDRegistros {
         boolean insertar=true;  
         Connection conexion = Conexion_BD.getConnection();
         PreparedStatement sentencia_insertar= null;
-        sentencia_insertar = conexion.prepareStatement("insert into registros (codigo, ci, nombre, apellido, descripcion, id_usuario, id_perfil) VALUES (?,?,?,?,?,?,?)");
+        sentencia_insertar = conexion.prepareStatement("insert into registros (codigo, ci, nombre, apellido, descripcion, id_usuario, id_perfil,codigo_grupal) VALUES (?,?,?,?,?,?,?,?)");
         sentencia_insertar.setInt(1, registro.getCodigo());
         sentencia_insertar.setInt(2, registro.getCi());
         sentencia_insertar.setString(3, registro.getNombre());
@@ -22,6 +22,7 @@ public class BDRegistros {
         sentencia_insertar.setString(5, registro.getDescripcion());
         sentencia_insertar.setInt(6, registro.getUsuario().getCodigo());
         sentencia_insertar.setInt(7, registro.getPerfil().getCodigo());
+        sentencia_insertar.setInt(8, registro.getCodigo_grupal());
         try {
             sentencia_insertar.executeUpdate();
         } catch (SQLException ex) {

@@ -1,51 +1,51 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 package BaseDeDatos;
 
+import Entidades.Lamina;
 import Entidades.Opciones;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Iterator;
-import java.util.StringTokenizer;
+import java.util.ArrayList;
 
-
+/**
+ *
+ * @author jose
+ */
 public class BDOpciones {
     //método que recibe objeto usuario y lo inserta en la base de datos
     public static boolean insertar(Opciones opciones) throws SQLException  {
         boolean insertar=true;
-        String lista="'{";
-        String comilla="\"";
-        PreparedStatement sentencia_insertar= null;
-        for (Iterator<String> it = opciones.getLista().iterator(); it.hasNext();) {
-                String opcion = it.next();
-                lista=lista+comilla+opcion+comilla+",";
-        }
-        
-        lista = lista.substring(0, lista.length()-1); 
-        lista=lista+"}'";
-        int codigo=mayor(opciones.getId_lamina())+1;
         Connection conexion = Conexion_BD.getConnection();
-        sentencia_insertar = conexion.prepareStatement("insert into opciones (codigo, id_lamina, lista) VALUES ("+codigo+","+opciones.getId_lamina()+","+lista+")");
+        PreparedStatement sentencia_insertar= null;
+        sentencia_insertar = conexion.prepareStatement("insert into opciones2 (id_lamina, codigo, descripcion, nomenclatura) VALUES (?,?,?,?)");
+        System.out.println(opciones.getCodigo());
+        sentencia_insertar.setInt(1, opciones.getLamina().getCodigo());
+        sentencia_insertar.setInt(2, mayor(opciones.getLamina())+1);
+        sentencia_insertar.setString(3, opciones.getDescripcion());
+        sentencia_insertar.setString(4, opciones.getNomenclatura());
         try {
             sentencia_insertar.executeUpdate();
         } catch (SQLException ex) {
-            System.out.println(ex);
             insertar=false;
         }
-        System.out.println("insert into opciones (codigo, id_lamina, lista) VALUES ("
-                +codigo+","+opciones.getId_lamina()+","+"'"+lista+"'"+ ")");
         conexion.close();
         sentencia_insertar.close();
         return insertar;
     }
     
     //metodo que recibe le identificador de la usuario a ser eliminado
-    public static boolean eliminar(int codigo,int id_lamina) throws SQLException {
+    public static boolean eliminar(int codigo) throws SQLException {
         Connection conexion = Conexion_BD.getConnection();
         PreparedStatement sentencia_eliminar = null;
-        sentencia_eliminar = conexion.prepareStatement("delete from opciones where codigo=? and id_lamina=?");
+        sentencia_eliminar = conexion.prepareStatement("delete from opciones2 where codigo=?");
         sentencia_eliminar.setInt(1, codigo);
-        sentencia_eliminar.setInt(2, id_lamina);
         int rowsUpdated = sentencia_eliminar.executeUpdate();
         conexion.close();
         sentencia_eliminar.close();
@@ -59,20 +59,15 @@ public class BDOpciones {
     
     //método que recibe objeto usuario y actualiza datos en base de datos
     public static boolean actualizar(Opciones opciones) throws SQLException {
-        String lista="'{";
-        String comilla="\"";
-        for (Iterator<String> it = opciones.getLista().iterator(); it.hasNext();) {
-                String opcion = it.next();
-                lista=lista+comilla+opcion+comilla+",";
-        }   
-        lista = lista.substring(0, lista.length()-1); 
-        lista=lista+"}'";
-        int codigo=mayor(opciones.getId_lamina())+1;
         Connection conexion = Conexion_BD.getConnection();
-        PreparedStatement sentencia_actualizar = conexion.prepareStatement("update opciones set lista="+lista+" where codigo=" + opciones.getCodigo()+"and id_lamina="+opciones.getId_lamina());
+        PreparedStatement sentencia_actualizar = null;
+
+        sentencia_actualizar = conexion.prepareStatement("update opciones2 set descripcion=?, nomenclatura=? where codigo=" + opciones.getCodigo()+"and id_lamina="+opciones.getLamina().getCodigo());
+        sentencia_actualizar.setString(1, opciones.getDescripcion());
+        sentencia_actualizar.setString(2, opciones.getNomenclatura());
         int rowsUpdated = sentencia_actualizar.executeUpdate();
-        conexion.close();
-        sentencia_actualizar.close();
+           conexion.close();
+           sentencia_actualizar.close();
         if (rowsUpdated > 0) {
             return true;
         } else {
@@ -81,15 +76,14 @@ public class BDOpciones {
     }
 
     //método que busca usuario por codigo
-    public static Opciones buscarId(int id_lamina) throws SQLException {
+    public static Opciones buscarId(int codigo,int id_lamina) throws SQLException {
         Connection conexion = Conexion_BD.getConnection();
-        String cadenalista;
-        int tamañolista =0;
         if(conexion != null)
         {
            PreparedStatement sentencia_buscar = null;
-           sentencia_buscar = conexion.prepareStatement("select * from opciones where id_lamina=?");
-           sentencia_buscar.setInt(1, id_lamina);
+           sentencia_buscar = conexion.prepareStatement("select * from opciones2 where codigo=? and id_lamina=?");
+           sentencia_buscar.setInt(1, codigo);
+           sentencia_buscar.setInt(2, id_lamina);
            Opciones opciones=null;
            ResultSet resultado = sentencia_buscar.executeQuery();
             if (resultado.next()) {
@@ -97,15 +91,10 @@ public class BDOpciones {
                     opciones = new Opciones() {
                     };
                 }
-            }
-            tamañolista=tamaño(opciones.getId_lamina());
-            opciones.setCodigo(resultado.getInt("codigo"));
-            cadenalista=resultado.getString("lista");
-            cadenalista=cadenalista.replace("{", "");
-            cadenalista=cadenalista.replace("}", "");
-            StringTokenizer token = new StringTokenizer(cadenalista,",");
-            for(int x=0;x<=token.countTokens();x++){
-                opciones.addLista(token.nextToken());
+                opciones.setCodigo(codigo);
+                opciones.setLamina(BDLaminas.buscarId(resultado.getInt("id_lamina")));
+                opciones.setDescripcion(resultado.getString("descripcion"));
+                opciones.setNomenclatura(resultado.getString("nomenclatura"));
             }
             conexion.close();
             sentencia_buscar.close();
@@ -115,11 +104,34 @@ public class BDOpciones {
         
     }
     
-    private static int mayor(int id_lamina) throws SQLException{
+    
+    //método que devuelve una lista de todas las opciones 
+    public static ArrayList<Opciones> Lista(int id_lamina) throws SQLException {
+            Connection conexion = Conexion_BD.getConnection();
+            PreparedStatement sentencia_mostrar = null;
+            ArrayList<Opciones> lista = new ArrayList<Opciones>();
+
+            sentencia_mostrar = conexion.prepareStatement("select * from opciones2 where id_lamina="+id_lamina);
+            ResultSet resultado = sentencia_mostrar.executeQuery();
+            while (resultado.next()) {
+                Opciones opciones = new Opciones() {
+                };
+                opciones.setCodigo(resultado.getInt("codigo"));
+                opciones.setLamina(BDLaminas.buscarId(resultado.getInt("id_lamina")));
+                opciones.setDescripcion(resultado.getString("descripcion"));
+                opciones.setNomenclatura(resultado.getString("nomenclatura"));
+                lista.add(opciones);
+            }
+            conexion.close();
+            sentencia_mostrar.close();
+            return lista;
+    }
+    
+    private static int mayor(Lamina id_lamina) throws SQLException{
         int mayor;
         Connection conexion = Conexion_BD.getConnection();
         PreparedStatement sentencia_mayor = null;
-        sentencia_mayor = conexion.prepareStatement("select max(codigo) as maximo from opciones where id_lamina="+id_lamina);
+        sentencia_mayor = conexion.prepareStatement("select max(codigo) as maximo from opciones2 where id_lamina="+id_lamina.getCodigo());
         ResultSet resultado = sentencia_mayor.executeQuery();
         if (!resultado.next()){
            mayor=0; 
@@ -128,22 +140,5 @@ public class BDOpciones {
             
         }   
             return mayor;
-        }
-     
-    //retorna el tamaño del array en la base de datos 
-    private static int tamaño(int id_lamina) throws SQLException{
-        int mayor;
-        Connection conexion = Conexion_BD.getConnection();
-        PreparedStatement sentencia_mayor = null;
-        sentencia_mayor = conexion.prepareStatement("SELECT array_upper(lista,1) FROM opciones where id_lamina="+id_lamina);
-        ResultSet resultado = sentencia_mayor.executeQuery();
-        if (!resultado.next()){
-           mayor=0; 
-        }else{
-            mayor=resultado.getInt("array_upper");
-            
-        }   
-        return mayor; 
     }
-
 }

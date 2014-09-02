@@ -8,7 +8,7 @@ public class Registro {
     private String descripcion;
     private Usuario usuario;
     private Perfil perfil;
-
+    private int Codigo_grupal;
     /**
      * @return the ci
      */
@@ -105,5 +105,19 @@ public class Registro {
      */
     public void setCodigo(int codigo) {
         this.codigo = codigo;
+    }
+
+    /**
+     * @return the Codigo_grupal
+     */
+    public int getCodigo_grupal() {
+        return Codigo_grupal;
+    }
+
+    /**
+     * @param Codigo_grupal the Codigo_grupal to set
+     */
+    public void setCodigo_grupal(int Codigo_grupal) {
+        this.Codigo_grupal = Codigo_grupal;
     }
 }

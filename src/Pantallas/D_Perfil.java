@@ -59,7 +59,13 @@ public class D_Perfil extends javax.swing.JDialog {
         perfil_actual.setCodigo(Integer.parseInt(texto_codigo.getText()));
         perfil_actual.setDescripcion(textoa_descripcion.getText());
         try {
-            guardar=BDPerfiles.insertar(perfil_actual);
+            int codigo;
+            codigo=BDPerfiles.insertar(perfil_actual);
+            if(codigo!=0){
+                guardar=true;
+            }else{
+                guardar=false;
+            }
         } catch (SQLException ex) {
             return false;
         }

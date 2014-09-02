@@ -6,9 +6,9 @@
 
 package Pantallas;
 
-import BaseDeDatos.BDOpciones2;
+import BaseDeDatos.BDOpciones;
 import Entidades.Lamina;
-import Entidades.Opciones2;
+import Entidades.Opciones;
 import Util.Alfanumerico;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -25,7 +25,7 @@ public class D_Opciones2 extends javax.swing.JDialog {
      * Creates new form D_Opciones2
      */
     boolean nuevo;
-    Opciones2 opcion_actual=new Opciones2() {};
+    Opciones opcion_actual=new Opciones() {};
     public D_Opciones2(java.awt.Frame parent, boolean modal,Lamina lamina) {
         //bloque la ventana padre de jdialog
         super(parent, modal);
@@ -37,7 +37,7 @@ public class D_Opciones2 extends javax.swing.JDialog {
         FormatoCampos();
     }
     
-    public D_Opciones2(java.awt.Frame parent, boolean modal, Opciones2 opcion,Lamina lamina){
+    public D_Opciones2(java.awt.Frame parent, boolean modal, Opciones opcion,Lamina lamina){
         //bloque la ventana padre de jdialog
         super(parent,modal);
         //varible que se usa para indicar que el es una edición de datos o una inserción
@@ -69,7 +69,7 @@ public class D_Opciones2 extends javax.swing.JDialog {
         boolean guardar;
         opcion_actual.setNomenclatura(texto_nomenclatura.getText());
         opcion_actual.setDescripcion(textoa_descripcion.getText());
-        guardar=BDOpciones2.insertar(opcion_actual);
+        guardar=BDOpciones.insertar(opcion_actual);
          return guardar;
     }
     
@@ -77,7 +77,7 @@ public class D_Opciones2 extends javax.swing.JDialog {
     private boolean Actualizar() throws SQLException{
         opcion_actual.setNomenclatura(texto_nomenclatura.getText());
         opcion_actual.setDescripcion(textoa_descripcion.getText());
-        BDOpciones2.actualizar(opcion_actual);
+        BDOpciones.actualizar(opcion_actual);
         return true;
     } 
     /**

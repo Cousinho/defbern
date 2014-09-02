@@ -1,5 +1,6 @@
 package Analisis;
 
+import RNA.Emociones;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
@@ -40,7 +41,7 @@ public class Analisis {
     String NombreArchivo = "";      
     String NombreMuestra="";    
     public void run() {
-        for (int x = 1; x <= 8;x++) {
+        for (int x = 1; x <= 14;x++) {
             NombreArchivo = "Rostro"+String.valueOf(x);
             NombreMuestra=String.valueOf(x);
             Rostro SelectorRostro = new Rostro();
@@ -81,6 +82,8 @@ public class Analisis {
         Core.line(image, ceja1 ,ceja2, new Scalar(0, 240, 0));
         Core.line(image, ceja1 ,nariz, new Scalar(0, 240, 0));
         Core.line(image, ceja2, nariz, new Scalar(0, 240, 0));
+        Core.line(image,ceja1,boca,new Scalar(0, 240, 0));
+        Core.line(image, ceja2, boca, new Scalar(0, 240, 0));
         Core.line(image, ojo1, ojo2, new Scalar(0, 240, 0));
         Core.line(image, ojo1, boca, new Scalar(0, 240, 0));
         Core.line(image, ojo1, nariz, new Scalar(0, 240, 0));
@@ -127,7 +130,9 @@ public class Analisis {
        System.out.print(" "+(distancia51/distancia52));
        System.out.print(" "+(distancia61/distancia62));
        System.out.println();
-         
+       Emociones identificar=new Emociones();
+       identificar.DeterminarEmocion(distancia11/distancia12,distancia21/distancia22,distancia31/distancia32,
+       distancia41/distancia42,distancia51/distancia52,distancia61/distancia62);
     }
     public double Distancia(Point x1, Point x2){
         double Distancia = Math.sqrt( Math.pow((x1.x-x2.x),2)+ Math.pow((x1.y-x2.y),2));

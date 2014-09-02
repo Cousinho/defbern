@@ -7,7 +7,7 @@ import Entidades.Lamina;
 import Entidades.Perfil;
 import Util.Directorios;
 import java.awt.Font;
-import static java.awt.Frame.MAXIMIZED_BOTH;
+import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
@@ -46,7 +46,8 @@ public class D_Presentacion extends javax.swing.JDialog {
     boolean primero=true;
     public D_Presentacion(java.awt.Frame parent, boolean modal,Perfil perfil) throws SQLException {
         super(parent, modal);
-       initComponents();
+        initComponents();
+        Class1();
         Id_perfil=perfil.getCodigo();
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         entrevista=BDEntrevistas.buscarId(1);
@@ -63,9 +64,13 @@ public class D_Presentacion extends javax.swing.JDialog {
             Grabar();
         }
         IndiceLista++;
-          }
+    }
+    
+    public void Class1() {
+        this.setSize(this.getToolkit().getScreenSize());    
+    }
 
-     private void CargarImagen(Image imagen){
+    private void CargarImagen(Image imagen){
         lamina.setFont(new Font("Monospaced", Font.PLAIN, 24));
         lamina.setBorder(BorderFactory.createEtchedBorder());
         img=imagen;

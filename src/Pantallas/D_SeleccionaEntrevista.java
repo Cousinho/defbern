@@ -2,17 +2,11 @@ package Pantallas;
 
 import BaseDeDatos.BDEntrevistas;
 import Entidades.Entrevista;
-import static Pantallas.P_Entrevista.pantalla;
 import Util.TablaModelo;
-import java.awt.Frame;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.beans.PropertyVetoException;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableRowSorter;
 
@@ -130,7 +124,6 @@ public class D_SeleccionaEntrevista extends javax.swing.JDialog {
         else{
             JOptionPane.showMessageDialog(null, "Seleccione una fila de la tabla");
         }
-        // TODO add your handling code here:
     }//GEN-LAST:event_b_aceptarActionPerformed
 
     private void b_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_cancelarActionPerformed

@@ -2,6 +2,7 @@ package Pantallas;
 
 import Entidades.Usuario;
 import java.beans.PropertyVetoException;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -42,6 +43,8 @@ public class P_Principal extends javax.swing.JFrame {
         SM_Usuario = new javax.swing.JMenuItem();
         M_Entrevista = new javax.swing.JMenu();
         SM_Iniciar_Entrevista = new javax.swing.JMenuItem();
+        S_EntrevistaGrupal = new javax.swing.JMenuItem();
+        S_EntrevistaIndividual = new javax.swing.JMenuItem();
         M_Informes = new javax.swing.JMenu();
         SM_Informes = new javax.swing.JMenuItem();
 
@@ -55,12 +58,12 @@ public class P_Principal extends javax.swing.JFrame {
         Panel_Principal1.setBounds(0, 0, 0, 0);
 
         Menu_Principal.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
             public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
                 Menu_PrincipalAncestorAdded(evt);
             }
             public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
-            }
-            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
             }
         });
 
@@ -129,6 +132,22 @@ public class P_Principal extends javax.swing.JFrame {
             }
         });
         M_Entrevista.add(SM_Iniciar_Entrevista);
+
+        S_EntrevistaGrupal.setText("Entrevista Grupal");
+        S_EntrevistaGrupal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                S_EntrevistaGrupalActionPerformed(evt);
+            }
+        });
+        M_Entrevista.add(S_EntrevistaGrupal);
+
+        S_EntrevistaIndividual.setText("Entrevista Individual");
+        S_EntrevistaIndividual.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                S_EntrevistaIndividualActionPerformed(evt);
+            }
+        });
+        M_Entrevista.add(S_EntrevistaIndividual);
 
         Menu_Principal.add(M_Entrevista);
 
@@ -231,6 +250,38 @@ public class P_Principal extends javax.swing.JFrame {
         principal.show();
     }//GEN-LAST:event_SM_UsuarioActionPerformed
 
+    private void S_EntrevistaIndividualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_S_EntrevistaIndividualActionPerformed
+        P_IniciarEntrevista entrevista = null;
+        try {
+            entrevista = new P_IniciarEntrevista(this,false);
+        } catch (SQLException ex) {
+            Logger.getLogger(P_Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Panel_Principal.add(entrevista);
+        try {
+            entrevista.setMaximum(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(P_Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        entrevista.show();
+    }//GEN-LAST:event_S_EntrevistaIndividualActionPerformed
+
+    private void S_EntrevistaGrupalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_S_EntrevistaGrupalActionPerformed
+        P_IniciarEntrevista entrevista = null;
+        try {
+            entrevista = new P_IniciarEntrevista(this,true);
+        } catch (SQLException ex) {
+            Logger.getLogger(P_Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Panel_Principal.add(entrevista);
+        try {
+            entrevista.setMaximum(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(P_Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        entrevista.show();
+    }//GEN-LAST:event_S_EntrevistaGrupalActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -261,6 +312,7 @@ public class P_Principal extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                System.loadLibrary("opencv_java249");
                 Usuario user = null;
                 new P_Principal(user).setVisible(true);
             }
@@ -281,6 +333,8 @@ public class P_Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem SM_Perfil;
     private javax.swing.JMenuItem SM_Usuario;
     private javax.swing.JMenuItem S_Cerrar;
+    private javax.swing.JMenuItem S_EntrevistaGrupal;
+    private javax.swing.JMenuItem S_EntrevistaIndividual;
     private javax.swing.JMenuItem S_Salir;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;

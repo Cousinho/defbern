@@ -1,10 +1,10 @@
 package Pantallas;
 
 import BaseDeDatos.BDLaminas;
-import BaseDeDatos.BDOpciones2;
+import BaseDeDatos.BDOpciones;
 import Entidades.Entrevista;
 import Entidades.Lamina;
-import Entidades.Opciones2;
+import Entidades.Opciones;
 import Util.TablaModelo;
 import java.awt.Image;
 import java.awt.event.WindowAdapter;
@@ -89,8 +89,8 @@ public class D_Lamina extends javax.swing.JDialog {
         String titulos[] = {"Codigo","Descripción","Nomenclatura"};
         LOpciones.setColumnIdentifiers(titulos);
         try {
-            for (Iterator<Opciones2> it = BDOpciones2.Lista(lamina_actual.getCodigo()) .iterator(); it.hasNext();) {
-                Opciones2 opciones = it.next();
+            for (Iterator<Opciones> it = BDOpciones.Lista(lamina_actual.getCodigo()) .iterator(); it.hasNext();) {
+                Opciones opciones = it.next();
                 String Datos[] = {String.valueOf(opciones.getCodigo()),
                                   opciones.getDescripcion(),opciones.getNomenclatura()
                                   };
@@ -318,9 +318,9 @@ public class D_Lamina extends javax.swing.JDialog {
         int columna=tabla_opciones.getSelectedRow();
         if (columna!=-1){
             try {
-                Opciones2 p_envia=new Opciones2() {};
+                Opciones p_envia=new Opciones() {};
                 Object valor = tabla_opciones.getValueAt(columna, 0);
-                p_envia=BDOpciones2.buscarId(Integer.parseInt(valor.toString()),lamina_actual.getCodigo());
+                p_envia=BDOpciones.buscarId(Integer.parseInt(valor.toString()),lamina_actual.getCodigo());
                 D_Opciones2 editar= new D_Opciones2(pantalla_padre,true,p_envia,lamina_actual);
                 editar.setLocationRelativeTo(null);
                 editar.setResizable(false);
@@ -363,7 +363,7 @@ public class D_Lamina extends javax.swing.JDialog {
                     Object valor = tabla_opciones.getValueAt(fila, 0);
                     try {
                         //solicita eliminar fila selecionada
-                        BDOpciones2.eliminar(Integer.parseInt(valor.toString()));
+                        BDOpciones.eliminar(Integer.parseInt(valor.toString()));
                     } catch (SQLException ex) {
                         JOptionPane.showMessageDialog(null, "No se puede eliminar opción");
 
