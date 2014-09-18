@@ -20,9 +20,9 @@ public class Cejas {
     private int DistanciaMinima;
     private int tamaño=0;
            
-    public void Analizar(String Nombre,Point ojo1, Point ojo2,Point tamañoojo) {
+    public void Analizar(String Nombre,String Directorio,Point ojo1, Point ojo2,Point tamañoojo) {
             NombreArchivo=Nombre;
-            BuscarCejas(ojo1,ojo2,tamañoojo);
+            BuscarCejas(ojo1,ojo2,tamañoojo,Directorio);
             SelecionarCejas(ojo1, ojo2); 
     }
     
@@ -43,12 +43,12 @@ public class Cejas {
     }
             
     //Utiliza el xml para encontrar la lista de Cejas
-    public void BuscarCejas(Point Ojo1, Point Ojo2, Point tamañoojo){
+    public void BuscarCejas(Point Ojo1, Point Ojo2, Point tamañoojo,String Directorio){
         CascadeClassifier faceDetector = new CascadeClassifier("xml/Cejas.xml");
         String nombre="Cejas";
         Mat image;
         MatOfRect faceDetections;
-        image = Highgui.imread("imagen/Rostros/"+NombreArchivo+".png");
+        image = Highgui.imread(NombreArchivo);
         DistanciaMinima=image.width()/15;
         faceDetections = new MatOfRect();    
         faceDetector.detectMultiScale(image, faceDetections);
@@ -63,8 +63,8 @@ public class Cejas {
                     listacejas[nu][3]=rect.width;
                     listacejas[nu][4]=rect.height;
                     tamaño++;
-                    //Core.rectangle(image, new Point(rect.x, rect.y), new Point(rect.x +rect.width, rect.y +rect.height), new Scalar(0, 240, 0));
-                    //Highgui.imwrite("imagen/ceja"+NombreArchivo+nu+".png", image);
+                    Core.rectangle(image, new Point(rect.x, rect.y), new Point(rect.x +rect.width, rect.y +rect.height), new Scalar(0, 240, 0));
+                    Highgui.imwrite(Directorio+"Cejas.png", image);
                     nu++;
                 }
             }
@@ -79,8 +79,8 @@ public class Cejas {
                         listacejas[nu][4]=rect.height;
                         tamaño++;
                         //Core.rectangle(image, new Point(rect.x+(rect.width/2), rect.y+(rect.height/2)), new Point(rect.x+(rect.width/2)+5, rect.y+(rect.height/2)+5), new Scalar(0, 240, 0));
-                        //Core.rectangle(image, new Point(rect.x, rect.y), new Point(rect.x +rect.width, rect.y +rect.height), new Scalar(0, 240, 0));
-                        //Highgui.imwrite("imagen/ceja"+NombreArchivo+nu+".png", image);
+                        Core.rectangle(image, new Point(rect.x, rect.y), new Point(rect.x +rect.width, rect.y +rect.height), new Scalar(0, 240, 0));
+                        Highgui.imwrite(Directorio+"Cejas.png", image);
                         nu++;
                     }
                 }

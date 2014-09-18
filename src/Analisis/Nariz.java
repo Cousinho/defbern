@@ -1,9 +1,11 @@
 package Analisis;
 
+import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
 import org.opencv.highgui.Highgui;
 import org.opencv.objdetect.CascadeClassifier;
 
@@ -18,19 +20,19 @@ public class Nariz {
    //Distancia Mínima y Máxima entre el y de los ojos y nariz
    private int DistanciaMaxima=0;
    private int DistanciaMinima=0;
-   public Point Analizar(Point ojo1, Point ojo2, String Nombre){
-       Buscar(ojo1 ,ojo2 ,Nombre);
+   public Point Analizar(String Nombre,String Directorio,Point ojo1, Point ojo2){
+       Buscar(ojo1 ,ojo2 ,Nombre,Directorio);
        SeleccionarNariz( ojo1, ojo2);
        return nariz;
     }
     
     
-    private void Buscar(Point ojo1, Point ojo2, String Nombre){
+    private void Buscar(Point ojo1, Point ojo2, String Nombre,String Directorio){
         CascadeClassifier faceDetector = new CascadeClassifier("xml/Nariz.xml");
         String nombre="nariz";
         Mat image;
         MatOfRect faceDetections;
-        image = Highgui.imread("imagen/Rostros/"+Nombre+".png");
+        image = Highgui.imread(Nombre);
         //Genera un valores mínimos y máximos a partir de el tamaño de la muestra
         DistanciaMaxima=image.width()/3;
         DistanciaMinima=image.width()/15;
@@ -44,8 +46,8 @@ public class Nariz {
                 if((rect.y+(rect.height/2))>ojo2.y){
                     listanariz[nu][1]=rect.x+(rect.width/2);
                     listanariz[nu][2]=rect.y+(rect.height/2);
-                    //Core.rectangle(image, new Point(rect.x+(rect.width/2), rect.y+(rect.height/2)), new Point(rect.x + (rect.width/2)+4, rect.y + (rect.height/2)+4), new Scalar(0, 240, 0));
-                    //Highgui.imwrite("imagen/nariz"+NombreArchivo+nu+".png", image);
+                    Core.rectangle(image, new Point(rect.x+(rect.width/2), rect.y+(rect.height/2)), new Point(rect.x + (rect.width/2)+4, rect.y + (rect.height/2)+4), new Scalar(0, 240, 0));
+                    Highgui.imwrite(Directorio+"Nariz.png", image);
                     nu++;
                     tamaño++;
                 }
@@ -53,7 +55,7 @@ public class Nariz {
         }
     }
     
-    public void SeleccionarNariz(Point ojo1, Point ojo2){
+    private void SeleccionarNariz(Point ojo1, Point ojo2){
         //Diferencia entre en alineación con el centro de los ojos
        int diferenciaactual = 0;
        int diferenciacentro=0;
@@ -85,7 +87,9 @@ public class Nariz {
             }
         }
     }
-
+    public Point getNariz(){
+        return nariz;
+    }
 }
 
 

@@ -1,23 +1,9 @@
 package Analisis;
 
 import RNA.Emociones;
-import org.opencv.core.Core;
-import org.opencv.core.Mat;
+import java.io.File;
 import org.opencv.core.Point;
-import org.opencv.core.Scalar;
-import org.opencv.highgui.Highgui;
-
-public class Analisis {
-    double distancia11, distancia12;
-    double distancia21, distancia22;
-    double distancia31, distancia32;
-    double distancia41, distancia42;
-    double distancia51, distancia52;
-    double distancia61, distancia62;
-    double distancia71, distancia72;
-    boolean primero=true;
-                            
-    private String nombre;
+public class Analisis  {
     Point nariz = new Point();
     Point ojo1 = new Point();
     Point tamañoojo1 = new Point();
@@ -29,139 +15,190 @@ public class Analisis {
     Point ceja2 = new Point();
     Point tamañoceja1 = new Point();
     Point tamañoceja2 = new Point();
-    int ojox1 = 0;
-    int listaojos[][] = new int[20][20];
-    int listabocas[][] = new int[20][20];
-    int ojox2 = 0;
-    int ojoy1 = 0;
-    int ojoy2 = 0;
-    int bocay = 0;
-    int alto = 0;
-    int ancho = 0;
-    String NombreArchivo = "";      
-    String NombreMuestra="";    
-    public void run() {
-        for (int x = 1; x <= 14;x++) {
-            NombreArchivo = "Rostro"+String.valueOf(x);
-            NombreMuestra=String.valueOf(x);
-            Rostro SelectorRostro = new Rostro();
-            SelectorRostro.Buscar(NombreMuestra);
-            Ojos selectorojos   = new Ojos();
-            selectorojos.Analizar(NombreArchivo);
-            ojo1 = selectorojos.getOjo1(    );
-            ojo2 = selectorojos.getOjo2();
-            tamañoojo1 = selectorojos.getTamaño1();
-            tamañoojo2 = selectorojos.getTamaño2();
-            Cejas selectorcejas = new Cejas();
-            selectorcejas.Analizar(NombreArchivo,ojo1,ojo2,tamañoojo1);
-            ceja1=selectorcejas.getCeja1();
-            ceja2=selectorcejas.getCeja2();
-            tamañoceja1=selectorcejas.getTamaño1();
-            tamañoceja2=selectorcejas.getTamaño2();
-            Nariz selectornariz = new Nariz();
-            nariz = selectornariz.Analizar(ojo1, ojo2, NombreArchivo);
-            Boca selectorboca = new Boca();
-            selectorboca.Analizar(nariz, ojo1, ojo2, NombreArchivo,tamañoojo1);
-            boca = selectorboca.Boca();
-            tamañoboca = selectorboca.Tamaño();
-            if(ojo1.x!=0 && ojo2.x!=0 && ceja1.x!=0 && ceja2.x!=0 && boca.x!=0){
-                linea();
-                   CalcularDistancia();
-                //System.out.println(x);
-            }else{
-                linea2();
-                CalcularDistancia();
-            }
+    private double distancia11, distancia12;
+    private double distancia21, distancia22;
+    private double distancia31, distancia32;
+    private double distancia41, distancia42;
+    private double distancia51, distancia52;
+    private double distancia61, distancia62;
+    private double distancia71, distancia72;
+    private String DirectorioPrincipal="imagen/Muestras/";
+    private String Directorio;
+    private String SubDirectorio="";
+    private String DirectorioResultados="";
+    private int TamanhoMuestras=0;
+    private int TamanhoLista=0;
+    private int[] Resultados=new int[6];
+    private Rostro AnalisisRostro=new Rostro();
+    private Cejas AnalisisCejas=new Cejas();
+    private Ojos AnalisisOjos=new Ojos();
+    private Nariz AnalisisNariz=new Nariz();
+    private Boca AnalisisBoca=new Boca();
+    public int[] Analizar(int codigo_perfil){
+        Directorio=DirectorioPrincipal+codigo_perfil+"/";
+        File listamuestras = new File(Directorio);
+        if(!listamuestras.exists()){
+            return null;
         }
+        DirectorioResultados=Directorio+"Resultados/";
+        File make=new File(DirectorioResultados);
+        make.mkdir();
+        TamanhoMuestras=listamuestras.list().length;
+        if(TamanhoMuestras!=0){
+            Resultados = new int[TamanhoMuestras];
+            for(int x = 0;x<TamanhoMuestras;x++){
+                SubDirectorio=Directorio+x+"/";
+               if(x!=0){
+                    Resultados[x]=AnalizarMuestras(SubDirectorio);
+                    LimpiarDistancias();
 
-    }
-
-    public void linea() {
-        Mat image;
-        image = Highgui.imread("imagen/Rostros/" + NombreArchivo + ".png");
-        Core.line(image, ceja1 ,ceja2, new Scalar(0, 240, 0));
-        Core.line(image, ceja1 ,nariz, new Scalar(0, 240, 0));
-        Core.line(image, ceja2, nariz, new Scalar(0, 240, 0));
-        Core.line(image,ceja1,boca,new Scalar(0, 240, 0));
-        Core.line(image, ceja2, boca, new Scalar(0, 240, 0));
-        Core.line(image, ojo1, ojo2, new Scalar(0, 240, 0));
-        Core.line(image, ojo1, boca, new Scalar(0, 240, 0));
-        Core.line(image, ojo1, nariz, new Scalar(0, 240, 0));
-        Core.line(image, ojo2, boca, new Scalar(0, 240, 0));
-        Core.line(image, ojo2, nariz, new Scalar(0, 240, 0));
-        Core.line(image, ojo1, ceja1, new Scalar(0, 240, 0));
-        Core.line(image, ojo2, ceja2, new Scalar(0, 240, 0));
-        Core.line(image, nariz, boca, new Scalar(0, 240, 0));
-        Core.rectangle(image, new Point(boca.x-tamañoboca.x/2 , boca.y-tamañoboca.y) , new Point(boca.x+tamañoboca.x/2, boca.y), new Scalar(0, 240, 0)); 
-        Core.rectangle(image, new Point (ojo1.x-(tamañoojo1.x/2), ojo1.y-(tamañoojo1.y/2)),new Point (ojo1.x+(tamañoojo1.x/2), ojo1.y+(tamañoojo1.y/2)) , new Scalar(0, 240, 0));
-        Core.rectangle(image, new Point (ojo2.x-(tamañoojo2.x/2), ojo2.y-(tamañoojo2.y/2)),new Point (ojo2.x+(tamañoojo2.x/2), ojo2.y+(tamañoojo2.y/2)) , new Scalar(0, 240, 0));
-        Highgui.imwrite("imagen/linea/" + NombreArchivo + ".png", image);
+                }else{
+                    AnalizarNeutros(SubDirectorio);
+                }
+               
+       }
+            
+        }else{
+          return null;
+        }
+        return Resultados;
     }
     
-    public void CalcularDistancia() {
-       if(primero){
+    private int AnalizarMuestras(String DirectorioMuestras) {
+        String Archivo;
+        int emocion=0;
+        File lista_imagenes=new File(DirectorioMuestras);
+        int numero_imagenes=0;
+        if(lista_imagenes.exists()){
+            numero_imagenes=lista_imagenes.list().length;
+            if(numero_imagenes!=0){
+                for(int y=1;y<numero_imagenes;y++){
+                    String[] muestras = lista_imagenes.list();
+                    Archivo=DirectorioMuestras+muestras[y];
+                    int s=AnalizarImagen(Archivo);
+                    if(s==1){
+                        CalcularDistancia(false);
+                        emocion=Emociones();
+                        LimpiarDistancias();
+                        if(emocion!=0){
+                            return emocion;
+                        }
+                    }
+                }
+                return emocion;
+            }else{
+                return 4;
+                
+            }
+        }else{
+            return 4;
+        }
+        
+    }
+    
+    private int AnalizarNeutros(String DirectorioMuestras) {
+        String Archivo;
+        File lista_imagenes=new File(DirectorioMuestras);
+        int numero_imagenes=0;
+        if(lista_imagenes.exists()){
+            numero_imagenes=lista_imagenes.list().length;
+            if(numero_imagenes!=0){
+                for(int y=0;y<numero_imagenes;y++){
+                    String[] muestras = lista_imagenes.list();
+                    Archivo=DirectorioMuestras+muestras[y];
+                    int estadoanalisis=AnalizarImagen(Archivo);
+                    if(estadoanalisis==1){
+                        CalcularDistancia(true);
+                        return 1;
+                    }
+                }
+                return 0;
+            }else{
+                return 4;
+                
+            }
+        }else{
+            return 4;
+        }
+        
+    }
+   
+    private int AnalizarImagen(String Archivo){
+        LimpiarAnalisis();
+        boolean positivo;
+        positivo=AnalisisRostro.Buscar(Archivo,DirectorioResultados); 
+        if(positivo){
+            AnalisisOjos.Analizar(DirectorioResultados+"Rostro.png", DirectorioResultados);
+            ojo1=AnalisisOjos.getOjo1();
+            tamañoojo1=AnalisisOjos.getTamaño1();
+            ojo2=AnalisisOjos.getOjo2();
+            tamañoojo2=AnalisisOjos.getTamaño2();
+            AnalisisCejas.Analizar(DirectorioResultados+"Rostro.png",DirectorioResultados, ojo1, ojo2, tamañoojo1);
+            ceja1=AnalisisCejas.getCeja1();
+            ceja2=AnalisisCejas.getCeja2();
+            AnalisisNariz.Analizar(DirectorioResultados+"Rostro.png",DirectorioResultados,ojo1, ojo2);
+            nariz=AnalisisNariz.getNariz();
+            AnalisisBoca.Analizar(DirectorioResultados+"Rostro.png", DirectorioResultados, nariz, ojo1, ojo2, tamañoojo1);
+            boca=AnalisisBoca.getBoca();
+            tamañoboca=AnalisisBoca.getTamaño();
+            if(ceja1.x==0||ojo1.x==0||nariz.x==0||boca.x==0){
+                return 0;
+            }else{
+                return 1;
+            }
+                
+        }
+        return 0;
+    }
+    
+    private int Emociones(){
+       Emociones identificar=new Emociones();
+       return identificar.DeterminarEmocion(distancia11/distancia12,distancia21/distancia22,distancia31/distancia32,
+       distancia41/distancia42,distancia51/distancia52,distancia61/distancia62);
+
+     }
+    
+    public void CalcularDistancia(boolean neutro) {
+         if(neutro){
            double P=Distancia(ojo1,ojo2);
            distancia11=P/tamañoboca.x;
            distancia21=P/tamañoojo1.x;
-           distancia31=P/((Distancia(ojo1,boca)+Distancia(ojo1,boca))/2);
+           distancia31=P/((Distancia(ojo1,boca)+Distancia(ojo2,boca))/2);
            distancia41=P/((Distancia(ceja1,boca)+Distancia(ceja2,boca))/2);
            distancia51=P/((Distancia(ojo1,ceja1)+Distancia(ojo2,ceja2))/2);
-           distancia61=P/((Distancia(ceja1,nariz)+Distancia(ceja2,nariz))/2);
-           primero=false;
-       }else{
+           distancia61=P/((Distancia(ceja1,nariz)+Distancia(ceja2,nariz))/2); 
+         }else{
            double P=Distancia(ojo1,ojo2);
            distancia12=P/tamañoboca.x;
            distancia22=P/tamañoojo1.x;
-           distancia32=P/((Distancia(ojo1,boca)+Distancia(ojo1,boca))/2);
+           distancia32=P/((Distancia(ojo1,boca)+Distancia(ojo2,boca))/2);
            distancia42=P/((Distancia(ceja1,boca)+Distancia(ceja2,boca))/2);
            distancia52=P/((Distancia(ojo1,ceja1)+Distancia(ojo2,ceja2))/2);
            distancia62=P/((Distancia(ceja1,nariz)+Distancia(ceja2,nariz))/2);
-           primero=true;
-           Imprimir();
-       }
-       
-        
+        }
     }
-    public void Imprimir(){
-       System.out.print(" "+(distancia11/distancia12));
-       System.out.print(" "+(distancia21/distancia22));
-       System.out.print(" "+(distancia31/distancia32));
-       System.out.print(" "+(distancia41/distancia42));
-       System.out.print(" "+(distancia51/distancia52));
-       System.out.print(" "+(distancia61/distancia62));
-       System.out.println();
-       Emociones identificar=new Emociones();
-       identificar.DeterminarEmocion(distancia11/distancia12,distancia21/distancia22,distancia31/distancia32,
-       distancia41/distancia42,distancia51/distancia52,distancia61/distancia62);
-    }
-    public double Distancia(Point x1, Point x2){
+     
+    
+    
+    private double Distancia(Point x1, Point x2){
         double Distancia = Math.sqrt( Math.pow((x1.x-x2.x),2)+ Math.pow((x1.y-x2.y),2));
         return Distancia;
     }
     
-    public void linea2() {
-        Mat image;
-        image = Highgui.imread("imagen/Rostros/" + NombreArchivo + ".png");
-        Core.line(image, ceja1 ,ceja2, new Scalar(0, 240, 0));
-        Core.line(image, ceja1 ,nariz, new Scalar(0, 240, 0));
-        Core.line(image, ceja2, nariz, new Scalar(0, 240, 0));
-        Core.line(image, ojo1, ojo2, new Scalar(0, 240, 0));
-        Core.line(image, ojo1, boca, new Scalar(0, 240, 0));
-        Core.line(image, ojo1, nariz, new Scalar(0, 240, 0));
-        Core.line(image, ojo2, boca, new Scalar(0, 240, 0));
-        Core.line(image, ojo2, nariz, new Scalar(0, 240, 0));
-        Core.line(image, ojo1, ceja1, new Scalar(0, 240, 0));
-        Core.line(image, ojo2, ceja2, new Scalar(0, 240, 0));
-        Core.line(image, nariz, boca, new Scalar(0, 240, 0));
-        Core.rectangle(image, new Point(boca.x-tamañoboca.x/2 , boca.y-tamañoboca.y/2) , new Point(boca.x+tamañoboca.x/2, boca.y+tamañoboca.y/2), 
-        new Scalar(0, 240, 0));
-        Highgui.imwrite("imagen/error/" + NombreArchivo + ".png", image);
-
+     private void LimpiarAnalisis(){
+        AnalisisRostro=new Rostro();
+        AnalisisCejas=new Cejas();
+        AnalisisOjos=new Ojos();
+        AnalisisNariz=new Nariz();
+        AnalisisBoca=new Boca();
     }
-
-    public static void main(String[] args) {
-        System.loadLibrary("opencv_java249");
-        new Analisis().run();
-
+    
+    private void LimpiarDistancias(){
+        distancia12=0;
+        distancia22=0;
+        distancia32=0;
+        distancia42=0;
+        distancia52=0;
+        distancia62=0;
     }
 }

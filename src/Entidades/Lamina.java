@@ -8,8 +8,7 @@ public class Lamina {
     private String ruta;
     private int orden;
     private Entrevista entrevista;
-    private int peso;
-
+ 
     /**
      * @return the codigo
      */
@@ -78,20 +77,6 @@ public class Lamina {
      */
     public void setEntrevista(Entrevista entrevista) {
         this.entrevista = entrevista;
-    }
-
-    /**
-     * @return the peso
-     */
-    public int getPeso() {
-        return peso;
-    }
-
-    /**
-     * @param peso the peso to set
-     */
-    public void setPeso(int peso) {
-        this.peso = peso;
     }
 
 }

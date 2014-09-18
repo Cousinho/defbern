@@ -29,7 +29,7 @@ public class BDLaminas {
             PreparedStatement sentencia_insertar= null;
             File file = new File(lamina.getRuta());
             fis = new FileInputStream(file);
-            sentencia_insertar = conexion.prepareStatement("insert into laminas (codigo,imagen, orden, peso, id_entrevista) VALUES (?,?,?,?,?)");
+            sentencia_insertar = conexion.prepareStatement("insert into laminas (codigo,imagen, orden, id_entrevista) VALUES (?,?,?,?)");
             int codigo=0;
             codigo=mayor();
             System.out.println(codigo);
@@ -40,8 +40,7 @@ public class BDLaminas {
             }
             sentencia_insertar.setBinaryStream(2, fis,(int) file.length());
             sentencia_insertar.setInt(3, lamina.getOrden());
-            sentencia_insertar.setInt(4, lamina.getPeso());
-            sentencia_insertar.setInt(5, lamina.getEntrevista().getCodigo());
+            sentencia_insertar.setInt(4, lamina.getEntrevista().getCodigo());
             try {
                 sentencia_insertar.executeUpdate();
             } catch (SQLException ex) {
@@ -83,10 +82,9 @@ public class BDLaminas {
             fis = new FileInputStream(file);
                 
             
-            sentencia_actualizar = conexion.prepareStatement("update laminas set imagen=?, orden=?, peso=? where codigo=" + lamina.getCodigo());
+            sentencia_actualizar = conexion.prepareStatement("update laminas set imagen=?, orden=? where codigo=" + lamina.getCodigo());
             sentencia_actualizar.setBinaryStream(1, fis,(int) file.length());
             sentencia_actualizar.setInt(2, lamina.getOrden());
-            sentencia_actualizar.setInt(3, lamina.getPeso());
             int rowsUpdated = sentencia_actualizar.executeUpdate();
                conexion.close();
                sentencia_actualizar.close();
@@ -122,7 +120,6 @@ public class BDLaminas {
                     Logger.getLogger(BDLaminas.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 lamina.setOrden(resultado.getInt("orden"));
-                lamina.setPeso(resultado.getInt("peso"));
                 lamina.setEntrevista(BDEntrevistas.buscarId(resultado.getInt("id_entrevista")));
             }
             conexion.close();
@@ -152,7 +149,6 @@ public class BDLaminas {
                     Logger.getLogger(BDLaminas.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 lamina.setOrden(resultado.getInt("orden"));
-                lamina.setPeso(resultado.getInt("peso"));
                 lamina.setEntrevista(BDEntrevistas.buscarId(resultado.getInt("id_entrevista")));
                 lista.add(lamina);
             }

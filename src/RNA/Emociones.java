@@ -3,15 +3,14 @@ package RNA;
 import org.neuroph.core.NeuralNetwork;
 
 public class Emociones {
+    private int emocion = 0;
     NeuralNetwork sorpresa = NeuralNetwork.load("RNA/Sorpresa.nnet");
-NeuralNetwork enojo = NeuralNetwork.load("RNA/Enojo2.nnet");
-    NeuralNetwork felicidad = NeuralNetwork.load("RNA/FelicidadFinal.nnet");
+    NeuralNetwork enojo = NeuralNetwork.load("RNA/Enojo.nnet");
+    NeuralNetwork felicidad = NeuralNetwork.load("RNA/Felicidad.nnet");
     public static void main(String[] args) {
     }
     public int DeterminarEmocion(double valor1,double valor2,double valor3,double valor4,double valor5,double valor6){
             go(valor1,valor2,valor3,valor4,valor5,valor6);
-            int emocion = 0;
-            
             return emocion;
     }
     private void go(double valor1,double valor2,double valor3,double valor4,double valor5,double valor6)
@@ -19,7 +18,16 @@ NeuralNetwork enojo = NeuralNetwork.load("RNA/Enojo2.nnet");
         int sor=CalcularSorpresa(valor3, valor4, valor5, valor6);
         int eno=CalcularEnojo(valor3, valor4, valor5, valor6);
         int fel=CalcularFelicidad(valor1,valor2,valor3, valor4, valor5, valor6);
-        System.out.println(sor+" "+eno+" "+fel);
+        if(eno==1){
+            emocion=2;
+        }
+        if(fel==1){
+            emocion=3;
+        }
+        if(sor==1){
+            emocion=1;
+        }
+        
     }
  
     private int CalcularSorpresa(double... input)

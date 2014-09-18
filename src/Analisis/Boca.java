@@ -1,33 +1,35 @@
 package Analisis;
 
+import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
 import org.opencv.highgui.Highgui;
 import org.opencv.objdetect.CascadeClassifier;
 
 public class Boca {
     //lista de bocas y diferencias entre boca nariz
-    int listabocas[][] = new int[20][20];
-    int diferencias[]=new int[20];
-    Point boca = new Point(); 
-    Point tamañoboca = new Point();
-    String NombreArchivo;
-    int tamaño=0;
-    int DistanciaMinima;
-    public void Analizar(Point nariz, Point ojo1, Point ojo2,String Nombre,Point tamañoojo){
+    private int listabocas[][] = new int[20][20];
+    private int diferencias[]=new int[20];
+    private Point boca = new Point(); 
+    private Point tamañoboca = new Point();
+    private String NombreArchivo;
+    private int tamaño=0;
+    private int DistanciaMinima;
+    public void Analizar(String Nombre, String Directorio,Point nariz, Point ojo1, Point ojo2,Point tamañoojo){
                     NombreArchivo=Nombre;
                     //Busca las bocas con el xml de y si no encuetra busca con otro
-                    Buscar(ojo1,ojo2,tamañoojo,nariz,"1");
+                    Buscar(ojo1,ojo2,tamañoojo,nariz,"1",Directorio);
                     if(tamaño==0){
-                        Buscar(ojo1,ojo2,tamañoojo,nariz,"2");
+                        Buscar(ojo1,ojo2,tamañoojo,nariz,"2",Directorio);
                     }
                     SeleccionarBoca(nariz,ojo1,ojo2);
                           
     }
     
-    public void SeleccionarBoca(Point nariz, Point ojo1,Point ojo2){
+    private void SeleccionarBoca(Point nariz, Point ojo1,Point ojo2){
             int diferenciaactual = 0;
             int diferenciacentro=0;
             boolean primero=true;
@@ -65,12 +67,12 @@ public class Boca {
 
              }
     
-    private void Buscar(Point ojo1, Point ojo2,Point tamañoojo, Point nariz,String numero){
+    private void Buscar(Point ojo1, Point ojo2,Point tamañoojo, Point nariz,String numero,String Directorio){
         CascadeClassifier faceDetector = new CascadeClassifier("xml/Boca"+numero+".xml");
                     String nombre="boca";
                     Mat image;
                     MatOfRect faceDetections;
-                    image = Highgui.imread("imagen/Rostros/"+NombreArchivo+".png");
+                    image = Highgui.imread(NombreArchivo);
                     faceDetections = new MatOfRect();    
                     faceDetector.detectMultiScale(image, faceDetections);
                     //Genera la distancia mínima a partir de la imagen
@@ -83,8 +85,8 @@ public class Boca {
                                     listabocas[nu][2]=rect.y+(rect.height);
                                     listabocas[nu][3]=rect.width;
                                     listabocas[nu][4]=rect.height;
-                                    //Core.rectangle(image, new Point(rect.x ,rect.y), new Point(rect.x +rect.width, rect.y + rect.height), new Scalar(0, 240, 0));
-                                    //Highgui.imwrite("imagen/bocas"+NombreArchivo+nu+".png", image);
+                                    Core.rectangle(image, new Point(rect.x ,rect.y), new Point(rect.x +rect.width, rect.y + rect.height), new Scalar(0, 240, 0));
+                                    Highgui.imwrite(Directorio+"Boca.png", image);
                                     nu++;
                                     tamaño++;
                                 }
@@ -93,10 +95,10 @@ public class Boca {
                      }
     }
     
-    public Point Boca(){
+    public Point getBoca(){
         return boca;
     }
-    public Point Tamaño(){
+    public Point getTamaño(){
         return tamañoboca;
     }
 }

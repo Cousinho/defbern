@@ -192,7 +192,7 @@ public class P_Lamina extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_b_modificarActionPerformed
 
     private void b_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_eliminarActionPerformed
-                //recibe numero de fila seleccionada
+        //recibe numero de fila seleccionada
         int fila=tabla_laminas.getSelectedRow();
         
         //verifica que este seleccionada una fila

@@ -1,9 +1,11 @@
 package Analisis;
 
+import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
 import org.opencv.highgui.Highgui;
 import org.opencv.objdetect.CascadeClassifier;
 
@@ -23,23 +25,24 @@ public class Ojos {
     //Tamaño de la lista de ojos
     private int tamaño=0;
     
-    public void Analizar(String Nombre) {
-            NombreArchivo=Nombre;
+    public void Analizar(String Archivo,String Directorio) {
+            NombreArchivo=Archivo;
             //si no encuentra nada con el primer clasificador busca con el segundo
-            Buscar("1");
+             Buscar("1",Directorio);
             if(tamaño==0){
-                Buscar("2");
+                Buscar("2",Directorio);
             }
             SelecionarOjos();
             
         }
     
         //Metodo que detecta los ojos en la imagen
-        public void Buscar(String numero){
+        public void Buscar(String numero,String Directorio){
                     CascadeClassifier faceDetector = new CascadeClassifier("xml/Ojos"+numero+".xml");
                     Mat image;
                     MatOfRect faceDetections;
-                    image = Highgui.imread("imagen/Rostros/"+NombreArchivo+".png");
+                    image = Highgui.imread(NombreArchivo);
+                   
                     DistanciaMinima=(int) (image.width()/3.2);
                     DistanciaMaxima=(int)(image.width()/2.4);
                     faceDetections = new MatOfRect();    
@@ -52,8 +55,8 @@ public class Ojos {
                             listaojos[nu][4]=rect.width;
                             nu++;
                             tamaño++;
-                            //Core.rectangle(image, new Point(rect.x, rect.y), new Point(rect.x +rect.width, rect.y +rect.height), new Scalar(0, 240, 0));
-                            //Highgui.imwrite("imagen/ojo"+NombreArchivo+nu+".png", image);
+                            Core.rectangle(image, new Point(rect.x, rect.y), new Point(rect.x +rect.width, rect.y +rect.height), new Scalar(0, 240, 0));
+                            Highgui.imwrite(Directorio+numero+"Ojos.png", image);
                      }
                     if(tamaño==1){
                         

@@ -1,5 +1,7 @@
 package Entidades;
 
+import java.util.ArrayList;
+
 public class Registro {
     private int codigo;
     private int ci;
@@ -8,7 +10,9 @@ public class Registro {
     private String descripcion;
     private Usuario usuario;
     private Perfil perfil;
-    private int Codigo_grupal;
+    private int Codigo_grupo;
+    private String[] Respuestas;
+  
     /**
      * @return the ci
      */
@@ -110,14 +114,28 @@ public class Registro {
     /**
      * @return the Codigo_grupal
      */
-    public int getCodigo_grupal() {
-        return Codigo_grupal;
+    public int getCodigo_grupo() {
+        return Codigo_grupo;
     }
 
     /**
      * @param Codigo_grupal the Codigo_grupal to set
      */
-    public void setCodigo_grupal(int Codigo_grupal) {
-        this.Codigo_grupal = Codigo_grupal;
+    public void setCodigo_grupo(int Codigo_grupo) {
+        this.Codigo_grupo = Codigo_grupo;
+    }
+
+    /**
+     * @return the Respuestas
+     */
+    public String[] getRespuestas() {
+        return Respuestas;
+    }
+
+    /**
+     * @param Respuestas the Respuestas to set
+     */
+    public void setRespuestas(String[] Respuestas) {
+        this.Respuestas = Respuestas;
     }
 }
