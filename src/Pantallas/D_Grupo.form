@@ -59,9 +59,9 @@
                   <Component id="jScrollPane1" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="b_aceptar" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="b_cancelar" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="b_aceptar" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>

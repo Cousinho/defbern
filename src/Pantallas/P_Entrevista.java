@@ -1,7 +1,6 @@
 package Pantallas;
 
 import BaseDeDatos.BDEntrevistas;
-import BaseDeDatos.BDUsuarios;
 import Entidades.Entrevista;
 import Util.TablaModelo;
 import java.awt.event.WindowAdapter;
@@ -198,11 +197,11 @@ public class P_Entrevista extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_b_editarActionPerformed
 
     private void b_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_eliminarActionPerformed
-        //recibe numero de fila seleccionada
+        //obtiene el número de fila seleccionada
         int fila=tabla_entrevistas.getSelectedRow();
-        
-        //verifica que este seleccionada una fila
+
         if (fila!=-1){
+            //solita confirmación de acción
             int seleccion = JOptionPane.showOptionDialog(
                 this, // Componente padre
                 "¿Desea eliminar esta entrevista?",
@@ -216,20 +215,15 @@ public class P_Entrevista extends javax.swing.JInternalFrame {
             {
                 if((seleccion + 1)==1)
                 {
-                    //recupera el objeto fila de la tabla a modificar
                     Object valor = tabla_entrevistas.getValueAt(fila, 0);
                     try {
-                        //solicita eliminar fila selecionada
-                        BDUsuarios.eliminar(Integer.parseInt(valor.toString()));
+                        BDEntrevistas.eliminar(Integer.parseInt(valor.toString()));
                     } catch (SQLException ex) {
                         JOptionPane.showMessageDialog(null, "No se puede eliminar entrevista");
-
                     }
-
-                    //actualiza tabla despues de eliminar fila
-                    actualizartabla();
+                actualizartabla();
                 }
-              }
+                           }
         }
         else{
             JOptionPane.showMessageDialog(null, "Seleccione una fila de la tabla");

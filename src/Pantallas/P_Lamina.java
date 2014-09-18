@@ -198,7 +198,7 @@ public class P_Lamina extends javax.swing.JInternalFrame {
         if (fila!=-1){
             int seleccion = JOptionPane.showOptionDialog(
                 this, // Componente padre
-                "¿Desea eliminar este lamina?",
+                "¿Desea eliminar esta lamina?",
                 "Seleccione una opción",
                 JOptionPane.YES_NO_CANCEL_OPTION,
                 JOptionPane.QUESTION_MESSAGE,

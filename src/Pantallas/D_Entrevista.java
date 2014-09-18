@@ -31,7 +31,6 @@ public class D_Entrevista extends javax.swing.JDialog {
     }
 
     D_Entrevista(java.awt.Frame parent, boolean modal) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         super(parent, modal);
         initComponents();
         nuevo=true;
@@ -40,7 +39,6 @@ public class D_Entrevista extends javax.swing.JDialog {
     }
 
     D_Entrevista(java.awt.Frame parent, boolean modal,Entrevista entrevista) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         super(parent, modal);
         entrevista_actual = entrevista;
         initComponents();

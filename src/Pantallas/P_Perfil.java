@@ -199,7 +199,7 @@ public class P_Perfil extends javax.swing.JInternalFrame {
                     try {
                         BDPerfiles.eliminar(Integer.parseInt(valor.toString()));
                     } catch (SQLException ex) {
-                        JOptionPane.showMessageDialog(null, "No se puede eliminar categoria");
+                        JOptionPane.showMessageDialog(null, "No se puede eliminar perfil");
                     }
                 actualizartabla();
                 }

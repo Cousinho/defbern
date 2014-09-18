@@ -169,7 +169,7 @@ public class D_EntrevistaGrupal extends javax.swing.JFrame {
                         //solicita eliminar fila selecionada
                         BDRegistros.eliminar(Integer.parseInt(valor.toString()));
                     } catch (SQLException ex) {
-                        JOptionPane.showMessageDialog(null, "No se puede eliminar producto");
+                        JOptionPane.showMessageDialog(null, "No se puede eliminar registro");
 
                     }
 
