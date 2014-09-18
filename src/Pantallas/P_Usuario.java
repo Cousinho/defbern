@@ -145,11 +145,11 @@ public class P_Usuario extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_b_agregarActionPerformed
 
     private void b_modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_modificarActionPerformed
-        int columna=tabla_usuarios.getSelectedRow();
+        int columna = tabla_usuarios.getSelectedRow();
         if (columna!=-1){
             try {
                 Usuario p_envia=new Usuario() {};
-                Object valor = tabla_usuarios.getValueAt(columna, 0);
+                Object valor =tabla_usuarios.getValueAt(columna, 0);
                 p_envia=BDUsuarios.buscarId(Integer.parseInt(valor.toString()));
                 D_Usuario editar= new D_Usuario(pantalla_padre,true,p_envia);
                 editar.setLocationRelativeTo(null);
@@ -172,7 +172,7 @@ public class P_Usuario extends javax.swing.JInternalFrame {
 
     private void b_borrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_borrarActionPerformed
         //recibe numero de fila seleccionada
-        int fila=tabla_usuarios.getSelectedRow();
+        int fila = tabla_usuarios.getSelectedRow();
         
         //verifica que este seleccionada una fila
         if (fila!=-1){
@@ -190,7 +190,7 @@ public class P_Usuario extends javax.swing.JInternalFrame {
                 if((seleccion + 1)==1)
                 {
                     //recupera el objeto fila de la tabla a modificar
-                    Object valor = tabla_usuarios.getValueAt(fila, 0);
+                    Object valor =tabla_usuarios.getValueAt(fila, 0);
                     try {
                         //solicita eliminar fila selecionada
                         BDUsuarios.eliminar(Integer.parseInt(valor.toString()));

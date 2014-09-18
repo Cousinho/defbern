@@ -63,9 +63,9 @@ public class P_TipoEntrevista extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void b_individualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_individualActionPerformed
-        D_Entrevista nuevo = null;
+        D_IniciarEntrevista nuevo = null;
         
-        nuevo = new D_Entrevista(Padre,true);
+        nuevo = new D_IniciarEntrevista(Padre,true);
         nuevo.setLocationRelativeTo(null);
         nuevo.setResizable(false);
         nuevo.setVisible(true);

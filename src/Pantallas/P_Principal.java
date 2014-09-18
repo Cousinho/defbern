@@ -41,6 +41,7 @@ public class P_Principal extends javax.swing.JFrame {
         SM_Lamina = new javax.swing.JMenuItem();
         SM_Perfil = new javax.swing.JMenuItem();
         SM_Usuario = new javax.swing.JMenuItem();
+        SM_Registro = new javax.swing.JMenuItem();
         M_Entrevista = new javax.swing.JMenu();
         SM_Iniciar_Entrevista = new javax.swing.JMenuItem();
         S_EntrevistaGrupal = new javax.swing.JMenuItem();
@@ -120,6 +121,14 @@ public class P_Principal extends javax.swing.JFrame {
             }
         });
         M_Administrar.add(SM_Usuario);
+
+        SM_Registro.setText("Registro");
+        SM_Registro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SM_RegistroActionPerformed(evt);
+            }
+        });
+        M_Administrar.add(SM_Registro);
 
         Menu_Principal.add(M_Administrar);
 
@@ -282,6 +291,18 @@ public class P_Principal extends javax.swing.JFrame {
         entrevista.show();
     }//GEN-LAST:event_S_EntrevistaGrupalActionPerformed
 
+    private void SM_RegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SM_RegistroActionPerformed
+        P_Registro principal = null;
+        principal = new P_Registro(this);
+        Panel_Principal.add(principal);
+        try {
+            principal.setMaximum(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(P_Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        principal.show();
+    }//GEN-LAST:event_SM_RegistroActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -331,6 +352,7 @@ public class P_Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem SM_Iniciar_Entrevista;
     private javax.swing.JMenuItem SM_Lamina;
     private javax.swing.JMenuItem SM_Perfil;
+    private javax.swing.JMenuItem SM_Registro;
     private javax.swing.JMenuItem SM_Usuario;
     private javax.swing.JMenuItem S_Cerrar;
     private javax.swing.JMenuItem S_EntrevistaGrupal;

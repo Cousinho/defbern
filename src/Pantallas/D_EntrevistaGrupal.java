@@ -184,7 +184,7 @@ public class D_EntrevistaGrupal extends javax.swing.JFrame {
     }//GEN-LAST:event_b_borrarActionPerformed
 
     private void b_agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_agregarActionPerformed
-        D_Entrevista insertar  = new D_Entrevista(pantalla,true);
+        D_IniciarEntrevista insertar  = new D_IniciarEntrevista(pantalla,true);
         insertar.setLocationRelativeTo(null);
         insertar.setResizable(false);
         insertar.setVisible(true);
@@ -204,7 +204,7 @@ public class D_EntrevistaGrupal extends javax.swing.JFrame {
                 Registro r_envia=new Registro() {};
                 Object valor = tabla_registros.getValueAt(columna, 0);
                 r_envia=BDRegistros.buscarId(Integer.parseInt(valor.toString()));
-                D_Entrevista editar= new D_Entrevista(pantalla,true,r_envia);
+                D_IniciarEntrevista editar= new D_IniciarEntrevista(pantalla,true,r_envia);
                 editar.setLocationRelativeTo(null);
                 editar.setResizable(false);
                 editar.setVisible(true);

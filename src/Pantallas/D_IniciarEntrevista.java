@@ -23,7 +23,7 @@ import javax.swing.JOptionPane;
  *
  * @author Cousiño
  */
-public class D_EntrevistaIndividual extends javax.swing.JDialog {
+public class D_IniciarEntrevista extends javax.swing.JDialog {
 
     /**
      * Creates new form P_EntrevistaIndividual
@@ -32,11 +32,11 @@ public class D_EntrevistaIndividual extends javax.swing.JDialog {
     private Registro registro_actual = new Registro();
     private boolean individual = false;
     
-    public D_EntrevistaIndividual() {
+    public D_IniciarEntrevista() {
         initComponents();
     }
 
-    D_EntrevistaIndividual(java.awt.Frame parent, boolean modal) {
+    D_IniciarEntrevista(java.awt.Frame parent, boolean modal) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         super(parent, modal);
         initComponents();
@@ -45,7 +45,7 @@ public class D_EntrevistaIndividual extends javax.swing.JDialog {
         FormatoCampos();
     }
 
-    D_EntrevistaIndividual(java.awt.Frame parent, boolean modal,Registro registro) {
+    D_IniciarEntrevista(java.awt.Frame parent, boolean modal,Registro registro) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         super(parent, modal);
         registro_actual = registro;
@@ -54,7 +54,8 @@ public class D_EntrevistaIndividual extends javax.swing.JDialog {
         FormatoCampos();
         CargarDatos();
     }
-    
+
+  
     private void FormatoCampos(){
         texto_codigo.setDocument(new Numerico(texto_codigo,11));
         texto_nombre.setDocument(new AlfanumericoEspacio(texto_nombre,45));
@@ -83,7 +84,7 @@ public class D_EntrevistaIndividual extends javax.swing.JDialog {
                 lista_usuarios.addItem(usuario.getNombre());
             }
         } catch (SQLException ex) {
-            Logger.getLogger(D_EntrevistaIndividual.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(D_IniciarEntrevista.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -207,7 +208,7 @@ public class D_EntrevistaIndividual extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel8)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -329,7 +330,7 @@ public class D_EntrevistaIndividual extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(D_EntrevistaIndividual.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(D_IniciarEntrevista.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -337,7 +338,7 @@ public class D_EntrevistaIndividual extends javax.swing.JDialog {
         java.awt.EventQueue.invokeLater(new Runnable() {
             private Registro registro;
             public void run() {
-                    D_EntrevistaIndividual dialog = new D_EntrevistaIndividual(new javax.swing.JFrame(), true, registro);
+                    D_IniciarEntrevista dialog = new D_IniciarEntrevista(new javax.swing.JFrame(), true, registro);
                     dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                         @Override
                         public void windowClosing(java.awt.event.WindowEvent e) {

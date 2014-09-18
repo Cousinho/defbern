@@ -7,7 +7,6 @@ import Entidades.Lamina;
 import Entidades.Perfil;
 import Util.Directorios;
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
