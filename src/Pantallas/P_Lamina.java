@@ -161,7 +161,6 @@ public class P_Lamina extends javax.swing.JInternalFrame {
                 actualizartabla();
             }
         });
-
     }//GEN-LAST:event_b_nuevoActionPerformed
 
     private void b_modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_modificarActionPerformed

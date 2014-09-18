@@ -22,7 +22,7 @@ import javax.imageio.stream.ImageInputStream;
 
 public class BDLaminas {
     //método que recibe objeto usuario y lo inserta en la base de datos
-    public static boolean insertar(Lamina lamina) throws SQLException  {
+    public static int insertar(Lamina lamina) throws SQLException  {
         try {
             FileInputStream fis = null;
             Connection conexion = Conexion_BD.getConnection();
@@ -32,7 +32,6 @@ public class BDLaminas {
             sentencia_insertar = conexion.prepareStatement("insert into laminas (codigo,imagen, orden, id_entrevista) VALUES (?,?,?,?)");
             int codigo=0;
             codigo=mayor();
-            System.out.println(codigo);
             if(codigo==0){
                 sentencia_insertar.setInt(1,codigo+1);
             }else{
@@ -44,15 +43,15 @@ public class BDLaminas {
             try {
                 sentencia_insertar.executeUpdate();
             } catch (SQLException ex) {
-                return false;
+                return 0;
             }
             conexion.close();
             sentencia_insertar.close();
-            return true;
+            return codigo+1;
         } catch (FileNotFoundException ex) {
             Logger.getLogger(BDLaminas.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return false;
+        return 0;
     }
          //metodo que recibe le identificador de la usuario a ser eliminado
     public static boolean eliminar(int codigo) throws SQLException {

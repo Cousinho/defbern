@@ -19,14 +19,14 @@ import javax.swing.JOptionPane;
  *
  * @author jose
  */
-public class D_Opciones2 extends javax.swing.JDialog {
+public class D_Opciones extends javax.swing.JDialog {
 
     /**
      * Creates new form D_Opciones2
      */
     boolean nuevo;
     Opciones opcion_actual=new Opciones() {};
-    public D_Opciones2(java.awt.Frame parent, boolean modal,Lamina lamina) {
+    public D_Opciones(java.awt.Frame parent, boolean modal,Lamina lamina) {
         //bloque la ventana padre de jdialog
         super(parent, modal);
         //varible que se usa para indicar que el es una edición de datos o una inserción
@@ -37,7 +37,7 @@ public class D_Opciones2 extends javax.swing.JDialog {
         FormatoCampos();
     }
     
-    public D_Opciones2(java.awt.Frame parent, boolean modal, Opciones opcion,Lamina lamina){
+    public D_Opciones(java.awt.Frame parent, boolean modal, Opciones opcion,Lamina lamina){
         //bloque la ventana padre de jdialog
         super(parent,modal);
         //varible que se usa para indicar que el es una edición de datos o una inserción
@@ -96,8 +96,8 @@ public class D_Opciones2 extends javax.swing.JDialog {
         texto_nomenclatura = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         textoa_descripcion = new javax.swing.JTextArea();
-        b_aceptar = new javax.swing.JButton();
-        b_cancelar = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -133,17 +133,17 @@ public class D_Opciones2 extends javax.swing.JDialog {
         textoa_descripcion.setRows(5);
         jScrollPane1.setViewportView(textoa_descripcion);
 
-        b_aceptar.setText("Aceptar");
-        b_aceptar.addActionListener(new java.awt.event.ActionListener() {
+        jButton1.setText("Aceptar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                b_aceptarActionPerformed(evt);
+                jButton1ActionPerformed(evt);
             }
         });
 
-        b_cancelar.setText("Cancelar");
-        b_cancelar.addActionListener(new java.awt.event.ActionListener() {
+        jButton2.setText("Cancelar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                b_cancelarActionPerformed(evt);
+                jButton2ActionPerformed(evt);
             }
         });
 
@@ -152,21 +152,19 @@ public class D_Opciones2 extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 415, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(b_aceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(48, 48, 48)
-                .addComponent(b_cancelar)
-                .addGap(112, 112, 112))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
-                    .addComponent(texto_nomenclatura))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton2))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE)
+                    .addComponent(texto_nomenclatura, javax.swing.GroupLayout.Alignment.LEADING))
                 .addGap(23, 23, 23))
         );
         layout.setVerticalGroup(
@@ -181,29 +179,29 @@ public class D_Opciones2 extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(texto_nomenclatura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
-                .addGap(32, 32, 32)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(b_cancelar)
-                    .addComponent(b_aceptar))
-                .addContainerGap())
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
+                .addGap(25, 25, 25))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void b_aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_aceptarActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         boolean estado = false;
         if(nuevo){
             try {
                 estado=Guardar();
             } catch (SQLException ex) {
-                Logger.getLogger(D_Opciones2.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(D_Opciones.class.getName()).log(Level.SEVERE, null, ex);
             }
         }else{
             try {
                 estado=Actualizar();
             } catch (SQLException ex) {
-                Logger.getLogger(D_Opciones2.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(D_Opciones.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         if(estado){
@@ -212,11 +210,11 @@ public class D_Opciones2 extends javax.swing.JDialog {
         else{
             JOptionPane.showMessageDialog(null, "No se pudo guardar datos");
         }
-    }//GEN-LAST:event_b_aceptarActionPerformed
+    }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void b_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_cancelarActionPerformed
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         this.dispose();
-    }//GEN-LAST:event_b_cancelarActionPerformed
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -235,13 +233,13 @@ public class D_Opciones2 extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(D_Opciones2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(D_Opciones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(D_Opciones2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(D_Opciones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(D_Opciones2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(D_Opciones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(D_Opciones2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(D_Opciones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -249,7 +247,7 @@ public class D_Opciones2 extends javax.swing.JDialog {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 Lamina lamina = null;
-                D_Opciones2 dialog = new D_Opciones2(new javax.swing.JFrame(), true,lamina);
+                D_Opciones dialog = new D_Opciones(new javax.swing.JFrame(), true,lamina);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -262,8 +260,8 @@ public class D_Opciones2 extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton b_aceptar;
-    private javax.swing.JButton b_cancelar;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

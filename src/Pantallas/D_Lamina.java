@@ -61,10 +61,15 @@ public class D_Lamina extends javax.swing.JDialog {
     //método que carga guardo datos nuevos
     private boolean Guardar(){
         boolean guardar=true;
+        int codigo;
         setDatos();
         try {
             if(lamina_actual.getRuta()!=null){
-                guardar=BDLaminas.insertar(lamina_actual);
+                codigo=BDLaminas.insertar(lamina_actual);
+                if(codigo!=0){
+                    lamina_actual.setCodigo(codigo);
+                    guardar=true;
+                }
             }
         } catch (SQLException ex) {
             return false;
@@ -170,8 +175,6 @@ public class D_Lamina extends javax.swing.JDialog {
             }
         });
 
-        lamina.setText("                                         Lamina");
-
         tabla_opciones.setModel(LOpciones);
         jScrollPane1.setViewportView(tabla_opciones);
 
@@ -208,8 +211,8 @@ public class D_Lamina extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(b_aceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(44, 44, 44)
-                                .addComponent(b_cancelar))
+                                .addGap(37, 37, 37)
+                                .addComponent(b_cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(lamina, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
@@ -230,19 +233,18 @@ public class D_Lamina extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(11, 11, 11)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(b_imagen)
                             .addComponent(jLabel8))
-                        .addGap(51, 51, 51)
-                        .addComponent(lamina, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(lamina, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(b_cancelar)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(b_aceptar)
-                                .addContainerGap())))
+                            .addComponent(b_aceptar))
+                        .addGap(11, 11, 11))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(b_agregar)
@@ -259,7 +261,7 @@ public class D_Lamina extends javax.swing.JDialog {
 
     private void b_aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_aceptarActionPerformed
         boolean estado = false;
-         if (nuevo==true){
+        if (nuevo==true){
             estado=Guardar();
         }
         else{
@@ -275,13 +277,21 @@ public class D_Lamina extends javax.swing.JDialog {
     }//GEN-LAST:event_b_aceptarActionPerformed
 
     private void b_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_cancelarActionPerformed
+        if(nuevo){
+            try {
+                BDLaminas.eliminar(lamina_actual.getCodigo());
+            } catch (SQLException ex) {
+                Logger.getLogger(D_Lamina.class.getName()).log(Level.SEVERE, null, ex);
+            }   
+        }
+        
         this.dispose();
+        
     }//GEN-LAST:event_b_cancelarActionPerformed
 
     private void b_imagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_imagenActionPerformed
         String ruta;
         ruta=Seleccion();
-        System.out.println(ruta);
         if(ruta!=null){
             lamina_actual.setRuta(ruta);
         }
@@ -289,8 +299,12 @@ public class D_Lamina extends javax.swing.JDialog {
     }//GEN-LAST:event_b_imagenActionPerformed
 
     private void b_agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_agregarActionPerformed
-        D_Opciones2 insertar = null;
-        insertar = new D_Opciones2(pantalla_padre,true,lamina_actual);
+        if(nuevo){
+            setDatos();
+            Guardar();
+        }
+        D_Opciones insertar = null;
+        insertar = new D_Opciones(pantalla_padre,true,lamina_actual);
         insertar.setLocationRelativeTo(null);
         insertar.setResizable(false);
         insertar.setVisible(true);
@@ -309,7 +323,7 @@ public class D_Lamina extends javax.swing.JDialog {
                 Opciones p_envia=new Opciones() {};
                 Object valor = tabla_opciones.getValueAt(columna, 0);
                 p_envia=BDOpciones.buscarId(Integer.parseInt(valor.toString()),lamina_actual.getCodigo());
-                D_Opciones2 editar= new D_Opciones2(pantalla_padre,true,p_envia,lamina_actual);
+                D_Opciones editar= new D_Opciones(pantalla_padre,true,p_envia,lamina_actual);
                 editar.setLocationRelativeTo(null);
                 editar.setResizable(false);
                 editar.setVisible(true);

@@ -85,6 +85,14 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SM_RegistroActionPerformed"/>
               </Events>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="SM_Grupos">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Grupo"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SM_GruposActionPerformed"/>
+              </Events>
+            </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="M_Entrevista">
@@ -92,14 +100,6 @@
             <Property name="text" type="java.lang.String" value="Entrevista"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="SM_Iniciar_Entrevista">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Iniciar Entrevista"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SM_Iniciar_EntrevistaActionPerformed"/>
-              </Events>
-            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="S_EntrevistaGrupal">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Entrevista Grupal"/>

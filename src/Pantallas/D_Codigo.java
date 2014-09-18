@@ -1,10 +1,16 @@
 package Pantallas;
 
+import BaseDeDatos.BDGrupos;
+import Entidades.Grupo;
 import Util.Numerico;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class D_Codigo extends javax.swing.JDialog {
     P_IniciarEntrevista pantalla_padre;
+    private Grupo grupo=new Grupo();
     public D_Codigo(java.awt.Frame parent, boolean modal,P_IniciarEntrevista padre) {
         super(parent, modal);
         initComponents();
@@ -83,8 +89,17 @@ public class D_Codigo extends javax.swing.JDialog {
         }
         else
         {
-            pantalla_padre.SetCodigo(Integer.valueOf(texto_codigo.getText()));
-            dispose();
+            try {
+               grupo = BDGrupos.buscarId(Integer.valueOf(texto_codigo.getText()));
+            } catch (SQLException ex) {
+                Logger.getLogger(D_Codigo.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if(grupo!=null){
+                pantalla_padre.SetCodigo(grupo);
+                dispose();
+            }else{
+                JOptionPane.showMessageDialog(null, "Código invalido");
+            }
              
         }
         

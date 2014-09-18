@@ -1,6 +1,8 @@
 package Pantallas;
 
+import BaseDeDatos.BDGrupos;
 import BaseDeDatos.BDPerfiles;
+import Entidades.Grupo;
 import Entidades.Perfil;
 import Entidades.Registro;
 import Util.AlfanumericoEspacio;
@@ -16,26 +18,26 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
     boolean seleccion;
     java.awt.Frame pantalla_padre;
     Registro registro_actual=new Registro();
-    private int codigo_grupo=0;
+    private Grupo grupo_actual=BDGrupos.buscarId(0);
     private Perfil perfil_actual=new Perfil();
     public P_IniciarEntrevista(java.awt.Frame padre,boolean grupal) throws SQLException {
         System.loadLibrary("opencv_java249");
         initComponents();
-        b_entrevista.disable();
-        texto_perfil.disable();
+        b_entrevista.setEnabled(false);
+        b_analizar.setEnabled(false);
+        b_informe.setEnabled(false);
+        texto_perfil.setEnabled(false);
+        
         pantalla_padre = padre;
         if(grupal){
             Seleccionar();
         }
         FormatoCampos();
-        perfil_actual.setDescripcion("");
-        perfil_actual.setCodigo(BDPerfiles.insertar(perfil_actual));
-        texto_grupo.setText(String.valueOf(codigo_grupo));
-        texto_perfil.setText(String.valueOf(perfil_actual.getCodigo()));
+        CargarDatos();
     }
     
-    public void SetCodigo(int codigo){
-        codigo_grupo=codigo;
+    public void SetCodigo(Grupo grupo){
+        grupo_actual=grupo;
     }
     public void Seleccionar(){
         D_Codigo seleccionar=new D_Codigo(pantalla_padre,true,this);
@@ -43,7 +45,7 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
         seleccionar.setVisible(true);
         seleccionar.addWindowListener(new WindowAdapter() {
             public void windowClosed(WindowEvent e) {
-                if(codigo_grupo==0){
+                if(grupo_actual.getCodigo()==0){
                     dispose();
                 }                
         } 
@@ -58,6 +60,15 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
         texto_descripcion.setDocument(new AlfanumericoEspacio(texto_descripcion,100));
     }
     
+    private void CargarDatos() throws SQLException{
+        perfil_actual.setDescripcion("");
+        perfil_actual.setCodigo(BDPerfiles.insertar(perfil_actual));
+        texto_grupo.setText(String.valueOf(grupo_actual.getCodigo()));
+        texto_descripciongrupo.setText(grupo_actual.getDescripcion());
+        texto_perfil.setText(String.valueOf(perfil_actual.getCodigo()));
+
+    }
+    
     private void Guardar(){
         if(texto_nombre.getText().equals("")||texto_apellido.getText().equals("")||
            texto_ci.getText().equals("")||texto_descripcion.getText().equals("")){
@@ -67,12 +78,11 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
             registro_actual.setNombre(texto_nombre.getText());
             registro_actual.setApellido(texto_apellido.getText());
             registro_actual.setDescripcion(texto_descripcion.getText());
-            System.out.println(registro_actual.getNombre());
-            texto_codigo.disable();
-            texto_ci.disable();
-            texto_nombre.disable();
-            texto_apellido.disable();
-            texto_descripcion.disable();
+            texto_codigo.setEnabled(false);
+            texto_ci.setEnabled(false);
+            texto_nombre.setEnabled(false);
+            texto_apellido.setEnabled(false);
+            texto_descripcion.setEnabled(false);
         }
         
     }
@@ -103,6 +113,8 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
         texto_grupo = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         b_entrevista = new javax.swing.JButton();
+        jLabel10 = new javax.swing.JLabel();
+        texto_descripciongrupo = new javax.swing.JTextField();
 
         setClosable(true);
 
@@ -188,6 +200,10 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel10.setText("Descripción Grupo");
+
+        texto_descripciongrupo.setEditable(false);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -204,7 +220,8 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
                             .addComponent(jLabel4)
                             .addComponent(jLabel5)
                             .addComponent(jLabel7)
-                            .addComponent(jLabel9))
+                            .addComponent(jLabel9)
+                            .addComponent(jLabel10))
                         .addGap(10, 10, 10)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(texto_grupo)
@@ -213,28 +230,31 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
                             .addComponent(texto_ci)
                             .addComponent(texto_apellido)
                             .addComponent(texto_descripcion)
-                            .addComponent(texto_perfil, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)))
+                            .addComponent(texto_perfil, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                            .addComponent(texto_descripciongrupo)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(b_aceptar)
                         .addGap(61, 61, 61)
                         .addComponent(b_cancelar)))
-                .addGap(38, 38, 38)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(38, 38, 38)
                         .addComponent(b_entrevista)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(b_analizar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(b_informe)))
-                .addContainerGap())
+                        .addComponent(b_informe)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(38, 38, 38)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(texto_codigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -263,15 +283,19 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(texto_grupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel9))
-                        .addGap(38, 38, 38)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(b_cancelar)
-                            .addComponent(b_aceptar)
-                            .addComponent(b_entrevista, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(b_analizar)
-                            .addComponent(b_informe)))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(40, Short.MAX_VALUE))
+                            .addComponent(jLabel10)
+                            .addComponent(texto_descripciongrupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(b_cancelar)
+                    .addComponent(b_aceptar)
+                    .addComponent(b_entrevista, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(b_analizar)
+                    .addComponent(b_informe))
+                .addGap(30, 30, 30))
         );
 
         pack();
@@ -323,6 +347,7 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
     private javax.swing.JButton b_entrevista;
     private javax.swing.JButton b_informe;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -337,6 +362,7 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
     private javax.swing.JTextField texto_ci;
     private javax.swing.JTextField texto_codigo;
     private javax.swing.JTextField texto_descripcion;
+    private javax.swing.JTextField texto_descripciongrupo;
     private javax.swing.JTextField texto_grupo;
     private javax.swing.JTextField texto_nombre;
     private javax.swing.JTextField texto_perfil;
