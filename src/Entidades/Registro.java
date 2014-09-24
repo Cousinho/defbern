@@ -1,6 +1,6 @@
 package Entidades;
 
-import java.util.ArrayList;
+import java.sql.Date;
 
 public class Registro {
     private int codigo;
@@ -12,6 +12,7 @@ public class Registro {
     private Perfil perfil;
     private int Codigo_grupo;
     private String[] Respuestas;
+    private Date fecha;
   
     /**
      * @return the ci
@@ -137,5 +138,19 @@ public class Registro {
      */
     public void setRespuestas(String[] Respuestas) {
         this.Respuestas = Respuestas;
+    }
+
+    /**
+     * @return the fecha
+     */
+    public Date getFecha() {
+        return fecha;
+    }
+
+    /**
+     * @param fecha the fecha to set
+     */
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
     }
 }

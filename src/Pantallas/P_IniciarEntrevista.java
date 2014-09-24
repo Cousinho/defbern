@@ -314,6 +314,7 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
     private void b_aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_aceptarActionPerformed
         Guardar();
         b_entrevista.enable();
+        
     }//GEN-LAST:event_b_aceptarActionPerformed
 
     private void texto_apellidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_texto_apellidoActionPerformed

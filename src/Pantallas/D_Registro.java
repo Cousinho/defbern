@@ -7,16 +7,11 @@
 package Pantallas;
 
 import BaseDeDatos.BDRegistros;
-import BaseDeDatos.BDUsuarios;
 import Entidades.Registro;
-import Entidades.Usuario;
 import Util.Alfanumerico;
 import Util.AlfanumericoEspacio;
 import Util.Numerico;
 import java.sql.SQLException;
-import java.util.Iterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -44,11 +39,13 @@ public class D_Registro extends javax.swing.JDialog {
 
   
     private void FormatoCampos(){
-        texto_codigo.setDocument(new Numerico(texto_codigo,11));
+        texto_codigo.setEnabled(false);
         texto_nombre.setDocument(new AlfanumericoEspacio(texto_nombre,45));
         texto_apellido.setDocument(new AlfanumericoEspacio(texto_apellido,45));
         texto_ci.setDocument(new Numerico(texto_ci,45));
-        texto_descripcion.setDocument(new Alfanumerico(texto_descripcion,45));
+        texto_descripcion.setDocument(new AlfanumericoEspacio(texto_descripcion,45));
+        texto_usuario.setEnabled(false);
+        texto_respuestas.setEnabled(false);
     }
 
     private void CargarDatos(){
@@ -58,19 +55,8 @@ public class D_Registro extends javax.swing.JDialog {
         texto_apellido.setText(registro_actual.getApellido());
         texto_ci.setText(String.valueOf(registro_actual.getCi()));
         texto_descripcion.setText(registro_actual.getDescripcion());
-        lista_usuarios.setSelectedItem(registro_actual.getUsuario().getNombre());
-    }
-    
-    private void CargarBox() {
-        lista_usuarios.removeAllItems();
-        try {
-            for (Iterator<Usuario> it = BDUsuarios.Lista().iterator(); it.hasNext();) {
-                Usuario usuario = it.next();
-                lista_usuarios.addItem(usuario.getNombre());
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(D_IniciarEntrevista.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        texto_usuario.setText(registro_actual.getUsuario().getNombre());
+        texto_grupo.setText(String.valueOf(registro_actual.getCodigo_grupo()));
     }
     
     
@@ -94,16 +80,10 @@ public class D_Registro extends javax.swing.JDialog {
     }
     
     private void setDatos(){
-        registro_actual.setCodigo(Integer.parseInt(texto_codigo.getText()));
         registro_actual.setNombre(texto_nombre.getText());
         registro_actual.setApellido(texto_apellido.getText());
-        registro_actual.setCi(Integer.parseInt(texto_ci.getText()));
         registro_actual.setDescripcion(texto_descripcion.getText());
-        try{
-            registro_actual.setUsuario(BDUsuarios.buscarUsuario(String.valueOf(lista_usuarios.getSelectedItem())));
-        } catch(SQLException ex){
-            
-        }
+        registro_actual.setCodigo_grupo(Integer.valueOf(texto_grupo.getText()));
     }
     
     
@@ -128,10 +108,14 @@ public class D_Registro extends javax.swing.JDialog {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         b_aceptar = new javax.swing.JButton();
-        lista_usuarios = new javax.swing.JComboBox();
         b_cancelar = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
+        texto_usuario = new javax.swing.JTextField();
+        texto_respuestas = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        texto_grupo = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
 
         texto_apellido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -139,7 +123,7 @@ public class D_Registro extends javax.swing.JDialog {
             }
         });
 
-        jLabel1.setText("Codigo");
+        jLabel1.setText("Código");
 
         jLabel2.setText("CI");
 
@@ -158,8 +142,6 @@ public class D_Registro extends javax.swing.JDialog {
                 b_aceptarActionPerformed(evt);
             }
         });
-
-        lista_usuarios.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         b_cancelar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         b_cancelar.setText("Cancelar");
@@ -192,37 +174,48 @@ public class D_Registro extends javax.swing.JDialog {
                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
+        jLabel7.setText("Respuestas");
+
+        jLabel9.setText("Código Grupo");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(25, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel9))
+                        .addGap(49, 49, 49)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addGap(90, 90, 90)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(texto_codigo)
-                            .addComponent(texto_nombre)
-                            .addComponent(texto_ci)
-                            .addComponent(texto_apellido)
-                            .addComponent(texto_descripcion)
-                            .addComponent(lista_usuarios, 0, 150, Short.MAX_VALUE)))
+                            .addComponent(texto_codigo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
+                            .addComponent(texto_ci, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(texto_nombre, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                            .addComponent(texto_apellido, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(texto_descripcion, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(texto_usuario, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(texto_grupo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(texto_respuestas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(125, 125, 125)
                         .addComponent(b_aceptar)
-                        .addGap(40, 40, 40)
-                        .addComponent(b_cancelar)
-                        .addGap(57, 57, 57)))
-                .addContainerGap(61, Short.MAX_VALUE))
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(b_cancelar)))
+                .addGap(20, 20, 20))
         );
+
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {texto_apellido, texto_ci, texto_codigo, texto_descripcion, texto_nombre, texto_usuario});
+
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -248,15 +241,25 @@ public class D_Registro extends javax.swing.JDialog {
                     .addComponent(texto_descripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
-                    .addComponent(lista_usuarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
+                    .addComponent(texto_usuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(texto_grupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7)
+                    .addComponent(texto_respuestas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(b_aceptar)
                     .addComponent(b_cancelar))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(20, 20, 20))
         );
+
+        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {texto_apellido, texto_ci, texto_codigo, texto_descripcion, texto_nombre, texto_usuario});
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -305,7 +308,7 @@ public class D_Registro extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(D_IniciarEntrevista.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(D_Registro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -313,7 +316,7 @@ public class D_Registro extends javax.swing.JDialog {
         java.awt.EventQueue.invokeLater(new Runnable() {
             private Registro registro;
             public void run() {
-                    D_IniciarEntrevista dialog = new D_IniciarEntrevista(new javax.swing.JFrame(), true, registro);
+                    D_Registro dialog = new D_Registro(new javax.swing.JFrame(), true, registro);
                     dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                         @Override
                         public void windowClosing(java.awt.event.WindowEvent e) {
@@ -334,13 +337,17 @@ public class D_Registro extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JComboBox lista_usuarios;
     private javax.swing.JTextField texto_apellido;
     private javax.swing.JTextField texto_ci;
     private javax.swing.JTextField texto_codigo;
     private javax.swing.JTextField texto_descripcion;
+    private javax.swing.JTextField texto_grupo;
     private javax.swing.JTextField texto_nombre;
+    private javax.swing.JTextField texto_respuestas;
+    private javax.swing.JTextField texto_usuario;
     // End of variables declaration//GEN-END:variables
 }

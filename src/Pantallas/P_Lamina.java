@@ -11,6 +11,10 @@ import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 public class P_Lamina extends javax.swing.JInternalFrame {
@@ -23,8 +27,10 @@ public class P_Lamina extends javax.swing.JInternalFrame {
         pantalla_padre=padre;
         initComponents();
         Seleccionar();
-        tabla.setRowSorter(sorter);
+        tabla_laminas.setRowSorter(sorter);
         actualizartabla();
+        CargarBox();
+        Buscar();
     }
     
     public void Seleccionar(){
@@ -51,12 +57,12 @@ public class P_Lamina extends javax.swing.JInternalFrame {
     }
     public void actualizartabla(){
         limpiartabla();
-        String titulos[] = {"Idenficador","Nombre","Descripción"};
+        String titulos[] = {"Código","Descripcion","Entrevista"};
         LTabla.setColumnIdentifiers(titulos);
         try {
             for (Iterator<Lamina> it = BDLaminas.Lista(entrevista_actual.getCodigo()).iterator(); it.hasNext();) {
                 Lamina lamina = it.next();
-                String Datos[] = {String.valueOf(lamina.getCodigo()),lamina.getEntrevista().getNombre(),
+                String Datos[] = {String.valueOf(lamina.getCodigo()),lamina.getDescripcion(),
                         lamina.getEntrevista().getDescripcion()};
                 LTabla.addRow(Datos);
             }
@@ -72,7 +78,32 @@ public class P_Lamina extends javax.swing.JInternalFrame {
               LTabla.removeRow(i );
         }
     }
-
+                              
+    
+    private void filtrar() {
+        RowFilter<TableModel, Object> rf = null;
+        int indiceColumnaTabla = 0;
+        switch (combo_buscar.getSelectedIndex()) {
+        case 0: indiceColumnaTabla = 0;break;//por codigo
+        case 1: indiceColumnaTabla = 1;break;//por cedula
+        }
+        try {
+        if(check_mayusculas.isSelected()!=true){
+            rf = RowFilter.regexFilter( "(?i)"+texto_buscar.getText(), indiceColumnaTabla);
+        }else{
+            rf = RowFilter.regexFilter( texto_buscar.getText(), indiceColumnaTabla);
+        
+        }
+        } catch (java.util.regex.PatternSyntaxException e) {
+        }
+        sorter.setRowFilter(rf);
+    }
+    
+    private void CargarBox(){
+       combo_buscar.removeAllItems();
+       combo_buscar.addItem("Código");
+       combo_buscar.addItem("Descripción");
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -85,11 +116,16 @@ public class P_Lamina extends javax.swing.JInternalFrame {
         b_nuevo = new javax.swing.JButton();
         b_modificar = new javax.swing.JButton();
         b_eliminar = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        combo_buscar = new javax.swing.JComboBox();
+        texto_buscar = new javax.swing.JTextField();
+        check_mayusculas = new javax.swing.JCheckBox();
 
         tabla.setModel(LTabla);
         jScrollPane1.setViewportView(tabla);
 
         setClosable(true);
+        setTitle("Laminas");
 
         tabla_laminas.setModel(LTabla);
         jScrollPane2.setViewportView(tabla_laminas);
@@ -115,6 +151,30 @@ public class P_Lamina extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel1.setText("Buscar Por:");
+
+        combo_buscar.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        texto_buscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                texto_buscarActionPerformed(evt);
+            }
+        });
+        texto_buscar.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                texto_buscarInputMethodTextChanged(evt);
+            }
+        });
+        texto_buscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                texto_buscarKeyPressed(evt);
+            }
+        });
+
+        check_mayusculas.setText("Diferenciar mayúsculas y minúsculas");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -126,24 +186,38 @@ public class P_Lamina extends javax.swing.JInternalFrame {
                     .addComponent(b_modificar, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
                     .addComponent(b_eliminar, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(combo_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(texto_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(check_mayusculas)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 574, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(combo_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(texto_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(check_mayusculas))
+                .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(23, 23, 23)
                         .addComponent(b_nuevo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(b_modificar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(b_eliminar))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(11, 11, 11)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 448, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(4, 4, 4))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         pack();
@@ -193,12 +267,11 @@ public class P_Lamina extends javax.swing.JInternalFrame {
     private void b_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_eliminarActionPerformed
         //recibe numero de fila seleccionada
         int fila=tabla_laminas.getSelectedRow();
-        
         //verifica que este seleccionada una fila
         if (fila!=-1){
             int seleccion = JOptionPane.showOptionDialog(
                 this, // Componente padre
-                "¿Desea eliminar esta lamina?",
+                "¿Desea eliminar este lamina?",
                 "Seleccione una opción",
                 JOptionPane.YES_NO_CANCEL_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
@@ -230,14 +303,45 @@ public class P_Lamina extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_b_eliminarActionPerformed
 
+    private void Buscar(){
+        texto_buscar.getDocument().addDocumentListener(
+            new DocumentListener() {
+            public void changedUpdate(DocumentEvent e) {
+            filtrar();
+            }
+            public void insertUpdate(DocumentEvent e) {
+            filtrar();
+            }
+            public void removeUpdate(DocumentEvent e) {
+            filtrar();
+            }
+            });
+    }
+    
+    
+    private void texto_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_texto_buscarActionPerformed
+    
+    }//GEN-LAST:event_texto_buscarActionPerformed
+
+    private void texto_buscarInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_texto_buscarInputMethodTextChanged
+    }//GEN-LAST:event_texto_buscarInputMethodTextChanged
+
+    private void texto_buscarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_texto_buscarKeyPressed
+
+    }//GEN-LAST:event_texto_buscarKeyPressed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton b_eliminar;
     private javax.swing.JButton b_modificar;
     private javax.swing.JButton b_nuevo;
+    private javax.swing.JCheckBox check_mayusculas;
+    private javax.swing.JComboBox combo_buscar;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable tabla;
     private javax.swing.JTable tabla_laminas;
+    private javax.swing.JTextField texto_buscar;
     // End of variables declaration//GEN-END:variables
 }

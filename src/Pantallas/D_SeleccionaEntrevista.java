@@ -24,7 +24,7 @@ public class D_SeleccionaEntrevista extends javax.swing.JDialog {
     }
        public void actualizartabla(){
         limpiartabla();
-        String titulos[] = {"Idenficador","Nombre","Descripción"};
+        String titulos[] = {"Código","Nombre","Descripción"};
         LTabla.setColumnIdentifiers(titulos);
         try {
             for (Iterator<Entidades.Entrevista> it = BDEntrevistas.Lista().iterator(); it.hasNext();) {

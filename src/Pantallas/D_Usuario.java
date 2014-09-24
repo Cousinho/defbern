@@ -19,6 +19,7 @@ public class D_Usuario extends javax.swing.JDialog {
         initComponents();
         //llama a metodo que formatea metodo de ingreso de campos
         FormatoCampos();
+        CargarBox();
     }
     
     
@@ -31,22 +32,21 @@ public class D_Usuario extends javax.swing.JDialog {
         //llama a metodo que formatea metodo de ingreso de campos
         FormatoCampos();
         //carga datos del usuario recibido
+        CargarBox();
         CargarDatos();
     }
 
     private void CargarDatos(){
         texto_codigo.disable();
-        System.out.println("hoa");
         texto_codigo.setText(String.valueOf(usuario_actual.getCodigo()));
         texto_nombre.setText(usuario_actual.getNombre());
-        texto_rol.setText(usuario_actual.getRol());
+        lista_roles.setSelectedItem(usuario_actual.getRol());
         texto_contrasenha.setText(usuario_actual.getContrasenha());
     }
     
     private void FormatoCampos(){
         texto_codigo.setDocument(new Numerico(texto_codigo,11));
         texto_nombre.setDocument(new AlfanumericoEspacio(texto_nombre,20));
-        texto_rol.setDocument(new AlfanumericoEspacio(texto_rol,20));
         texto_contrasenha.setDocument(new Numerico(texto_contrasenha,11));
     }
     
@@ -74,10 +74,16 @@ public class D_Usuario extends javax.swing.JDialog {
     private void setDatos(){
         usuario_actual.setCodigo(Integer.parseInt(texto_codigo.getText()));
         usuario_actual.setNombre(texto_nombre.getText());
-        usuario_actual.setRol(texto_rol.getText());
+        usuario_actual.setRol((String) lista_roles.getSelectedItem());
         usuario_actual.setContrasenha(String.valueOf(texto_contrasenha.getPassword()));
     }
 
+    private void CargarBox(){
+        lista_roles.removeAllItems();
+        lista_roles.addItem("Usuario");
+        lista_roles.addItem("Administrador");
+        lista_roles.addItem("Psicólogo");
+    }
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -89,12 +95,12 @@ public class D_Usuario extends javax.swing.JDialog {
         jLabel4 = new javax.swing.JLabel();
         texto_codigo = new javax.swing.JTextField();
         texto_nombre = new javax.swing.JTextField();
-        texto_rol = new javax.swing.JTextField();
         b_aceptar = new javax.swing.JButton();
         b_cancelar = new javax.swing.JButton();
         texto_contrasenha = new javax.swing.JPasswordField();
         jPanel1 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
+        lista_roles = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -143,34 +149,37 @@ public class D_Usuario extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel5)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
+
+        lista_roles.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(97, 97, 97)
-                .addComponent(b_aceptar)
-                .addGap(57, 57, 57)
-                .addComponent(b_cancelar)
-                .addContainerGap(85, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel1))
-                .addGap(67, 67, 67)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(texto_codigo)
-                    .addComponent(texto_nombre)
-                    .addComponent(texto_rol)
-                    .addComponent(texto_contrasenha, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
-                .addGap(47, 47, 47))
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(97, 97, 97)
+                        .addComponent(b_aceptar)
+                        .addGap(57, 57, 57)
+                        .addComponent(b_cancelar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel1))
+                        .addGap(67, 67, 67)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(texto_codigo)
+                            .addComponent(texto_nombre)
+                            .addComponent(texto_contrasenha, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                            .addComponent(lista_roles, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap(77, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -187,7 +196,7 @@ public class D_Usuario extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(texto_rol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lista_roles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
@@ -274,9 +283,9 @@ public class D_Usuario extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JComboBox lista_roles;
     private javax.swing.JTextField texto_codigo;
     private javax.swing.JPasswordField texto_contrasenha;
     private javax.swing.JTextField texto_nombre;
-    private javax.swing.JTextField texto_rol;
     // End of variables declaration//GEN-END:variables
 }

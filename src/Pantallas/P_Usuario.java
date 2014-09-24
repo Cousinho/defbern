@@ -34,7 +34,7 @@ public class P_Usuario extends javax.swing.JInternalFrame {
     //Metodo que actualiza la tabla de productos
     public void actualizartabla(){
         limpiartabla();
-        String titulos[] = {"Codigo","Nombre","Rol"};
+        String titulos[] = {"Código","Nombre","Rol"};
         LUsuarios.setColumnIdentifiers(titulos);
         try {
             for (Iterator<Usuario> it = BDUsuarios.Lista() .iterator(); it.hasNext();) {
@@ -68,19 +68,20 @@ public class P_Usuario extends javax.swing.JInternalFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         tabla_usuarios = new javax.swing.JTable();
-        b_agregar = new javax.swing.JButton();
+        b_nuevo = new javax.swing.JButton();
         b_modificar = new javax.swing.JButton();
         b_borrar = new javax.swing.JButton();
 
         setClosable(true);
+        setTitle("Usuarios");
 
         tabla_usuarios.setModel(LUsuarios);
         jScrollPane1.setViewportView(tabla_usuarios);
 
-        b_agregar.setText("Agregar");
-        b_agregar.addActionListener(new java.awt.event.ActionListener() {
+        b_nuevo.setText("Nuevo");
+        b_nuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                b_agregarActionPerformed(evt);
+                b_nuevoActionPerformed(evt);
             }
         });
 
@@ -107,7 +108,7 @@ public class P_Usuario extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(b_modificar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(b_borrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(b_agregar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(b_nuevo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 547, Short.MAX_VALUE)
                 .addContainerGap())
@@ -119,7 +120,7 @@ public class P_Usuario extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(b_agregar)
+                        .addComponent(b_nuevo)
                         .addGap(18, 18, 18)
                         .addComponent(b_modificar)
                         .addGap(18, 18, 18)
@@ -130,7 +131,7 @@ public class P_Usuario extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void b_agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_agregarActionPerformed
+    private void b_nuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_nuevoActionPerformed
         D_Usuario insertar = null;
         insertar = new D_Usuario(pantalla_padre,true);
         insertar.setLocationRelativeTo(null);
@@ -142,14 +143,14 @@ public class P_Usuario extends javax.swing.JInternalFrame {
                 actualizartabla();
             }
         });
-    }//GEN-LAST:event_b_agregarActionPerformed
+    }//GEN-LAST:event_b_nuevoActionPerformed
 
     private void b_modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_modificarActionPerformed
-        int columna = tabla_usuarios.getSelectedRow();
+        int columna=tabla_usuarios.getSelectedRow();
         if (columna!=-1){
             try {
                 Usuario p_envia=new Usuario() {};
-                Object valor =tabla_usuarios.getValueAt(columna, 0);
+                Object valor = tabla_usuarios.getValueAt(columna, 0);
                 p_envia=BDUsuarios.buscarId(Integer.parseInt(valor.toString()));
                 D_Usuario editar= new D_Usuario(pantalla_padre,true,p_envia);
                 editar.setLocationRelativeTo(null);
@@ -172,7 +173,7 @@ public class P_Usuario extends javax.swing.JInternalFrame {
 
     private void b_borrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_borrarActionPerformed
         //recibe numero de fila seleccionada
-        int fila = tabla_usuarios.getSelectedRow();
+        int fila=tabla_usuarios.getSelectedRow();
         
         //verifica que este seleccionada una fila
         if (fila!=-1){
@@ -190,7 +191,7 @@ public class P_Usuario extends javax.swing.JInternalFrame {
                 if((seleccion + 1)==1)
                 {
                     //recupera el objeto fila de la tabla a modificar
-                    Object valor =tabla_usuarios.getValueAt(fila, 0);
+                    Object valor = tabla_usuarios.getValueAt(fila, 0);
                     try {
                         //solicita eliminar fila selecionada
                         BDUsuarios.eliminar(Integer.parseInt(valor.toString()));
@@ -211,9 +212,9 @@ public class P_Usuario extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton b_agregar;
     private javax.swing.JButton b_borrar;
     private javax.swing.JButton b_modificar;
+    private javax.swing.JButton b_nuevo;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tabla_usuarios;
     // End of variables declaration//GEN-END:variables

@@ -7,8 +7,10 @@
 package Pantallas;
 
 import BaseDeDatos.BDPerfiles;
+import Entidades.Grupo;
 import Entidades.Perfil;
 import Util.Numerico;
+import java.awt.Frame;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
@@ -38,7 +40,7 @@ public class D_Perfil extends javax.swing.JDialog {
         //carga datos del perfil recibido
         CargarDatos();
     }
-    
+
     
     //método que carga datos recibidos
     public void CargarDatos(){

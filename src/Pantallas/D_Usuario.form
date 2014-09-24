@@ -45,8 +45,8 @@
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="texto_codigo" alignment="0" max="32767" attributes="0"/>
                           <Component id="texto_nombre" alignment="0" max="32767" attributes="0"/>
-                          <Component id="texto_rol" alignment="0" max="32767" attributes="0"/>
                           <Component id="texto_contrasenha" pref="150" max="32767" attributes="0"/>
+                          <Component id="lista_roles" alignment="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -71,7 +71,7 @@
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="texto_rol" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lista_roles" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -112,8 +112,6 @@
     <Component class="javax.swing.JTextField" name="texto_codigo">
     </Component>
     <Component class="javax.swing.JTextField" name="texto_nombre">
-    </Component>
-    <Component class="javax.swing.JTextField" name="texto_rol">
     </Component>
     <Component class="javax.swing.JButton" name="b_aceptar">
       <Properties>
@@ -177,5 +175,17 @@
         </Component>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JComboBox" name="lista_roles">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="4">
+            <StringItem index="0" value="Item 1"/>
+            <StringItem index="1" value="Item 2"/>
+            <StringItem index="2" value="Item 3"/>
+            <StringItem index="3" value="Item 4"/>
+          </StringArray>
+        </Property>
+      </Properties>
+    </Component>
   </SubComponents>
 </Form>

@@ -55,6 +55,7 @@ public class D_Lamina extends javax.swing.JDialog {
     public void CargarDatos(){
         Icon icono = new ImageIcon(lamina_actual.getImagen().getScaledInstance(lamina.getWidth(), lamina.getHeight(), Image.SCALE_DEFAULT));
         lamina.setIcon(icono);
+        texto_descripcion.setText(lamina_actual.getDescripcion());
     }
     
      
@@ -78,11 +79,18 @@ public class D_Lamina extends javax.swing.JDialog {
     }
     
     private boolean Actualizar(){
+        boolean actualizar = false;
         setDatos();
-        return true;
+        try {
+            actualizar=BDLaminas.actualizar(lamina_actual);
+        } catch (SQLException ex) {
+            Logger.getLogger(D_Lamina.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return actualizar;
     } 
     
     private void setDatos(){
+        lamina_actual.setDescripcion(texto_descripcion.getText());
         lamina_actual.setEntrevista(entrevista_actual);
     }
     
@@ -126,6 +134,8 @@ public class D_Lamina extends javax.swing.JDialog {
         b_agregar = new javax.swing.JButton();
         b_modificar = new javax.swing.JButton();
         b_borrar = new javax.swing.JButton();
+        texto_descripcion = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -199,6 +209,8 @@ public class D_Lamina extends javax.swing.JDialog {
             }
         });
 
+        jLabel2.setText("Descripcion");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -216,9 +228,13 @@ public class D_Lamina extends javax.swing.JDialog {
                             .addComponent(lamina, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jLabel8)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel8))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(b_imagen, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(b_imagen, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE)
+                            .addComponent(texto_descripcion))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 643, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -238,8 +254,12 @@ public class D_Lamina extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(b_imagen)
                             .addComponent(jLabel8))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(texto_descripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lamina, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lamina, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(b_cancelar)
@@ -300,8 +320,8 @@ public class D_Lamina extends javax.swing.JDialog {
 
     private void b_agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_agregarActionPerformed
         if(nuevo){
-            setDatos();
             Guardar();
+            nuevo=false;
         }
         D_Opciones insertar = null;
         insertar = new D_Opciones(pantalla_padre,true,lamina_actual);
@@ -444,10 +464,12 @@ public class D_Lamina extends javax.swing.JDialog {
     private javax.swing.JButton b_imagen;
     private javax.swing.JButton b_modificar;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lamina;
     private javax.swing.JTable tabla_opciones;
+    private javax.swing.JTextField texto_descripcion;
     // End of variables declaration//GEN-END:variables
 }

@@ -96,7 +96,7 @@ public class BDGrupos {
             PreparedStatement sentencia_mostrar = null;
             ArrayList<Grupo> lista = new ArrayList<Grupo>();
 
-            sentencia_mostrar = conexion.prepareStatement("select * from grupos");
+            sentencia_mostrar = conexion.prepareStatement("select * from grupos order by codigo");
             ResultSet resultado = sentencia_mostrar.executeQuery();
             while (resultado.next()) {
                 Grupo grupo = new Grupo() {
