@@ -15,6 +15,7 @@ public class BDOpciones {
         Connection conexion = Conexion_BD.getConnection();
         PreparedStatement sentencia_insertar= null;
         sentencia_insertar = conexion.prepareStatement("insert into opciones (id_lamina, codigo, descripcion, nomenclatura) VALUES (?,?,?,?)");
+        System.out.println(opciones.getCodigo());
         sentencia_insertar.setInt(1, opciones.getLamina().getCodigo());
         sentencia_insertar.setInt(2, mayor(opciones.getLamina())+1);
         sentencia_insertar.setString(3, opciones.getDescripcion());
@@ -100,7 +101,7 @@ public class BDOpciones {
             PreparedStatement sentencia_mostrar = null;
             ArrayList<Opciones> lista = new ArrayList<Opciones>();
 
-            sentencia_mostrar = conexion.prepareStatement("select * from opciones where id_lamina="+id_lamina+" order by codigo");
+            sentencia_mostrar = conexion.prepareStatement("select * from opciones where id_lamina="+id_lamina);
             ResultSet resultado = sentencia_mostrar.executeQuery();
             while (resultado.next()) {
                 Opciones opciones = new Opciones() {

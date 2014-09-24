@@ -98,7 +98,7 @@ public class BDEntrevistas {
             PreparedStatement sentencia_mostrar = null;
             ArrayList<Entrevista> lista = new ArrayList<Entrevista>();
 
-            sentencia_mostrar = conexion.prepareStatement("select * from entrevistas order by codigo");
+            sentencia_mostrar = conexion.prepareStatement("select * from entrevistas");
             ResultSet resultado = sentencia_mostrar.executeQuery();
             while (resultado.next()) {
                 Entrevista entrevista = new Entrevista() {

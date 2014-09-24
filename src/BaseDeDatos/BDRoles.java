@@ -1,28 +1,30 @@
 package BaseDeDatos;
 
-import Entidades.Grupo;
+import Entidades.Rol;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-public class BDGrupos {
-     //método que recibe objeto usuario y lo inserta en la base de datos
-    public static boolean insertar(Grupo grupo) throws SQLException{
+/**
+ *
+ * @author jose
+ */
+public class BDRoles {
+    
+//método que recibe objeto usuario y lo inserta en la base de datos
+    public static boolean insertar(Rol rol) throws SQLException  {
         boolean insertar=true;
         Connection conexion = Conexion_BD.getConnection();
         PreparedStatement sentencia_insertar= null;
-        sentencia_insertar = conexion.prepareStatement("insert into grupos (codigo, descripcion) VALUES (?,?)");
-        sentencia_insertar.setInt(1, grupo.getCodigo());
-        sentencia_insertar.setString(2, grupo.getDescripcion());
+        sentencia_insertar = conexion.prepareStatement("insert into roles (codigo, descripcion) VALUES (?,?)");
+        sentencia_insertar.setInt(1, rol.getCodigo());
+        sentencia_insertar.setString(2, rol.getDescripcion());
         try {
             sentencia_insertar.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(BDPerfiles.class.getName()).log(Level.SEVERE, null, ex);
-            insertar= false;
+            insertar=false;
         }
         conexion.close();
         sentencia_insertar.close();
@@ -33,7 +35,7 @@ public class BDGrupos {
     public static boolean eliminar(int codigo) throws SQLException {
         Connection conexion = Conexion_BD.getConnection();
         PreparedStatement sentencia_eliminar = null;
-        sentencia_eliminar = conexion.prepareStatement("delete from grupos where codigo=?");
+        sentencia_eliminar = conexion.prepareStatement("delete from roles where codigo=?");
         sentencia_eliminar.setInt(1, codigo);
         int rowsUpdated = sentencia_eliminar.executeUpdate();
         conexion.close();
@@ -45,13 +47,14 @@ public class BDGrupos {
         }
     }
     
-     //método que recibe objeto usuario y actualiza datos en base de datos
-    public static boolean actualizar(Grupo grupo) throws SQLException {
+    
+    //método que recibe objeto usuario y actualiza datos en base de datos
+    public static boolean actualizar(Rol rol) throws SQLException {
         Connection conexion = Conexion_BD.getConnection();
         PreparedStatement sentencia_actualizar = null;
 
-        sentencia_actualizar = conexion.prepareStatement("update grupos set descripcion=? where codigo=" + grupo.getCodigo());
-        sentencia_actualizar.setString(1, grupo.getDescripcion());
+        sentencia_actualizar = conexion.prepareStatement("update roles set descripcion=? where codigo=" + rol.getCodigo());
+        sentencia_actualizar.setString(1, rol.getDescripcion());
         int rowsUpdated = sentencia_actualizar.executeUpdate();
            conexion.close();
            sentencia_actualizar.close();
@@ -62,28 +65,27 @@ public class BDGrupos {
         }
     }
 
-    
     //método que busca usuario por codigo
-    public static Grupo buscarId(int codigo) throws SQLException {
+    public static Rol buscarId(int codigo) throws SQLException {
         Connection conexion = Conexion_BD.getConnection();
         if(conexion != null)
         {
            PreparedStatement sentencia_buscar = null;
-           sentencia_buscar = conexion.prepareStatement("select * from grupos where codigo=?");
+           sentencia_buscar = conexion.prepareStatement("select * from roles where codigo=?");
            sentencia_buscar.setInt(1, codigo);
-           Grupo grupo=null;
+           Rol rol=null;
            ResultSet resultado = sentencia_buscar.executeQuery();
             if (resultado.next()) {
-                if (grupo == null) {
-                    grupo = new Grupo() {
+                if (rol == null) {
+                    rol = new Rol() {
                     };
                 }
-                grupo.setCodigo(codigo);
-                grupo.setDescripcion(resultado.getString("descripcion"));
+                rol.setCodigo(codigo);
+                rol.setDescripcion(resultado.getString("descripcion"));
             }
             conexion.close();
             sentencia_buscar.close();
-            return grupo; 
+            return rol; 
         }
         return null;
         
@@ -91,23 +93,22 @@ public class BDGrupos {
     
     
     //método que devuelve una lista de todas los usuarios 
-    public static ArrayList<Grupo> Lista() throws SQLException {
+    public static ArrayList<Rol> Lista() throws SQLException {
             Connection conexion = Conexion_BD.getConnection();
             PreparedStatement sentencia_mostrar = null;
-            ArrayList<Grupo> lista = new ArrayList<Grupo>();
+            ArrayList<Rol> lista = new ArrayList<Rol>();
 
-            sentencia_mostrar = conexion.prepareStatement("select * from grupos");
+            sentencia_mostrar = conexion.prepareStatement("select * from roles");
             ResultSet resultado = sentencia_mostrar.executeQuery();
             while (resultado.next()) {
-                Grupo grupo = new Grupo() {
+                Rol rol = new Rol() {
                 };
-                grupo.setCodigo(resultado.getInt("codigo"));
-                grupo.setDescripcion(resultado.getString("descripcion"));
-                lista.add(grupo);
+                rol.setCodigo(resultado.getInt("codigo"));
+                rol.setDescripcion(resultado.getString("descripcion"));
+                lista.add(rol);
             }
             conexion.close();
             sentencia_mostrar.close();
             return lista;
         }
-    
 }

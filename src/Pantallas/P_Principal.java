@@ -43,6 +43,8 @@ public class P_Principal extends javax.swing.JFrame {
         SM_Usuario = new javax.swing.JMenuItem();
         SM_Registro = new javax.swing.JMenuItem();
         SM_Grupos = new javax.swing.JMenuItem();
+        SM_Rol = new javax.swing.JMenuItem();
+        SM_Permiso = new javax.swing.JMenuItem();
         M_Entrevista = new javax.swing.JMenu();
         S_EntrevistaGrupal = new javax.swing.JMenuItem();
         S_EntrevistaIndividual = new javax.swing.JMenuItem();
@@ -137,6 +139,22 @@ public class P_Principal extends javax.swing.JFrame {
             }
         });
         M_Administrar.add(SM_Grupos);
+
+        SM_Rol.setText("Rol");
+        SM_Rol.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SM_RolActionPerformed(evt);
+            }
+        });
+        M_Administrar.add(SM_Rol);
+
+        SM_Permiso.setText("Permiso");
+        SM_Permiso.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SM_PermisoActionPerformed(evt);
+            }
+        });
+        M_Administrar.add(SM_Permiso);
 
         Menu_Principal.add(M_Administrar);
 
@@ -304,6 +322,30 @@ public class P_Principal extends javax.swing.JFrame {
 
     }//GEN-LAST:event_SM_GruposActionPerformed
 
+    private void SM_RolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SM_RolActionPerformed
+        P_Rol principal = null;
+        principal = new P_Rol(this);
+        Panel_Principal.add(principal);
+        try {
+            principal.setMaximum(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(P_Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        principal.show();
+    }//GEN-LAST:event_SM_RolActionPerformed
+
+    private void SM_PermisoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SM_PermisoActionPerformed
+        P_Permiso principal = null;
+        principal = new P_Permiso(this);
+        Panel_Principal.add(principal);
+        try {
+            principal.setMaximum(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(P_Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        principal.show();
+    }//GEN-LAST:event_SM_PermisoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -353,7 +395,9 @@ public class P_Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem SM_Informes;
     private javax.swing.JMenuItem SM_Lamina;
     private javax.swing.JMenuItem SM_Perfil;
+    private javax.swing.JMenuItem SM_Permiso;
     private javax.swing.JMenuItem SM_Registro;
+    private javax.swing.JMenuItem SM_Rol;
     private javax.swing.JMenuItem SM_Usuario;
     private javax.swing.JMenuItem S_Cerrar;
     private javax.swing.JMenuItem S_EntrevistaGrupal;

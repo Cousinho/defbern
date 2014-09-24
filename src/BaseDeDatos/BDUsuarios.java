@@ -129,7 +129,7 @@ public class BDUsuarios {
             PreparedStatement sentencia_mostrar = null;
             ArrayList<Usuario> lista = new ArrayList<Usuario>();
 
-            sentencia_mostrar = conexion.prepareStatement("select * from usuarios order by codigo");
+            sentencia_mostrar = conexion.prepareStatement("select * from usuarios");
             ResultSet resultado = sentencia_mostrar.executeQuery();
             while (resultado.next()) {
                 Usuario usuario = new Usuario() {

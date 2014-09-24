@@ -98,7 +98,7 @@ public class BDPerfiles {
             PreparedStatement sentencia_mostrar = null;
             ArrayList<Perfil> lista = new ArrayList<Perfil>();
 
-            sentencia_mostrar = conexion.prepareStatement("select * from perfiles order by codigo");
+            sentencia_mostrar = conexion.prepareStatement("select * from perfiles");
             ResultSet resultado = sentencia_mostrar.executeQuery();
             while (resultado.next()) {
                 Perfil perfil = new Perfil() {
