@@ -145,7 +145,6 @@ public class BDPermisos {
                 permiso.setCodigo(resultado.getInt("codigo"));
                 permiso.setDescripcion(resultado.getString("descripcion"));
                 lista.add(permiso);
-                System.out.println(resultado.getString("descripcion"));
             }
             conexion.close();
             sentencia_mostrar.close();
