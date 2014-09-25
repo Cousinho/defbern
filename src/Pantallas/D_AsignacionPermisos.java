@@ -44,6 +44,7 @@ public class D_AsignacionPermisos extends javax.swing.JDialog {
                 b_revocar.setEnabled(false);
                 b_ninguno.setEnabled(false);
         }
+        label.setVisible(false);
     }
     
     public void LlenarListas(){
@@ -77,6 +78,7 @@ public class D_AsignacionPermisos extends javax.swing.JDialog {
             BDRoles_Permisos.eliminar(rol_actual.getCodigo());
             guardar = true;
         } else {
+            BDRoles_Permisos.eliminar(rol_actual.getCodigo());
             for(Iterator<String> it = asignar.iterator(); it.hasNext();) {
                 try {
                     Permiso permiso = BDPermisos.buscarNombre(it.next());
@@ -120,6 +122,7 @@ public class D_AsignacionPermisos extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
+        label = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -197,6 +200,8 @@ public class D_AsignacionPermisos extends javax.swing.JDialog {
                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
+        label.setText("PRUEBA");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -207,18 +212,17 @@ public class D_AsignacionPermisos extends javax.swing.JDialog {
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(115, 115, 115))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(b_revocar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(b_todos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(b_asignar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(b_ninguno, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(label)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(b_revocar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(b_todos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(b_asignar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(b_ninguno, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -226,7 +230,6 @@ public class D_AsignacionPermisos extends javax.swing.JDialog {
                         .addGap(129, 129, 129)
                         .addComponent(b_aceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(97, 97, 97)
-                        .addGap(18, 18, 18)
                         .addComponent(b_cancelar)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -234,11 +237,17 @@ public class D_AsignacionPermisos extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(label)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
                     .addComponent(jScrollPane1)
@@ -262,20 +271,25 @@ public class D_AsignacionPermisos extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void b_asignarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_asignarActionPerformed
+        label.setText((String) lista_permisos.getSelectedValue());
         if(lista_permisos.isSelectionEmpty()){ 
             JOptionPane.showMessageDialog(null, "Seleccione un ítem de la lista");
         } else { 
             listaasignar.addElement(lista_permisos.getSelectedValue());
             listapermisos.removeElement(lista_permisos.getSelectedValue());
-            if(listaasignar.isEmpty()==false){
+            if(listaasignar.isEmpty()){
+                b_revocar.setEnabled(false);
+                b_ninguno.setEnabled(false);
+                b_asignar.setEnabled(true);
+                b_todos.setEnabled(true);
+            }
+            if (listapermisos.isEmpty()){
+                b_asignar.setEnabled(false);
+                b_todos.setEnabled(false);
                 b_revocar.setEnabled(true);
                 b_ninguno.setEnabled(true);
             }
-            if (auxiliar.isEmpty()){
-                b_asignar.setEnabled(false);
-                b_todos.setEnabled(false);
-            }
-            asignar.add((String) lista_permisos.getSelectedValue());
+            asignar.add(label.getText());
         }
     }//GEN-LAST:event_b_asignarActionPerformed
 
@@ -297,20 +311,31 @@ public class D_AsignacionPermisos extends javax.swing.JDialog {
     }//GEN-LAST:event_b_todosActionPerformed
 
     private void b_revocarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_revocarActionPerformed
+        label.setText((String) lista_asignar.getSelectedValue());
         if(lista_asignar.isSelectionEmpty()){ 
             JOptionPane.showMessageDialog(null, "Seleccione un ítem de la lista");
-        } else {
+        } else { 
             listapermisos.addElement(lista_asignar.getSelectedValue());
             listaasignar.removeElement(lista_asignar.getSelectedValue());
-            if(auxiliar.isEmpty()==false){
+            if(listapermisos.isEmpty()){
+                b_asignar.setEnabled(false);
+                b_todos.setEnabled(false);
+                b_revocar.setEnabled(true);
+                b_ninguno.setEnabled(true);
+            }else{
                 b_asignar.setEnabled(true);
                 b_todos.setEnabled(true);
             }
             if (listaasignar.isEmpty()){
-               b_revocar.setEnabled(false);
-               b_ninguno.setEnabled(false);
+                b_revocar.setEnabled(false);
+                b_ninguno.setEnabled(false);
+                b_asignar.setEnabled(true);
+                b_todos.setEnabled(true);
+            }else{
+                b_revocar.setEnabled(true);
+                b_ninguno.setEnabled(true);
             }
-            asignar.remove((String) lista_asignar.getSelectedValue());
+            asignar.remove(label.getText());
         }
     }//GEN-LAST:event_b_revocarActionPerformed
 
@@ -406,6 +431,7 @@ public class D_AsignacionPermisos extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel label;
     private javax.swing.JList lista_asignar;
     private javax.swing.JList lista_permisos;
     // End of variables declaration//GEN-END:variables
