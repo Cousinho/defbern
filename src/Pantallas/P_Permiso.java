@@ -7,6 +7,7 @@ import Util.TablaModelo;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,14 +25,37 @@ public class P_Permiso extends javax.swing.JInternalFrame {
     private Rol permiso_actual=new Rol();
     boolean seleccion=false;
     java.awt.Frame pantalla_padre;
+    private ArrayList<String> permisos_actuales = new ArrayList();
     
-    P_Permiso(java.awt.Frame Pantalla_padre) {
+    P_Permiso(java.awt.Frame Pantalla_padre, ArrayList<String> permisos) {
         Pantalla_padre=pantalla_padre;
+        permisos_actuales = permisos;
         initComponents();
+        BloquearComponentes();
+        HabilitarComponentes();
         tabla_permisos.setRowSorter(sorter);
         actualizartabla();
      }
      
+    private void BloquearComponentes() {
+        b_nuevo.setEnabled(false);
+        b_modificar.setEnabled(false);
+        b_eliminar.setEnabled(false);
+    }
+
+    private void HabilitarComponentes() {
+        if(permisos_actuales.indexOf("agregar permisos")!=-1){
+            b_nuevo.setEnabled(true);
+        }
+        if(permisos_actuales.indexOf("modificar permisos")!=-1){
+            b_modificar.setEnabled(true);
+        }
+        if(permisos_actuales.indexOf("eliminar permisos")!=-1){
+            b_eliminar.setEnabled(true);
+        }
+    }
+    
+    
     //Metodo que actualiza la tabla de productos
     public void actualizartabla(){
         limpiartabla();
@@ -71,7 +95,7 @@ public class P_Permiso extends javax.swing.JInternalFrame {
         tabla_permisos = new javax.swing.JTable();
         b_nuevo = new javax.swing.JButton();
         b_modificar = new javax.swing.JButton();
-        b_borrar = new javax.swing.JButton();
+        b_eliminar = new javax.swing.JButton();
 
         setClosable(true);
 
@@ -92,10 +116,10 @@ public class P_Permiso extends javax.swing.JInternalFrame {
             }
         });
 
-        b_borrar.setText("Borrar");
-        b_borrar.addActionListener(new java.awt.event.ActionListener() {
+        b_eliminar.setText("Eliminar");
+        b_eliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                b_borrarActionPerformed(evt);
+                b_eliminarActionPerformed(evt);
             }
         });
 
@@ -107,7 +131,7 @@ public class P_Permiso extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(b_modificar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(b_borrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(b_eliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(b_nuevo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 547, Short.MAX_VALUE)
@@ -124,7 +148,7 @@ public class P_Permiso extends javax.swing.JInternalFrame {
                         .addGap(18, 18, 18)
                         .addComponent(b_modificar)
                         .addGap(18, 18, 18)
-                        .addComponent(b_borrar)))
+                        .addComponent(b_eliminar)))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
 
@@ -171,7 +195,7 @@ public class P_Permiso extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_b_modificarActionPerformed
 
-    private void b_borrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_borrarActionPerformed
+    private void b_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_eliminarActionPerformed
         //recibe numero de fila seleccionada
         int fila=tabla_permisos.getSelectedRow();
         
@@ -208,11 +232,11 @@ public class P_Permiso extends javax.swing.JInternalFrame {
         else{
             JOptionPane.showMessageDialog(null, "Seleccione una fila de la tabla");
         }
-    }//GEN-LAST:event_b_borrarActionPerformed
+    }//GEN-LAST:event_b_eliminarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton b_borrar;
+    private javax.swing.JButton b_eliminar;
     private javax.swing.JButton b_modificar;
     private javax.swing.JButton b_nuevo;
     private javax.swing.JScrollPane jScrollPane1;

@@ -40,7 +40,7 @@ public class P_Usuario extends javax.swing.JInternalFrame {
             for (Iterator<Usuario> it = BDUsuarios.Lista() .iterator(); it.hasNext();) {
                 Usuario usuario = it.next();
                 String Datos[] = {String.valueOf(usuario.getCodigo()),
-                                  usuario.getNombre(),usuario.getRol(),
+                                  usuario.getNombre(),usuario.getRol().getDescripcion(),
                                   };
                 LUsuarios.addRow(Datos);
             }
@@ -133,7 +133,11 @@ public class P_Usuario extends javax.swing.JInternalFrame {
 
     private void b_nuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_nuevoActionPerformed
         D_Usuario insertar = null;
-        insertar = new D_Usuario(pantalla_padre,true);
+        try {
+            insertar = new D_Usuario(pantalla_padre,true);
+        } catch (SQLException ex) {
+            Logger.getLogger(P_Usuario.class.getName()).log(Level.SEVERE, null, ex);
+        }
         insertar.setLocationRelativeTo(null);
         insertar.setResizable(false);
         insertar.setVisible(true);

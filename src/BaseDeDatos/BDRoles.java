@@ -91,6 +91,31 @@ public class BDRoles {
         
     }
     
+    public static Rol buscarNombre(String descripcion) throws SQLException {
+        Connection conexion = Conexion_BD.getConnection();
+        if(conexion != null)
+        {
+           PreparedStatement sentencia_buscar = null;
+           sentencia_buscar = conexion.prepareStatement("select * from roles where descripcion=?");
+           sentencia_buscar.setString(1, descripcion);
+           Rol rol=null;
+           ResultSet resultado = sentencia_buscar.executeQuery();
+            if (resultado.next()) {
+                if (rol == null) {
+                    rol = new Rol() {
+                    };
+                }
+                rol.setCodigo(resultado.getInt("codigo"));
+                rol.setDescripcion(descripcion);
+            }
+            conexion.close();
+            sentencia_buscar.close();
+            return rol; 
+        }
+        return null;
+        
+    }
+    
     
     //método que devuelve una lista de todas los usuarios 
     public static ArrayList<Rol> Lista() throws SQLException {

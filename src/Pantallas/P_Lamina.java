@@ -7,6 +7,7 @@ import Util.TablaModelo;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,15 +24,40 @@ public class P_Lamina extends javax.swing.JInternalFrame {
     private Entrevista entrevista_actual=new Entrevista();
     boolean seleccion=false;
     java.awt.Frame pantalla_padre;
-    public P_Lamina(java.awt.Frame padre) {
+    private ArrayList<String> permisos_actuales = new ArrayList();
+    
+    
+    public P_Lamina(java.awt.Frame padre, ArrayList<String> permisos) {
         pantalla_padre=padre;
+        permisos_actuales = permisos;
         initComponents();
+        BloquearComponentes();
+        HabilitarComponentes();
         Seleccionar();
         tabla_laminas.setRowSorter(sorter);
         actualizartabla();
         CargarBox();
         Buscar();
     }
+    
+    private void BloquearComponentes() {
+        b_nuevo.setEnabled(false);
+        b_modificar.setEnabled(false);
+        b_eliminar.setEnabled(false);
+    }
+
+    private void HabilitarComponentes() {
+        if(permisos_actuales.indexOf("agregar laminas")!=-1){
+            b_nuevo.setEnabled(true);
+        }
+        if(permisos_actuales.indexOf("modificar laminas")!=-1){
+            b_modificar.setEnabled(true);
+        }
+        if(permisos_actuales.indexOf("eliminar laminas")!=-1){
+            b_eliminar.setEnabled(true);
+        }
+    }
+    
     
     public void Seleccionar(){
         seleccion=false;

@@ -31,15 +31,33 @@ public class P_Registro extends javax.swing.JInternalFrame {
     private Registro registro_actual=new Registro();
     boolean seleccion=false;
     java.awt.Frame pantalla_padre;
+    private ArrayList<String> permisos_actuales = new ArrayList();
     
-    P_Registro(java.awt.Frame Pantalla_padre) {
+    P_Registro(java.awt.Frame Pantalla_padre, ArrayList<String> permisos) {
         Pantalla_padre=pantalla_padre;
+        permisos_actuales = permisos;
         initComponents();
+        BloquearComponentes();
+        HabilitarComponentes();
         tabla_registros.setRowSorter(sorter);
         actualizartabla();
         Buscar();
     }
-     
+    
+    private void BloquearComponentes() {
+        b_modificar.setEnabled(false);
+        b_eliminar.setEnabled(false);
+    }
+
+    private void HabilitarComponentes() {
+        if(permisos_actuales.indexOf("modificar registros")!=-1){
+            b_modificar.setEnabled(true);
+        }
+        if(permisos_actuales.indexOf("eliminar registros")!=-1){
+            b_eliminar.setEnabled(true);
+        }
+    }
+    
     //Metodo que actualiza la tabla de productos
     public void actualizartabla(){
         limpiartabla();

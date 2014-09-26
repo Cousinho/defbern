@@ -73,7 +73,6 @@ public class BDRoles_Permisos {
     public static boolean actualizar(Rol_Permiso rol_permiso) throws SQLException {
         Connection conexion = Conexion_BD.getConnection();
         PreparedStatement sentencia_actualizar = null;
-
         sentencia_actualizar = conexion.prepareStatement("update roles_permisos set codigo_rol=?, codigo_permiso=? where codigo_rol=" + rol_permiso.getRol() +"and codigo_permiso=" + rol_permiso.getPermiso());
         sentencia_actualizar.setInt(1, rol_permiso.getRol().getCodigo());
         sentencia_actualizar.setInt(2, rol_permiso.getPermiso().getCodigo());

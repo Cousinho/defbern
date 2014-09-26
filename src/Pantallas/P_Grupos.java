@@ -6,6 +6,7 @@ import Util.TablaModelo;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,16 +21,41 @@ public class P_Grupos extends javax.swing.JInternalFrame {
     TablaModelo LTabla = new TablaModelo();
     TableRowSorter sorter = new TableRowSorter(LTabla);
     public static java.awt.Frame  pantalla_padre;
+    private ArrayList<String> permisos_actuales = new ArrayList();
     private Grupo grupo_actual=new Grupo();
-    public P_Grupos(java.awt.Frame padre) {
+    
+    
+    public P_Grupos(java.awt.Frame padre, ArrayList<String> permisos) {
         initComponents();
         pantalla_padre=padre;
+        permisos_actuales = permisos;
         tabla.setRowSorter(sorter);
+        BloquearComponentes();
+        HabilitarComponentes();
         //actualizada datos de tablas
         actualizartabla();
         Buscar();
         CargarBox();
     }
+    
+    private void BloquearComponentes() {
+        b_nuevo.setEnabled(false);
+        b_modificar.setEnabled(false);
+        b_eliminar.setEnabled(false);
+    }
+
+    private void HabilitarComponentes() {
+        if(permisos_actuales.indexOf("agregar grupos")!=-1){
+            b_nuevo.setEnabled(true);
+        }
+        if(permisos_actuales.indexOf("modificar grupos")!=-1){
+            b_modificar.setEnabled(true);
+        }
+        if(permisos_actuales.indexOf("eliminar grupos")!=-1){
+            b_eliminar.setEnabled(true);
+        }
+    }
+    
     
     public void actualizartabla(){
         limpiartabla();

@@ -1,17 +1,22 @@
 package Pantallas;
 
+import BaseDeDatos.BDRoles;
 import BaseDeDatos.BDUsuarios;
+import Entidades.Rol;
 import Entidades.Usuario;
 import Util.AlfanumericoEspacio;
 import Util.Numerico;
 import java.sql.SQLException;
+import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class D_Usuario extends javax.swing.JDialog {
 
     boolean nuevo;
     Usuario usuario_actual=new Usuario() {};
-    public D_Usuario(java.awt.Frame parent, boolean modal){
+    public D_Usuario(java.awt.Frame parent, boolean modal) throws SQLException{
         //bloque la ventana padre de jdialog
         super(parent, modal);
         //varible que se usa para indicar que el es una edición de datos o una inserción
@@ -23,7 +28,7 @@ public class D_Usuario extends javax.swing.JDialog {
     }
     
     
-    public D_Usuario(java.awt.Frame parent, boolean modal,Usuario usuario){
+    public D_Usuario(java.awt.Frame parent, boolean modal,Usuario usuario) throws SQLException{
         super(parent,modal);
         //varible que se usa para indicar que el es una edición de datos o una inserción
         nuevo=false;
@@ -40,7 +45,7 @@ public class D_Usuario extends javax.swing.JDialog {
         texto_codigo.disable();
         texto_codigo.setText(String.valueOf(usuario_actual.getCodigo()));
         texto_nombre.setText(usuario_actual.getNombre());
-        lista_roles.setSelectedItem(usuario_actual.getRol());
+        lista_roles.setSelectedItem(usuario_actual.getRol().getDescripcion());
         texto_contrasenha.setText(usuario_actual.getContrasenha());
     }
     
@@ -51,7 +56,7 @@ public class D_Usuario extends javax.swing.JDialog {
     }
     
       
-    private boolean Guardar(){
+    private boolean Guardar() throws SQLException{
         setDatos();
         try {
             return BDUsuarios.insertar(usuario_actual);
@@ -60,7 +65,7 @@ public class D_Usuario extends javax.swing.JDialog {
         }
     }
     
-    private boolean Actualizar(){
+    private boolean Actualizar() throws SQLException{
         setDatos();
         try {
            return BDUsuarios.actualizar(usuario_actual);
@@ -71,18 +76,19 @@ public class D_Usuario extends javax.swing.JDialog {
     }
     
     
-    private void setDatos(){
+    private void setDatos() throws SQLException{
         usuario_actual.setCodigo(Integer.parseInt(texto_codigo.getText()));
         usuario_actual.setNombre(texto_nombre.getText());
-        usuario_actual.setRol((String) lista_roles.getSelectedItem());
+        usuario_actual.setRol(BDRoles.buscarNombre((String) lista_roles.getSelectedItem()));
         usuario_actual.setContrasenha(String.valueOf(texto_contrasenha.getPassword()));
     }
 
-    private void CargarBox(){
+    private void CargarBox() throws SQLException{
         lista_roles.removeAllItems();
-        lista_roles.addItem("Usuario");
-        lista_roles.addItem("Administrador");
-        lista_roles.addItem("Psicólogo");
+        for (Iterator<Rol> it = BDRoles.Lista() .iterator(); it.hasNext();) {
+            Rol rol = it.next();
+            lista_roles.addItem(rol.getDescripcion());
+        }
     }
     
     @SuppressWarnings("unchecked")
@@ -212,12 +218,20 @@ public class D_Usuario extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void b_aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_aceptarActionPerformed
-        boolean estado;
+        boolean estado = false;
         if (nuevo==true){
-            estado=Guardar();
+            try {
+                estado=Guardar();
+            } catch (SQLException ex) {
+                Logger.getLogger(D_Usuario.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         else{
-            estado=Actualizar();
+            try {
+                estado=Actualizar();
+            } catch (SQLException ex) {
+                Logger.getLogger(D_Usuario.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         if(estado){
             this.dispose();
@@ -262,7 +276,12 @@ public class D_Usuario extends javax.swing.JDialog {
         java.awt.EventQueue.invokeLater(new Runnable() {
             private Usuario usuario;
             public void run() {
-                    D_Usuario dialog = new D_Usuario(new javax.swing.JFrame(), true, usuario);
+                    D_Usuario dialog = null;
+                try {
+                    dialog = new D_Usuario(new javax.swing.JFrame(), true, usuario);
+                } catch (SQLException ex) {
+                    Logger.getLogger(D_Usuario.class.getName()).log(Level.SEVERE, null, ex);
+                }
                     dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                         @Override
                         public void windowClosing(java.awt.event.WindowEvent e) {

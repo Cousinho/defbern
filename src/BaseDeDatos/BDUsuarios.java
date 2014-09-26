@@ -19,7 +19,7 @@ public class BDUsuarios {
         sentencia_insertar.setInt(1, usuario.getCodigo());
         sentencia_insertar.setString(2, usuario.getNombre());
         sentencia_insertar.setString(3, usuario.getContrasenha());
-        sentencia_insertar.setString(4, usuario.getRol());
+        sentencia_insertar.setInt(4, usuario.getRol().getCodigo());
         try {
             sentencia_insertar.executeUpdate();
         } catch (SQLException ex) {
@@ -55,7 +55,7 @@ public class BDUsuarios {
         sentencia_actualizar = conexion.prepareStatement("update usuarios set nombre=?, contrasenha=?, rol=? where codigo=" + usuario.getCodigo());
         sentencia_actualizar.setString(1, usuario.getNombre());
         sentencia_actualizar.setString(2, usuario.getContrasenha());
-        sentencia_actualizar.setString(3, usuario.getRol());
+        sentencia_actualizar.setInt(3, usuario.getRol().getCodigo());
         int rowsUpdated = sentencia_actualizar.executeUpdate();
            conexion.close();
            sentencia_actualizar.close();
@@ -84,7 +84,7 @@ public class BDUsuarios {
                 usuario.setCodigo(codigo);
                 usuario.setContrasenha(resultado.getString("contrasenha"));
                 usuario.setNombre(resultado.getString("nombre"));
-                usuario.setRol(resultado.getString("rol"));
+                usuario.setRol(BDRoles.buscarId(resultado.getInt("rol")));
             }
             conexion.close();
             sentencia_buscar.close();
@@ -112,7 +112,7 @@ public class BDUsuarios {
                 usuario.setNombre(nombre);
                 usuario.setContrasenha(resultado.getString("contrasenha"));
                 usuario.setCodigo(resultado.getInt("codigo"));
-                usuario.setRol(resultado.getString("rol"));
+                usuario.setRol(BDRoles.buscarId(resultado.getInt("rol")));
             }
             conexion.close();
             sentencia_buscar.close();
@@ -137,7 +137,7 @@ public class BDUsuarios {
                 usuario.setCodigo(resultado.getInt("codigo"));
                 usuario.setNombre(resultado.getString("nombre"));
                 usuario.setContrasenha(resultado.getString("contrasenha"));
-                usuario.setRol(resultado.getString("rol"));
+                usuario.setRol(BDRoles.buscarId(resultado.getInt("rol")));
                 lista.add(usuario);
             }
             conexion.close();

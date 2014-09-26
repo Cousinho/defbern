@@ -44,7 +44,7 @@ public class D_AsignacionPermisos extends javax.swing.JDialog {
                 b_revocar.setEnabled(false);
                 b_ninguno.setEnabled(false);
         }
-        label.setVisible(false);
+        label.setVisible(true);
     }
     
     public void LlenarListas(){

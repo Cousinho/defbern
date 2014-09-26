@@ -116,20 +116,20 @@
             <Property name="text" type="java.lang.String" value="Entrevista"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="S_EntrevistaGrupal">
+            <MenuItem class="javax.swing.JMenuItem" name="SM_EntrevistaGrupal">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Entrevista Grupal"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="S_EntrevistaGrupalActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SM_EntrevistaGrupalActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="S_EntrevistaIndividual">
+            <MenuItem class="javax.swing.JMenuItem" name="SM_EntrevistaIndividual">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Entrevista Individual"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="S_EntrevistaIndividualActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SM_EntrevistaIndividualActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>

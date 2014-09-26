@@ -1,8 +1,12 @@
 package Pantallas;
 
+import BaseDeDatos.BDPermisos;
+import Entidades.Permiso;
 import Entidades.Usuario;
 import java.beans.PropertyVetoException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -12,18 +16,76 @@ import java.util.logging.Logger;
  */
 public class P_Principal extends javax.swing.JFrame {
     Usuario usuario;
-
+    ArrayList<String> permisos = new ArrayList();
+    
     /**
      *
      * @param parametro_usuario
+     * @throws java.sql.SQLException
      */
-    public P_Principal(Usuario parametro_usuario) {
+    public P_Principal(Usuario parametro_usuario) throws SQLException {
         this.setTitle("Sistema de Analisis");
         usuario=parametro_usuario;
         
         initComponents();
+        BloquearComponentes();
+        HabilitarComponentes();
     }
 
+    private void HabilitarComponentes() throws SQLException{
+        for (Iterator<Permiso> it = BDPermisos.Lista(usuario.getRol().getCodigo()) .iterator(); it.hasNext();) {
+                Permiso permiso = it.next();
+                permisos.add(permiso.getDescripcion());
+        }
+        if(permisos.indexOf("agregar entrevistas")!=-1 || permisos.indexOf("modificar entrevistas")!=-1 || permisos.indexOf("eliminar entrevistas")!=-1){
+            SM_Entrevista.setEnabled(true);
+        }
+        if(permisos.indexOf("agregar laminas")!=-1 || permisos.indexOf("modificar laminas")!=-1 || permisos.indexOf("eliminar laminas")!=-1){
+            SM_Lamina.setEnabled(true);
+        }
+        if(permisos.indexOf("agregar perfiles")!=-1 || permisos.indexOf("modificar perfiles")!=-1 || permisos.indexOf("eliminar perfiles")!=-1){
+            SM_Perfil.setEnabled(true);
+        }
+        if(permisos.indexOf("agregar usuarios")!=-1 || permisos.indexOf("modificar usuarios")!=-1 || permisos.indexOf("eliminar usuarios")!=-1){
+            SM_Usuario.setEnabled(true);
+        }
+        if(permisos.indexOf("modificar registros")!=-1 || permisos.indexOf("eliminar registros")!=-1){
+            SM_Registro.setEnabled(true);
+        }
+        if(permisos.indexOf("agregar grupos")!=-1 || permisos.indexOf("modificar grupos")!=-1 || permisos.indexOf("eliminar grupos")!=-1){
+            SM_Grupos.setEnabled(true);
+        }
+        if(permisos.indexOf("agregar roles")!=-1 || permisos.indexOf("modificar roles")!=-1 || permisos.indexOf("eliminar roles")!=-1){
+            SM_Rol.setEnabled(true);
+        }
+        if(permisos.indexOf("agregar permisos")!=-1 || permisos.indexOf("modificar permisos")!=-1 || permisos.indexOf("eliminar permisos")!=-1){
+            SM_Permiso.setEnabled(true);
+        }
+        if(permisos.indexOf("crear informes")!=-1){
+            SM_Informes.setEnabled(true);
+        }
+        if(permisos.indexOf("realizar entrevista")!=-1){
+            SM_EntrevistaIndividual.setEnabled(true);
+            SM_EntrevistaGrupal.setEnabled(true);
+        }
+    }
+    
+    private void BloquearComponentes(){
+        SM_Entrevista.setEnabled(false);
+        SM_Lamina.setEnabled(false);
+        SM_Perfil.setEnabled(false);
+        SM_Usuario.setEnabled(false);
+        SM_Registro.setEnabled(false);
+        SM_Grupos.setEnabled(false);
+        SM_Rol.setEnabled(false);
+        SM_Permiso.setEnabled(false);
+        SM_Informes.setEnabled(false);
+        SM_EntrevistaIndividual.setEnabled(false);
+        SM_EntrevistaGrupal.setEnabled(false);
+    }
+    
+    
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -46,8 +108,8 @@ public class P_Principal extends javax.swing.JFrame {
         SM_Rol = new javax.swing.JMenuItem();
         SM_Permiso = new javax.swing.JMenuItem();
         M_Entrevista = new javax.swing.JMenu();
-        S_EntrevistaGrupal = new javax.swing.JMenuItem();
-        S_EntrevistaIndividual = new javax.swing.JMenuItem();
+        SM_EntrevistaGrupal = new javax.swing.JMenuItem();
+        SM_EntrevistaIndividual = new javax.swing.JMenuItem();
         M_Informes = new javax.swing.JMenu();
         SM_Informes = new javax.swing.JMenuItem();
 
@@ -160,21 +222,21 @@ public class P_Principal extends javax.swing.JFrame {
 
         M_Entrevista.setText("Entrevista");
 
-        S_EntrevistaGrupal.setText("Entrevista Grupal");
-        S_EntrevistaGrupal.addActionListener(new java.awt.event.ActionListener() {
+        SM_EntrevistaGrupal.setText("Entrevista Grupal");
+        SM_EntrevistaGrupal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                S_EntrevistaGrupalActionPerformed(evt);
+                SM_EntrevistaGrupalActionPerformed(evt);
             }
         });
-        M_Entrevista.add(S_EntrevistaGrupal);
+        M_Entrevista.add(SM_EntrevistaGrupal);
 
-        S_EntrevistaIndividual.setText("Entrevista Individual");
-        S_EntrevistaIndividual.addActionListener(new java.awt.event.ActionListener() {
+        SM_EntrevistaIndividual.setText("Entrevista Individual");
+        SM_EntrevistaIndividual.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                S_EntrevistaIndividualActionPerformed(evt);
+                SM_EntrevistaIndividualActionPerformed(evt);
             }
         });
-        M_Entrevista.add(S_EntrevistaIndividual);
+        M_Entrevista.add(SM_EntrevistaIndividual);
 
         Menu_Principal.add(M_Entrevista);
 
@@ -219,7 +281,7 @@ public class P_Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_Menu_PrincipalAncestorAdded
 
     private void SM_LaminaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SM_LaminaActionPerformed
-        P_Lamina pantalla_lamina=new P_Lamina(this);
+        P_Lamina pantalla_lamina=new P_Lamina(this, permisos);
         Panel_Principal.add(pantalla_lamina);
         try {
             pantalla_lamina.setMaximum(true);
@@ -230,7 +292,7 @@ public class P_Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_SM_LaminaActionPerformed
 
     private void SM_EntrevistaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SM_EntrevistaActionPerformed
-        P_Entrevista pantalla_entrevista=new P_Entrevista(this);
+        P_Entrevista pantalla_entrevista=new P_Entrevista(this, permisos);
         Panel_Principal.add(pantalla_entrevista);
         try {
             pantalla_entrevista.setMaximum(true);
@@ -243,7 +305,7 @@ public class P_Principal extends javax.swing.JFrame {
 
     private void SM_PerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SM_PerfilActionPerformed
         P_Perfil principal = null;
-        principal = new P_Perfil(this);
+        principal = new P_Perfil(this, permisos);
         Panel_Principal.add(principal);
         try {
             principal.setMaximum(true);
@@ -265,7 +327,7 @@ public class P_Principal extends javax.swing.JFrame {
         principal.show();
     }//GEN-LAST:event_SM_UsuarioActionPerformed
 
-    private void S_EntrevistaIndividualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_S_EntrevistaIndividualActionPerformed
+    private void SM_EntrevistaIndividualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SM_EntrevistaIndividualActionPerformed
         P_IniciarEntrevista entrevista = null;
         try {
             entrevista = new P_IniciarEntrevista(this,false);
@@ -279,9 +341,9 @@ public class P_Principal extends javax.swing.JFrame {
             Logger.getLogger(P_Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
         entrevista.show();
-    }//GEN-LAST:event_S_EntrevistaIndividualActionPerformed
+    }//GEN-LAST:event_SM_EntrevistaIndividualActionPerformed
 
-    private void S_EntrevistaGrupalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_S_EntrevistaGrupalActionPerformed
+    private void SM_EntrevistaGrupalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SM_EntrevistaGrupalActionPerformed
         P_IniciarEntrevista entrevista = null;
         try {
             entrevista = new P_IniciarEntrevista(this,true);
@@ -295,11 +357,11 @@ public class P_Principal extends javax.swing.JFrame {
             Logger.getLogger(P_Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
         entrevista.show();
-    }//GEN-LAST:event_S_EntrevistaGrupalActionPerformed
+    }//GEN-LAST:event_SM_EntrevistaGrupalActionPerformed
 
     private void SM_RegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SM_RegistroActionPerformed
         P_Registro principal = null;
-        principal = new P_Registro(this);
+        principal = new P_Registro(this, permisos);
         Panel_Principal.add(principal);
         try {
             principal.setMaximum(true);
@@ -311,7 +373,7 @@ public class P_Principal extends javax.swing.JFrame {
 
     private void SM_GruposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SM_GruposActionPerformed
         P_Grupos grupo = null;
-        grupo = new P_Grupos(this);
+        grupo = new P_Grupos(this, permisos);
         Panel_Principal.add(grupo);
         try {
             grupo.setMaximum(true);
@@ -336,7 +398,7 @@ public class P_Principal extends javax.swing.JFrame {
 
     private void SM_PermisoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SM_PermisoActionPerformed
         P_Permiso principal = null;
-        principal = new P_Permiso(this);
+        principal = new P_Permiso(this, permisos);
         Panel_Principal.add(principal);
         try {
             principal.setMaximum(true);
@@ -378,7 +440,11 @@ public class P_Principal extends javax.swing.JFrame {
             public void run() {
                 System.loadLibrary("opencv_java249");
                 Usuario user = null;
-                new P_Principal(user).setVisible(true);
+                try {
+                    new P_Principal(user).setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(P_Principal.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
@@ -391,6 +457,8 @@ public class P_Principal extends javax.swing.JFrame {
     private javax.swing.JLayeredPane Panel_Principal;
     private javax.swing.JLayeredPane Panel_Principal1;
     private javax.swing.JMenuItem SM_Entrevista;
+    private javax.swing.JMenuItem SM_EntrevistaGrupal;
+    private javax.swing.JMenuItem SM_EntrevistaIndividual;
     private javax.swing.JMenuItem SM_Grupos;
     private javax.swing.JMenuItem SM_Informes;
     private javax.swing.JMenuItem SM_Lamina;
@@ -400,8 +468,6 @@ public class P_Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem SM_Rol;
     private javax.swing.JMenuItem SM_Usuario;
     private javax.swing.JMenuItem S_Cerrar;
-    private javax.swing.JMenuItem S_EntrevistaGrupal;
-    private javax.swing.JMenuItem S_EntrevistaIndividual;
     private javax.swing.JMenuItem S_Salir;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;

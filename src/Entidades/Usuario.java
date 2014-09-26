@@ -4,7 +4,7 @@ public class Usuario {
     private int codigo;
     private String nombre;
     private String contrasenha;
-    private String rol;
+    private Rol rol;
 
     /**
      * @return the codigo
@@ -51,14 +51,14 @@ public class Usuario {
     /**
      * @return the rol
      */
-    public String getRol() {
+    public Rol getRol() {
         return rol;
     }
 
     /**
      * @param rol the rol to set
      */
-    public void setRol(String rol) {
+    public void setRol(Rol rol) {
         this.rol = rol;
     }
     
