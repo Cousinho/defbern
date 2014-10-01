@@ -5,7 +5,9 @@ public class Usuario {
     private String nombre;
     private String contrasenha;
     private Rol rol;
+    private int cambio;
 
+       
     /**
      * @return the codigo
      */
@@ -60,6 +62,14 @@ public class Usuario {
      */
     public void setRol(Rol rol) {
         this.rol = rol;
+    }
+    
+    public int getCambio() {
+        return cambio;
+    }
+
+    public void setCambio(int cambio) {
+        this.cambio = cambio;
     }
     
 }

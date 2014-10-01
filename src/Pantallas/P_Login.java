@@ -9,6 +9,8 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class P_Login extends javax.swing.JFrame {
 
@@ -127,18 +129,30 @@ public class P_Login extends javax.swing.JFrame {
             if(usuario!=null){
                 //si datos coinciden inicia pantalla principal
                 if (nombre_usuario.equals(usuario.getNombre()) && contraseña.equals(usuario.getContrasenha())) {
-                    P_Principal Principal = new P_Principal(usuario) {};
-                    Principal.setSize(600, 600);
-                    Principal.setExtendedState(MAXIMIZED_BOTH);
-                    Principal.setVisible(true);
-                    this.dispose();
+                    if(usuario.getCambio()==1){
+                        P_CambioContrasenha cambiar = null;
+                        cambiar = new P_CambioContrasenha(usuario);
+                        cambiar.setLocationRelativeTo(null);
+                        cambiar.setResizable(false);
+                        cambiar.setVisible(true);
+                        this.dispose();
+                    }else{
+                        P_Principal Principal = null;
+                        try {
+                            Principal = new P_Principal(usuario);
+                        } catch (SQLException ex) {
+                            Logger.getLogger(P_Login.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        Principal.setSize(600, 600);
+                        Principal.setExtendedState(MAXIMIZED_BOTH);
+                        Principal.setVisible(true);
+                        this.dispose();
+                    }
                 }
                 else{
                     JOptionPane.showMessageDialog(null, "La contraseña ingresada es incorrecta");
                 }
-
-            }
-            else{
+            }else{
                 JOptionPane.showMessageDialog(null, "El Usuario ingresado es incorrecto");
             }
     }//GEN-LAST:event_b_aceptarActionPerformed

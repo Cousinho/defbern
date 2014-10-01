@@ -68,8 +68,13 @@ public class D_Usuario extends javax.swing.JDialog {
     private boolean Actualizar() throws SQLException{
         setDatos();
         try {
-           return BDUsuarios.actualizar(usuario_actual);
-           
+            if(usuario_actual.getContrasenha().equals(BDUsuarios.buscarId(usuario_actual.getCodigo()).getContrasenha())){
+                usuario_actual.setCambio(0);
+                return BDUsuarios.actualizar(usuario_actual);
+            }else{
+                usuario_actual.setCambio(1);
+                return BDUsuarios.actualizar(usuario_actual);
+            }
         } catch (SQLException ex) {
            return false;
         }

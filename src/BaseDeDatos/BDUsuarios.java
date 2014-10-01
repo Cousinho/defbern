@@ -15,11 +15,12 @@ public class BDUsuarios {
         boolean insertar=true;
         Connection conexion = Conexion_BD.getConnection();
         PreparedStatement sentencia_insertar= null;
-        sentencia_insertar = conexion.prepareStatement("insert into usuarios (codigo, nombre, contrasenha, rol) VALUES (?,?,?,?)");
+        sentencia_insertar = conexion.prepareStatement("insert into usuarios (codigo, nombre, contrasenha, rol, cambio) VALUES (?,?,?,?,?)");
         sentencia_insertar.setInt(1, usuario.getCodigo());
         sentencia_insertar.setString(2, usuario.getNombre());
         sentencia_insertar.setString(3, usuario.getContrasenha());
         sentencia_insertar.setInt(4, usuario.getRol().getCodigo());
+        sentencia_insertar.setInt(4, 1);
         try {
             sentencia_insertar.executeUpdate();
         } catch (SQLException ex) {
@@ -52,10 +53,12 @@ public class BDUsuarios {
         Connection conexion = Conexion_BD.getConnection();
         PreparedStatement sentencia_actualizar = null;
 
-        sentencia_actualizar = conexion.prepareStatement("update usuarios set nombre=?, contrasenha=?, rol=? where codigo=" + usuario.getCodigo());
+        sentencia_actualizar = conexion.prepareStatement("update usuarios set nombre=?, contrasenha=?, rol=?, cambio=? where codigo=" + usuario.getCodigo());
         sentencia_actualizar.setString(1, usuario.getNombre());
         sentencia_actualizar.setString(2, usuario.getContrasenha());
         sentencia_actualizar.setInt(3, usuario.getRol().getCodigo());
+        sentencia_actualizar.setInt(4, usuario.getCambio());
+        
         int rowsUpdated = sentencia_actualizar.executeUpdate();
            conexion.close();
            sentencia_actualizar.close();
@@ -85,6 +88,7 @@ public class BDUsuarios {
                 usuario.setContrasenha(resultado.getString("contrasenha"));
                 usuario.setNombre(resultado.getString("nombre"));
                 usuario.setRol(BDRoles.buscarId(resultado.getInt("rol")));
+                usuario.setCambio(resultado.getInt("cambio"));
             }
             conexion.close();
             sentencia_buscar.close();
@@ -113,6 +117,7 @@ public class BDUsuarios {
                 usuario.setContrasenha(resultado.getString("contrasenha"));
                 usuario.setCodigo(resultado.getInt("codigo"));
                 usuario.setRol(BDRoles.buscarId(resultado.getInt("rol")));
+                usuario.setCambio(resultado.getInt("cambio"));
             }
             conexion.close();
             sentencia_buscar.close();
@@ -138,6 +143,7 @@ public class BDUsuarios {
                 usuario.setNombre(resultado.getString("nombre"));
                 usuario.setContrasenha(resultado.getString("contrasenha"));
                 usuario.setRol(BDRoles.buscarId(resultado.getInt("rol")));
+                usuario.setCambio(resultado.getInt("cambio"));
                 lista.add(usuario);
             }
             conexion.close();
