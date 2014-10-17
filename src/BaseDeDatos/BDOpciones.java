@@ -15,7 +15,6 @@ public class BDOpciones {
         Connection conexion = Conexion_BD.getConnection();
         PreparedStatement sentencia_insertar= null;
         sentencia_insertar = conexion.prepareStatement("insert into opciones (id_lamina, codigo, descripcion, nomenclatura) VALUES (?,?,?,?)");
-        System.out.println(opciones.getCodigo());
         sentencia_insertar.setInt(1, opciones.getLamina().getCodigo());
         sentencia_insertar.setInt(2, mayor(opciones.getLamina())+1);
         sentencia_insertar.setString(3, opciones.getDescripcion());
@@ -65,7 +64,7 @@ public class BDOpciones {
         }
     }
 
-    //método que busca usuario por codigo
+    //método que busca 
     public static Opciones buscarId(int codigo,int id_lamina) throws SQLException {
         Connection conexion = Conexion_BD.getConnection();
         if(conexion != null)
@@ -94,6 +93,27 @@ public class BDOpciones {
         
     }
     
+    public static String buscarDesc(String descripcion,int id_lamina) throws SQLException {
+        Connection conexion = Conexion_BD.getConnection();
+        if(conexion != null)
+        {
+           PreparedStatement sentencia_buscar = null;
+           sentencia_buscar = conexion.prepareStatement("select * from opciones where descripcion=? and id_lamina=?");
+           sentencia_buscar.setString(1, descripcion);
+           sentencia_buscar.setInt(2, id_lamina);
+           ResultSet resultado = sentencia_buscar.executeQuery();
+           String nomenclatura="";
+           if(resultado.next()){
+               nomenclatura=(resultado.getString("nomenclatura"));
+           }
+           conexion.close();
+           sentencia_buscar.close();
+           return nomenclatura; 
+        }
+        return null;
+        
+    }
+    
     
     //método que devuelve una lista de todas las opciones 
     public static ArrayList<Opciones> Lista(int id_lamina) throws SQLException {
@@ -101,7 +121,7 @@ public class BDOpciones {
             PreparedStatement sentencia_mostrar = null;
             ArrayList<Opciones> lista = new ArrayList<Opciones>();
 
-            sentencia_mostrar = conexion.prepareStatement("select * from opciones where id_lamina="+id_lamina);
+            sentencia_mostrar = conexion.prepareStatement("select * from opciones where id_lamina="+id_lamina+" order by codigo");
             ResultSet resultado = sentencia_mostrar.executeQuery();
             while (resultado.next()) {
                 Opciones opciones = new Opciones() {
@@ -116,6 +136,30 @@ public class BDOpciones {
             sentencia_mostrar.close();
             return lista;
     }
+    
+    
+        //método que devuelve una lista de todas las entrevistas 
+        public static ArrayList<Opciones> ListaOpciones(String buscar,int id_lamina) throws SQLException {
+           ArrayList<Opciones> lista = new ArrayList<Opciones>();
+           if(buscar.equals("")){
+                return lista;
+            }
+            Connection conexion = Conexion_BD.getConnection();
+            PreparedStatement sentencia_mostrar = null;
+            sentencia_mostrar=conexion.prepareStatement("select * from opciones where descripcion ilike'%"+buscar+"%' and id_lamina="+id_lamina);
+            ResultSet resultado = sentencia_mostrar.executeQuery();
+            while (resultado.next()) {
+                Opciones opcion = new Opciones() {
+                };
+                opcion.setCodigo(resultado.getInt("codigo"));
+                opcion.setDescripcion(resultado.getString("descripcion"));
+                opcion.setNomenclatura(resultado.getString("nomenclatura"));
+                lista.add(opcion);
+            }
+            conexion.close();
+            sentencia_mostrar.close();
+            return lista;
+        }
     
     private static int mayor(Lamina id_lamina) throws SQLException{
         int mayor;

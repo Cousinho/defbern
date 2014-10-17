@@ -91,14 +91,41 @@ public class BDEntrevistas {
         
     }
     
+    //método que busca usuario por codigo
+    public static Entrevista buscarNombre(String nombre) throws SQLException {
+        Connection conexion = Conexion_BD.getConnection();
+        if(conexion != null)
+        {
+           PreparedStatement sentencia_buscar = null;
+           sentencia_buscar = conexion.prepareStatement("select * from entrevistas where nombre=?");
+           sentencia_buscar.setString(1, nombre);
+           Entrevista entrevista=null;
+           ResultSet resultado = sentencia_buscar.executeQuery();
+            if (resultado.next()) {
+                if (entrevista == null) {
+                    entrevista = new Entrevista() {
+                    };
+                }
+                entrevista.setCodigo(resultado.getInt("codigo"));
+                entrevista.setNombre(nombre);
+                entrevista.setDescripcion(resultado.getString("descripcion"));
+            }
+            conexion.close();
+            sentencia_buscar.close();
+            return entrevista; 
+        }
+        return null;
+        
+    }
     
-    //método que devuelve una lista de todas los usuarios 
+    
+    //método que devuelve una lista de todas las entrevistas 
     public static ArrayList<Entrevista> Lista() throws SQLException {
             Connection conexion = Conexion_BD.getConnection();
             PreparedStatement sentencia_mostrar = null;
             ArrayList<Entrevista> lista = new ArrayList<Entrevista>();
 
-            sentencia_mostrar = conexion.prepareStatement("select * from entrevistas");
+            sentencia_mostrar = conexion.prepareStatement("select * from entrevistas order by codigo");
             ResultSet resultado = sentencia_mostrar.executeQuery();
             while (resultado.next()) {
                 Entrevista entrevista = new Entrevista() {
@@ -112,5 +139,4 @@ public class BDEntrevistas {
             sentencia_mostrar.close();
             return lista;
         }
-    
 }

@@ -7,7 +7,6 @@ public class Lamina {
     private Image imagen;
     private String ruta;
     private String descripcion;
-    private int orden;
     private Entrevista entrevista;
  
     /**
@@ -50,20 +49,6 @@ public class Lamina {
      */
     public void setRuta(String ruta) {
         this.ruta = ruta;
-    }
-
-    /**
-     * @return the orden
-     */
-    public int getOrden() {
-        return orden;
-    }
-
-    /**
-     * @param orden the orden to set
-     */
-    public void setOrden(int orden) {
-        this.orden = orden;
     }
 
     /**

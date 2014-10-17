@@ -1,15 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package Entidades;
 
-/**
- *
- * @author jose
- */
 public class Opciones {
     private Lamina lamina;
     private int codigo;
@@ -47,5 +37,6 @@ public class Opciones {
     public void setNomenclatura(String nomenclatura) {
         this.nomenclatura = nomenclatura;
     }
+
     
 }

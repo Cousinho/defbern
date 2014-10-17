@@ -89,7 +89,7 @@ public class P_Lamina extends javax.swing.JInternalFrame {
             for (Iterator<Lamina> it = BDLaminas.Lista(entrevista_actual.getCodigo()).iterator(); it.hasNext();) {
                 Lamina lamina = it.next();
                 String Datos[] = {String.valueOf(lamina.getCodigo()),lamina.getDescripcion(),
-                        lamina.getEntrevista().getDescripcion()};
+                        lamina.getEntrevista().getNombre()};
                 LTabla.addRow(Datos);
             }
         } catch (SQLException e) {

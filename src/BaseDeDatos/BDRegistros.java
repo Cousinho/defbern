@@ -6,15 +6,18 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class BDRegistros {
     //método que recibe objeto usuario y lo inserta en la base de datos
-    public static boolean insertar(Registro registro) throws SQLException  {
+    public static int insertar(Registro registro) throws SQLException  {
         boolean insertar=true;  
+        int codigo=mayor()+1;
         Connection conexion = Conexion_BD.getConnection();
         PreparedStatement sentencia_insertar= null;
         sentencia_insertar = conexion.prepareStatement("insert into registros (codigo, ci, nombre, apellido, descripcion, fecha, id_usuario, id_perfil,codigo_grupo,respuestas) VALUES (?,?,?,?,?,?,?,?,?,?)");
-        sentencia_insertar.setInt(1, registro.getCodigo());
+        sentencia_insertar.setInt(1, codigo);
         sentencia_insertar.setInt(2, registro.getCi());
         sentencia_insertar.setString(3, registro.getNombre());
         sentencia_insertar.setString(4, registro.getApellido());
@@ -27,12 +30,12 @@ public class BDRegistros {
         try {
             sentencia_insertar.executeUpdate();
         } catch (SQLException ex) {
-            System.out.println(ex);
-            insertar=false;
+            codigo=0;
+            Logger.getLogger(BDRegistros.class.getName()).log(Level.SEVERE, null, ex);
         }
         conexion.close();
         sentencia_insertar.close();
-        return insertar;
+        return codigo;
     }
     
     //metodo que recibe le identificador de la usuario a ser eliminado
@@ -169,23 +172,38 @@ public class BDRegistros {
             sentencia_mostrar.close();
             return lista;
         }
-        
+    
+    private static int mayor() throws SQLException{
+        int mayor;
+        Connection conexion = Conexion_BD.getConnection();
+        PreparedStatement sentencia_mayor = null;
+        sentencia_mayor = conexion.prepareStatement("select max(codigo) as maximo from registros");
+        ResultSet resultado = sentencia_mayor.executeQuery();
+        if (!resultado.next()){
+           mayor=0; 
+        }else{
+            mayor=resultado.getInt("maximo");
+            
+        }   
+            return mayor;
+    }
+    
+    
     private static String CrearCadena(String[] Lista){
         String resultado="";
         for(int x=0;x<Lista.length;x++){
             if(x==0){
                 resultado=Lista[x];
             }else{
-                resultado=resultado+" "+Lista[x];
+                resultado=resultado+","+Lista[x];
             }
         }
-        System.out.println(resultado);
         return resultado;
     }
     
     private static String[] CrearArray(String Lista){
         String[] resultado;
-        resultado = Lista.split(" ");
+        resultado = Lista.split(",");
         return resultado;
     }
 }

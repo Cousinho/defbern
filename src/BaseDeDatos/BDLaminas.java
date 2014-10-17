@@ -29,7 +29,7 @@ public class BDLaminas {
             PreparedStatement sentencia_insertar= null;
             File file = new File(lamina.getRuta());
             fis = new FileInputStream(file);
-            sentencia_insertar = conexion.prepareStatement("insert into laminas (codigo,imagen,descripcion,orden, id_entrevista) VALUES (?,?,?,?,?)");
+            sentencia_insertar = conexion.prepareStatement("insert into laminas (codigo,imagen,descripcion, id_entrevista) VALUES (?,?,?,?)");
             int codigo=0;
             codigo=mayor();
             if(codigo==0){
@@ -39,8 +39,7 @@ public class BDLaminas {
             }
             sentencia_insertar.setBinaryStream(2, fis,(int) file.length());
             sentencia_insertar.setString(3, lamina.getDescripcion());
-            sentencia_insertar.setInt(4, lamina.getOrden());
-            sentencia_insertar.setInt(5, lamina.getEntrevista().getCodigo());
+            sentencia_insertar.setInt(4, lamina.getEntrevista().getCodigo());
             try {
                 sentencia_insertar.executeUpdate();
             } catch (SQLException ex) {
@@ -80,16 +79,13 @@ public class BDLaminas {
                 FileInputStream fis = null;
                 File file = new File(lamina.getRuta());
                 fis = new FileInputStream(file);
-                sentencia_actualizar = conexion.prepareStatement("update laminas set imagen=?,descripcion=? orden=? where codigo=" + lamina.getCodigo());
+                sentencia_actualizar = conexion.prepareStatement("update laminas set imagen=?,descripcion=? where codigo=" + lamina.getCodigo());
                 sentencia_actualizar.setBinaryStream(1, fis,(int) file.length());
                 sentencia_actualizar.setString(2, lamina.getDescripcion());
-                System.out.println(lamina.getDescripcion());
-                sentencia_actualizar.setInt(3, lamina.getOrden());
       
             }else{
-                sentencia_actualizar = conexion.prepareStatement("update laminas set descripcion=?, orden=? where codigo=" + lamina.getCodigo());
+                sentencia_actualizar = conexion.prepareStatement("update laminas set descripcion=? where codigo=" + lamina.getCodigo());
                 sentencia_actualizar.setString(1, lamina.getDescripcion());
-                sentencia_actualizar.setInt(2, lamina.getOrden());
             }
             int rowsUpdated = sentencia_actualizar.executeUpdate();
                conexion.close();
@@ -125,7 +121,6 @@ public class BDLaminas {
                 } catch (IOException ex) {
                     Logger.getLogger(BDLaminas.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                lamina.setOrden(resultado.getInt("orden"));
                 lamina.setDescripcion(resultado.getString("descripcion"));
                 lamina.setEntrevista(BDEntrevistas.buscarId(resultado.getInt("id_entrevista")));
             }
@@ -156,7 +151,6 @@ public class BDLaminas {
                     Logger.getLogger(BDLaminas.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 lamina.setDescripcion(resultado.getString("descripcion"));
-                lamina.setOrden(resultado.getInt("orden"));
                 lamina.setEntrevista(BDEntrevistas.buscarId(resultado.getInt("id_entrevista")));
                 lista.add(lamina);
             }

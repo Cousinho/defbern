@@ -27,7 +27,7 @@ public class P_Entrevista extends javax.swing.JInternalFrame {
         permisos_actuales = permisos;
         initComponents();
         tabla_entrevistas.setRowSorter(sorter);
-        BloquearComponentes();
+        //BloquearComponentes();
         HabilitarComponentes();
         actualizartabla();
     }

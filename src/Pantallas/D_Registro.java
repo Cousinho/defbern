@@ -63,7 +63,12 @@ public class D_Registro extends javax.swing.JDialog {
     private boolean Guardar(){
         setDatos();
         try {
-            return BDRegistros.insertar(registro_actual);
+            int resultado= BDRegistros.insertar(registro_actual);
+            if(resultado==0){
+                return false;
+            }else{
+                return true;
+            }
         } catch (SQLException ex) {
             return false;
         }

@@ -1,14 +1,29 @@
 package Pantallas;
 
 import BaseDeDatos.BDPermisos;
+import BaseDeDatos.Conexion_BD;
 import Entidades.Permiso;
 import Entidades.Usuario;
+import Reportes.P_Reportes;
+import Reportes.P_ReportesGrupos;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.beans.PropertyVetoException;
+import java.io.File;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -17,12 +32,7 @@ import java.util.logging.Logger;
 public class P_Principal extends javax.swing.JFrame {
     Usuario usuario;
     ArrayList<String> permisos = new ArrayList();
-    
-    /**
-     *
-     * @param parametro_usuario
-     * @throws java.sql.SQLException
-     */
+    private int CodigoGrupo=0;
     public P_Principal(Usuario parametro_usuario) throws SQLException {
         this.setTitle("Sistema de Analisis");
         usuario=parametro_usuario;
@@ -58,9 +68,9 @@ public class P_Principal extends javax.swing.JFrame {
         if(permisos.indexOf("agregar roles")!=-1 || permisos.indexOf("modificar roles")!=-1 || permisos.indexOf("eliminar roles")!=-1){
             SM_Rol.setEnabled(true);
         }
-        if(permisos.indexOf("agregar permisos")!=-1 || permisos.indexOf("modificar permisos")!=-1 || permisos.indexOf("eliminar permisos")!=-1){
+        /*if(permisos.indexOf("agregar permisos")!=-1 || permisos.indexOf("modificar permisos")!=-1 || permisos.indexOf("eliminar permisos")!=-1){
             SM_Permiso.setEnabled(true);
-        }
+        }*/
         if(permisos.indexOf("crear informes")!=-1){
             SM_Informes.setEnabled(true);
         }
@@ -78,7 +88,7 @@ public class P_Principal extends javax.swing.JFrame {
         SM_Registro.setEnabled(false);
         SM_Grupos.setEnabled(false);
         SM_Rol.setEnabled(false);
-        SM_Permiso.setEnabled(false);
+        //SM_Permiso.setEnabled(false);
         SM_Informes.setEnabled(false);
         SM_EntrevistaIndividual.setEnabled(false);
         SM_EntrevistaGrupal.setEnabled(false);
@@ -106,12 +116,14 @@ public class P_Principal extends javax.swing.JFrame {
         SM_Registro = new javax.swing.JMenuItem();
         SM_Grupos = new javax.swing.JMenuItem();
         SM_Rol = new javax.swing.JMenuItem();
-        SM_Permiso = new javax.swing.JMenuItem();
         M_Entrevista = new javax.swing.JMenu();
         SM_EntrevistaGrupal = new javax.swing.JMenuItem();
         SM_EntrevistaIndividual = new javax.swing.JMenuItem();
         M_Informes = new javax.swing.JMenu();
+        SM_Grupales = new javax.swing.JMenuItem();
         SM_Informes = new javax.swing.JMenuItem();
+        M_Configuracion = new javax.swing.JMenu();
+        SM_Conexion = new javax.swing.JMenuItem();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -210,14 +222,6 @@ public class P_Principal extends javax.swing.JFrame {
         });
         M_Administrar.add(SM_Rol);
 
-        SM_Permiso.setText("Permiso");
-        SM_Permiso.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SM_PermisoActionPerformed(evt);
-            }
-        });
-        M_Administrar.add(SM_Permiso);
-
         Menu_Principal.add(M_Administrar);
 
         M_Entrevista.setText("Entrevista");
@@ -242,10 +246,35 @@ public class P_Principal extends javax.swing.JFrame {
 
         M_Informes.setText("Informes");
 
-        SM_Informes.setText("Crear Informes");
+        SM_Grupales.setText("Crear Informes Grupales");
+        SM_Grupales.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SM_GrupalesActionPerformed(evt);
+            }
+        });
+        M_Informes.add(SM_Grupales);
+
+        SM_Informes.setText("Crear Informes Individuales");
+        SM_Informes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SM_InformesActionPerformed(evt);
+            }
+        });
         M_Informes.add(SM_Informes);
 
         Menu_Principal.add(M_Informes);
+
+        M_Configuracion.setText("Configuración");
+
+        SM_Conexion.setText("Conexión");
+        SM_Conexion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SM_ConexionActionPerformed(evt);
+            }
+        });
+        M_Configuracion.add(SM_Conexion);
+
+        Menu_Principal.add(M_Configuracion);
 
         setJMenuBar(Menu_Principal);
 
@@ -317,7 +346,7 @@ public class P_Principal extends javax.swing.JFrame {
 
     private void SM_UsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SM_UsuarioActionPerformed
         P_Usuario principal = null;
-        principal = new P_Usuario(this);
+        principal = new P_Usuario(this,permisos);
         Panel_Principal.add(principal);
         try {
             principal.setMaximum(true);
@@ -330,7 +359,7 @@ public class P_Principal extends javax.swing.JFrame {
     private void SM_EntrevistaIndividualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SM_EntrevistaIndividualActionPerformed
         P_IniciarEntrevista entrevista = null;
         try {
-            entrevista = new P_IniciarEntrevista(this,false);
+            entrevista = new P_IniciarEntrevista(this,false,usuario);
         } catch (SQLException ex) {
             Logger.getLogger(P_Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -346,7 +375,7 @@ public class P_Principal extends javax.swing.JFrame {
     private void SM_EntrevistaGrupalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SM_EntrevistaGrupalActionPerformed
         P_IniciarEntrevista entrevista = null;
         try {
-            entrevista = new P_IniciarEntrevista(this,true);
+            entrevista = new P_IniciarEntrevista(this,true,usuario);
         } catch (SQLException ex) {
             Logger.getLogger(P_Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -386,7 +415,7 @@ public class P_Principal extends javax.swing.JFrame {
 
     private void SM_RolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SM_RolActionPerformed
         P_Rol principal = null;
-        principal = new P_Rol(this);
+        principal = new P_Rol(this,permisos);
         Panel_Principal.add(principal);
         try {
             principal.setMaximum(true);
@@ -396,9 +425,9 @@ public class P_Principal extends javax.swing.JFrame {
         principal.show();
     }//GEN-LAST:event_SM_RolActionPerformed
 
-    private void SM_PermisoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SM_PermisoActionPerformed
-        P_Permiso principal = null;
-        principal = new P_Permiso(this, permisos);
+    private void SM_InformesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SM_InformesActionPerformed
+        P_Reportes principal = null;
+        principal = new P_Reportes();
         Panel_Principal.add(principal);
         try {
             principal.setMaximum(true);
@@ -406,8 +435,30 @@ public class P_Principal extends javax.swing.JFrame {
             Logger.getLogger(P_Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
         principal.show();
-    }//GEN-LAST:event_SM_PermisoActionPerformed
+    }//GEN-LAST:event_SM_InformesActionPerformed
 
+    private void SM_GrupalesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SM_GrupalesActionPerformed
+        P_ReportesGrupos principal = null;
+        principal = new P_ReportesGrupos();
+        Panel_Principal.add(principal);
+        try {
+            principal.setMaximum(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(P_Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        principal.show();
+    }//GEN-LAST:event_SM_GrupalesActionPerformed
+
+    private void SM_ConexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SM_ConexionActionPerformed
+        D_Conexion conexion = new D_Conexion(this,true);
+        conexion.setLocationRelativeTo(null);
+        conexion.setResizable(false);
+        conexion.setVisible(true);
+    }//GEN-LAST:event_SM_ConexionActionPerformed
+    
+    public void CodigoGrupo(int codigo){
+        CodigoGrupo=codigo;
+    }
     /**
      * @param args the command line arguments
      */
@@ -451,19 +502,21 @@ public class P_Principal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu M_Administrar;
     private javax.swing.JMenu M_Archivo;
+    private javax.swing.JMenu M_Configuracion;
     private javax.swing.JMenu M_Entrevista;
     private javax.swing.JMenu M_Informes;
     private javax.swing.JMenuBar Menu_Principal;
     private javax.swing.JLayeredPane Panel_Principal;
     private javax.swing.JLayeredPane Panel_Principal1;
+    private javax.swing.JMenuItem SM_Conexion;
     private javax.swing.JMenuItem SM_Entrevista;
     private javax.swing.JMenuItem SM_EntrevistaGrupal;
     private javax.swing.JMenuItem SM_EntrevistaIndividual;
+    private javax.swing.JMenuItem SM_Grupales;
     private javax.swing.JMenuItem SM_Grupos;
     private javax.swing.JMenuItem SM_Informes;
     private javax.swing.JMenuItem SM_Lamina;
     private javax.swing.JMenuItem SM_Perfil;
-    private javax.swing.JMenuItem SM_Permiso;
     private javax.swing.JMenuItem SM_Registro;
     private javax.swing.JMenuItem SM_Rol;
     private javax.swing.JMenuItem SM_Usuario;

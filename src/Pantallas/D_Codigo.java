@@ -9,15 +9,16 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class D_Codigo extends javax.swing.JDialog {
-    P_IniciarEntrevista pantalla_padre;
+    P_IniciarEntrevista pantalla_padre_entrevista;
     private Grupo grupo=new Grupo();
     public D_Codigo(java.awt.Frame parent, boolean modal,P_IniciarEntrevista padre) {
         super(parent, modal);
         initComponents();
-        pantalla_padre = padre;
+        grupo.setDescripcion("");
+        pantalla_padre_entrevista = padre;
         FormatoCampos();
     }
-    
+   
      private void FormatoCampos(){
         texto_codigo.setDocument(new Numerico(texto_codigo,11));
      }
@@ -89,19 +90,20 @@ public class D_Codigo extends javax.swing.JDialog {
         }
         else
         {
-            try {
-               grupo = BDGrupos.buscarId(Integer.valueOf(texto_codigo.getText()));
-            } catch (SQLException ex) {
-                Logger.getLogger(D_Codigo.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            if(grupo!=null){
-                pantalla_padre.SetCodigo(grupo);
-                dispose();
-            }else{
-                JOptionPane.showMessageDialog(null, "Código invalido");
-            }
-             
+                try {
+                   grupo = BDGrupos.buscarId(Integer.valueOf(texto_codigo.getText()));
+                } catch (SQLException ex) {
+                    Logger.getLogger(D_Codigo.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                if(grupo.getDescripcion()!=null){
+                    pantalla_padre_entrevista.SetCodigo(grupo);
+                    dispose();
+                }else{
+                    JOptionPane.showMessageDialog(null, "Código invalido");
+                }
+
         }
+            
         
        
     }//GEN-LAST:event_jButton1ActionPerformed

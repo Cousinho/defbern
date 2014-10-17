@@ -9,8 +9,7 @@ import java.util.ArrayList;
 
 public class BDUsuarios {
     
-
-    //método que recibe objeto usuario y lo inserta en la base de datos
+     //método que recibe objeto usuario y lo inserta en la base de datos
     public static boolean insertar(Usuario usuario) throws SQLException  {
         boolean insertar=true;
         Connection conexion = Conexion_BD.getConnection();

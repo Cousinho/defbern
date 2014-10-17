@@ -71,7 +71,7 @@ public class BDGrupos {
            PreparedStatement sentencia_buscar = null;
            sentencia_buscar = conexion.prepareStatement("select * from grupos where codigo=?");
            sentencia_buscar.setInt(1, codigo);
-           Grupo grupo=null;
+           Grupo grupo=new Grupo();
            ResultSet resultado = sentencia_buscar.executeQuery();
             if (resultado.next()) {
                 if (grupo == null) {
@@ -96,7 +96,7 @@ public class BDGrupos {
             PreparedStatement sentencia_mostrar = null;
             ArrayList<Grupo> lista = new ArrayList<Grupo>();
 
-            sentencia_mostrar = conexion.prepareStatement("select * from grupos");
+            sentencia_mostrar = conexion.prepareStatement("select * from grupos order by codigo");
             ResultSet resultado = sentencia_mostrar.executeQuery();
             while (resultado.next()) {
                 Grupo grupo = new Grupo() {

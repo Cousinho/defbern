@@ -1,16 +1,21 @@
 package Pantallas;
 
 import BaseDeDatos.BDRegistros;
+import BaseDeDatos.Conexion_BD;
 import Entidades.Registro;
 import Util.Bloqueo;
 import Util.FormatoFecha;
 import Util.TablaModelo;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -20,6 +25,13 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.JasperRunManager;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 public class P_Registro extends javax.swing.JInternalFrame {
 
@@ -148,6 +160,7 @@ public class P_Registro extends javax.swing.JInternalFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
+        b_reportes = new javax.swing.JButton();
 
         setClosable(true);
         setTitle("Registro de Entrevistas");
@@ -304,6 +317,13 @@ public class P_Registro extends javax.swing.JInternalFrame {
 
         panel_filtroLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {texto_cedula, texto_codigo, texto_nombre});
 
+        b_reportes.setText("Generar Reporte");
+        b_reportes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_reportesActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -333,11 +353,12 @@ public class P_Registro extends javax.swing.JInternalFrame {
                         .addGap(209, 209, 209))))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(b_modificar, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(b_reportes, javax.swing.GroupLayout.DEFAULT_SIZE, 114, Short.MAX_VALUE)
+                    .addComponent(b_modificar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(b_eliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1196, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1176, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -368,10 +389,11 @@ public class P_Registro extends javax.swing.JInternalFrame {
                         .addComponent(b_eliminar)
                         .addGap(11, 11, 11)
                         .addComponent(b_modificar)
-                        .addGap(155, 155, 155))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addContainerGap())))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(b_reportes)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {b_eliminar, b_modificar});
@@ -562,10 +584,34 @@ public class P_Registro extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_check_filtroActionPerformed
 
+    private void b_reportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_reportesActionPerformed
+        //recibe numero de fila seleccionada
+        Connection conexion = Conexion_BD.getConnection();
+        int fila=tabla_registros.getSelectedRow();
+        File archivo=new File("reportes/ReporteIndividual.jasper");
+        JasperReport reporte = null;
+        try {
+            reporte = (JasperReport) JRLoader.loadObject(archivo);
+        } catch (JRException ex) {
+            Logger.getLogger(P_Registro.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            Map parametros = new HashMap();
+            parametros.put("id_registro",fila);
+            JasperPrint reporte_view = JasperFillManager.fillReport( reporte, parametros, conexion);
+            JasperViewer.viewReport( reporte_view,false);
+            byte[] bytes = JasperRunManager.runReportToPdf(archivo.getPath(), parametros, conexion);
+        } catch (JRException ex) {
+            Logger.getLogger(P_Registro.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_b_reportesActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton b_eliminar;
     private javax.swing.JButton b_modificar;
+    private javax.swing.JButton b_reportes;
     private javax.swing.JCheckBox check_fecha;
     private javax.swing.JCheckBox check_filtro;
     private javax.swing.JCheckBox check_mayusculas;

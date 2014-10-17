@@ -118,7 +118,7 @@ public class D_SeleccionaEntrevista extends javax.swing.JDialog {
                 pantalla_padre.setEntrevista(e_envia);
                 
             } catch (SQLException ex) {
-                Logger.getLogger(P_Entrevista.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(D_SeleccionaEntrevista.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         else{
