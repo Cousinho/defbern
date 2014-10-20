@@ -9,11 +9,11 @@ public class Registro {
     private String apellido;
     private String descripcion;
     private Usuario usuario;
-    private Perfil perfil;
     private int Codigo_grupo;
     private String[] Respuestas;
     private Date fecha;
-  
+    private int tiempo_total;
+    private String perfil;
     /**
      * @return the ci
      */
@@ -85,20 +85,6 @@ public class Registro {
     }
 
     /**
-     * @return the perfi
-     */
-    public Perfil getPerfil() {
-        return perfil;
-    }
-
-    /**
-     * @param perfil the perfi to set
-     */
-    public void setPerfil(Perfil perfil) {
-        this.perfil = perfil;
-    }
-
-    /**
      * @return the codigo
      */
     public int getCodigo() {
@@ -152,5 +138,34 @@ public class Registro {
      */
     public void setFecha(Date fecha) {
         this.fecha = fecha;
+    }
+
+ 
+    /**
+     * @return the tiempo_total
+     */
+    public int getTiempo_total() {
+        return tiempo_total;
+    }
+
+    /**
+     * @param tiempo_total the tiempo_total to set
+     */
+    public void setTiempo_total(int tiempo_total) {
+        this.tiempo_total = tiempo_total;
+    }
+
+    /**
+     * @return the perfil
+     */
+    public String getPerfil() {
+        return perfil;
+    }
+
+    /**
+     * @param perfil the perfil to set
+     */
+    public void setPerfil(String perfil) {
+        this.perfil = perfil;
     }
 }

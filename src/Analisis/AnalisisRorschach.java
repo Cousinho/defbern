@@ -1,19 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package Analisis;
 
 import BaseDeDatos.BDPerfiles;
 import Entidades.Registro;
 import java.sql.SQLException;
 
-/**
- *
- * @author jose
- */
 
 //G.F+.T.V* G.F+.T.V*,NADA,NADA
 
@@ -66,172 +56,180 @@ public class AnalisisRorschach {
     private int Gp,Dp,Bmasp,Fmasp,Bmenosp,Fp,IR,Tp,Bp,Origp;
     private int Origd,Origg,Origmenosp;
     private int ChoqueNegro, ChoqueColor,ChoqueRojo,ChoqueKinestesico,ChoqueSexual,ChoqueLVI;
-    private String perfil;
+    private String perfil="";
     private String vivencia;
-    private Analisis analizar;
+    private Analisis analizar=new Analisis();
     private int[] choques;
     
     
-    public String AnalizarRegistro(Registro registro, int duracion) throws SQLException{
+    public String AnalizarRegistro(Registro registro) throws SQLException{
         registro_actual = registro;
-        for(int i=0;i<10;i++){
+        for(int i=1;i<registro_actual.getRespuestas().length;i++){
             respuestas = registro_actual.getRespuestas()[i].split(" ");
-            for(int j=0;i<respuestas.length;j++){
+            for(int j=0;j<respuestas.length;j++){
                 nomenclaturas = respuestas[j].split(",");
+                NR++;
                 AnalizarRespuesta(nomenclaturas,j);
-                NR = NR++;
             }
         }
         choques = analizar.Analizar(registro_actual.getCodigo());
         Gp = (G*100)/NR;
         Dp = (D*100)/NR;
-        Fmasp = (Fmas*100)/(Fmas+Fmenos);
+        if(Fmas+Fmenos==0){
+            Fmasp=0;
+        }else{
+            Fmasp = (Fmas*100)/(Fmas+Fmenos);
+        }
         Fp = ((Fmas+Fmenos)*100)/NR;
         //Hp = ((H+Hd)*100)/NR;
         Bmasp = (Bmas*100)/NR;
         Bmenosp = (Bmenos*100)/NR;
         Tp = ((T+Td)*100)/NR;
         Origp = ((Origmas+Origmenos)*100)/NR;
-        Origmenosp = (Origmenos*100)/(Origmenos+Origmas);
+        if(Origmenos+Origmas==0){
+            Origmenosp=0;
+        }else{
+            Origmenosp = (Origmenos*100)/(Origmenos+Origmas);
+        }
         
         
         //Analisis de nomenclaturas
-        if(Math.abs(C-M)!=0.5){
-            perfil = perfil + BDPerfiles.buscarId(3).getDescripcion();
-            vivencia = "ambigual";
-        }else{
-            if(C>M){
-                perfil = perfil + BDPerfiles.buscarId(1).getDescripcion();
-                vivencia = "extratensivo";
+        if(C>0 || M>0){
+            if(Math.abs(C-M)!=0.5){
+                perfil = perfil + BDPerfiles.buscarId(3).getDescripcion()+"\n";
+                vivencia = "ambigual";
             }else{
-                perfil = perfil + BDPerfiles.buscarId(2).getDescripcion();
-                vivencia = "introtensivo";
-            }
-        }
-        
-        if(G<33){
-            perfil = perfil + BDPerfiles.buscarId(4).getDescripcion();
-        }else if(G>80){
-            perfil = perfil + BDPerfiles.buscarId(5).getDescripcion();
-        }
-        
-        if(Dd>0){
-            perfil = perfil + BDPerfiles.buscarId(6).getDescripcion();
-        }
-        
-        if(Dp<=75){
-            perfil = perfil + BDPerfiles.buscarId(7).getDescripcion();
-            if(Dp==0){
-                perfil = perfil + BDPerfiles.buscarId(7).getDescripcion();
-            }
-        }else if(Dp>75){
-            perfil = perfil + BDPerfiles.buscarId(9).getDescripcion();
-        }
-        
-        if(M<=3){
-            perfil = perfil + BDPerfiles.buscarId(10).getDescripcion();
-        }else{
-            perfil = perfil + BDPerfiles.buscarId(11).getDescripcion();
-        }
-        
-        if(Tp>=30 && Tp<=50){
-            perfil = perfil + BDPerfiles.buscarId(12).getDescripcion();
-        }else if(Tp<30){
-            perfil = perfil + BDPerfiles.buscarId(13).getDescripcion();
-        }else{
-            perfil = perfil + BDPerfiles.buscarId(14).getDescripcion();
-        }
-        
-        if(Td>0){
-            perfil = perfil + BDPerfiles.buscarId(15).getDescripcion();
-        }
-        
-        if(Fmasp>=80 && Fmasp<=90){
-            perfil = perfil + BDPerfiles.buscarId(16).getDescripcion();
-        }else{
-            if(Fmasp>70 && Fmasp<80){
-                perfil = perfil + BDPerfiles.buscarId(17).getDescripcion();
-            }else{
-                if(Fmasp>=60 && Fmasp<=70){
-                    perfil = perfil + BDPerfiles.buscarId(18).getDescripcion();
+                if(C>M){
+                    perfil = perfil + BDPerfiles.buscarId(1).getDescripcion()+"\n";
+                    vivencia = "introtensivo";
                 }else{
-                    if(Fmasp<60){
-                        perfil = perfil + BDPerfiles.buscarId(19).getDescripcion();
-                    }else{
-                        perfil = perfil + BDPerfiles.buscarId(20).getDescripcion();
-                    }
+                    perfil = perfil + BDPerfiles.buscarId(2).getDescripcion()+"\n";
+                    vivencia = "extratensivo";
                 }
             }
         }
         
-        if(IR<=1){
-            perfil = perfil + BDPerfiles.buscarId(23).getDescripcion();
-        }else if(IR==2){
-            perfil = perfil + BDPerfiles.buscarId(24).getDescripcion();
-        }else if(IR==3){
-            perfil = perfil + BDPerfiles.buscarId(25).getDescripcion();
-        }else if(IR==4){
-            perfil = perfil + BDPerfiles.buscarId(26).getDescripcion();
-        }else if(IR>4 && IR<=7){
-            perfil = perfil + BDPerfiles.buscarId(27).getDescripcion();
+        if(G<33 && G>0){
+            perfil = perfil + BDPerfiles.buscarId(4).getDescripcion()+"\n";
+        }else if((80<=G)&&(G>=33)){
+            perfil = perfil + BDPerfiles.buscarId(6).getDescripcion()+"\n";
+        }else if(G>80){
+            perfil = perfil + BDPerfiles.buscarId(5).getDescripcion()+"\n";
+        }
+        
+        if(Dd>0){
+            perfil = perfil + BDPerfiles.buscarId(7).getDescripcion()+"\n";
+        }
+        
+        if(Dp<=75 && D>0){
+            perfil = perfil + BDPerfiles.buscarId(8).getDescripcion()+"\n";
+        }else if(Dp>75){
+            perfil = perfil + BDPerfiles.buscarId(10).getDescripcion()+"\n";
+        }else if(Dp==0){
+                perfil = perfil + BDPerfiles.buscarId(9).getDescripcion()+"\n";
+        }
+        
+        if(M<=3 && M>0){
+            perfil = perfil + BDPerfiles.buscarId(11).getDescripcion()+"\n";
+        }else if(M==4){
+            perfil = perfil + BDPerfiles.buscarId(12).getDescripcion()+"\n";
         }else{
-            perfil = perfil + BDPerfiles.buscarId(28).getDescripcion();
+            perfil = perfil + BDPerfiles.buscarId(13).getDescripcion()+"\n";
+        }
+        
+        if(Tp>=30 && Tp<=50){
+            perfil = perfil + BDPerfiles.buscarId(14).getDescripcion()+"\n";
+        }else if(Tp<30 && Tp>0){
+            perfil = perfil + BDPerfiles.buscarId(15).getDescripcion()+"\n";
+        }else{
+            perfil = perfil + BDPerfiles.buscarId(16).getDescripcion()+"\n";
+        }
+        
+        if(Td>T){
+            perfil = perfil + BDPerfiles.buscarId(17).getDescripcion()+"\n";
+        }
+        
+        if(Fmasp>=80 && Fmasp<=90){
+            perfil = perfil + BDPerfiles.buscarId(18).getDescripcion()+"\n";
+        }else{
+            if(Fmasp>70 && Fmasp<80){
+                perfil = perfil + BDPerfiles.buscarId(19).getDescripcion()+"\n";
+            }else{
+                if(Fmasp>=60 && Fmasp<=70){
+                    perfil = perfil + BDPerfiles.buscarId(20).getDescripcion()+"\n";
+                }else{
+                    if(Fmasp<60){
+                        perfil = perfil + BDPerfiles.buscarId(21).getDescripcion()+"\n";
+                    }else{
+                        perfil = perfil + BDPerfiles.buscarId(22).getDescripcion()+"\n";
+                    }
+                } 
+            }
+        }
+        
+        if(IR<=4){
+            perfil = perfil + BDPerfiles.buscarId(23).getDescripcion()+"\n";
+        }else if(IR>4 && IR<=7){
+            perfil = perfil + BDPerfiles.buscarId(24).getDescripcion()+"\n";
+        }else{
+            perfil = perfil + BDPerfiles.buscarId(25).getDescripcion()+"\n";
         }
     
         if(Bmas<=1){
-            perfil = perfil + BDPerfiles.buscarId(29).getDescripcion();
-        }else if(Bmas>1 && Bmas<5){
-            perfil = perfil + BDPerfiles.buscarId(30).getDescripcion();
+            perfil = perfil + BDPerfiles.buscarId(26).getDescripcion()+"\n";
+        }else if(Bmas>1 && Bmas<=5){
+            perfil = perfil + BDPerfiles.buscarId(27).getDescripcion()+"\n";
         }else{
-            perfil = perfil + BDPerfiles.buscarId(31).getDescripcion();
+            perfil = perfil + BDPerfiles.buscarId(28).getDescripcion()+"\n";
         }
         
         if(Origp>=40 && Origp<=60){
-            perfil = perfil + BDPerfiles.buscarId(32).getDescripcion();
+            perfil = perfil + BDPerfiles.buscarId(29).getDescripcion()+"\n";
         }else if(Origp<40){
-            perfil = perfil + BDPerfiles.buscarId(33).getDescripcion();
+            perfil = perfil + BDPerfiles.buscarId(30).getDescripcion()+"\n";
         }else{
-            perfil = perfil + BDPerfiles.buscarId(34).getDescripcion();
+            perfil = perfil + BDPerfiles.buscarId(31).getDescripcion()+"\n";
         }
         
         //Análisis de determinantes
-        if(Anat<12){
-            perfil = perfil + BDPerfiles.buscarId(35).getDescripcion();
+        if(Anat<=12 && Anat>0){
+            perfil = perfil + BDPerfiles.buscarId(32).getDescripcion()+"\n";
         }else{
-            perfil = perfil + BDPerfiles.buscarId(35).getDescripcion();
+            perfil = perfil + BDPerfiles.buscarId(33).getDescripcion()+"\n";
         }
+        
         if(Abstr>0){
-            perfil = perfil + BDPerfiles.buscarId(37).getDescripcion();
+            perfil = perfil + BDPerfiles.buscarId(34).getDescripcion()+"\n";
         }
         if(Sex>0){
-            perfil = perfil + BDPerfiles.buscarId(38).getDescripcion();
+            perfil = perfil + BDPerfiles.buscarId(35).getDescripcion()+"\n";
         }
         if(Geo>0){
-            perfil = perfil + BDPerfiles.buscarId(39).getDescripcion();
+            perfil = perfil + BDPerfiles.buscarId(36).getDescripcion()+"\n";
         }
         if(Obj>0){
-            perfil = perfil + BDPerfiles.buscarId(40).getDescripcion();
+            perfil = perfil + BDPerfiles.buscarId(37).getDescripcion()+"\n";
         }
         if(Mascara>0){
-            perfil = perfil + BDPerfiles.buscarId(41).getDescripcion();
+            perfil = perfil + BDPerfiles.buscarId(38).getDescripcion()+"\n";
         }
         if(Sangre>0){
-            perfil = perfil + BDPerfiles.buscarId(42).getDescripcion();
+            perfil = perfil + BDPerfiles.buscarId(39).getDescripcion()+"\n";
         }
         if(Fuego>0){
-            perfil = perfil + BDPerfiles.buscarId(43).getDescripcion();
+            perfil = perfil + BDPerfiles.buscarId(40).getDescripcion()+"\n";
         }
         if(Refl>0){
-            perfil = perfil + BDPerfiles.buscarId(44).getDescripcion();
+            perfil = perfil + BDPerfiles.buscarId(41).getDescripcion()+"\n";
         }
         if(Simetria>0){
-            perfil = perfil + BDPerfiles.buscarId(45).getDescripcion();
+            perfil = perfil + BDPerfiles.buscarId(42).getDescripcion()+"\n";
         }
         if(Pinza>0){
-            perfil = perfil + BDPerfiles.buscarId(46).getDescripcion();
+            perfil = perfil + BDPerfiles.buscarId(43).getDescripcion()+"\n";
         }
         if(Arq>0){
-            perfil = perfil + BDPerfiles.buscarId(47).getDescripcion();
+            perfil = perfil + BDPerfiles.buscarId(44).getDescripcion()+"\n";
         }
         
         
@@ -245,15 +243,14 @@ public class AnalisisRorschach {
                 (Tp>=35 && Tp<=45) &&
                 (vivencia.equals("ambigual"))){
             
-                perfil = perfil + BDPerfiles.buscarId(48).getDescripcion();
-        
+                perfil = perfil + BDPerfiles.buscarId(45).getDescripcion()+"\n";
         }
         //La aptitud práctica es
         if(vivencia.equals("extratensivo") &&
                 (A>Ad) &&
                 (Origd>Origg)){
             
-                perfil = perfil + BDPerfiles.buscarId(49).getDescripcion();
+                perfil = perfil + BDPerfiles.buscarId(46).getDescripcion()+"\n";
             
         }
         if(vivencia.equals("ambigual")&&
@@ -266,7 +263,7 @@ public class AnalisisRorschach {
                 (Tp>=30 && Tp<=40)&&
                 (T>Td)){
             
-                perfil = perfil + BDPerfiles.buscarId(50).getDescripcion();
+                perfil = perfil + BDPerfiles.buscarId(47).getDescripcion()+"\n";
         
         }
         //La aptitud artística es
@@ -278,12 +275,12 @@ public class AnalisisRorschach {
                 (Tp<=30) &&
                 (vivencia.equals("ambigual"))){
                 
-            perfil = perfil + BDPerfiles.buscarId(51).getDescripcion();
+            perfil = perfil + BDPerfiles.buscarId(48).getDescripcion()+"\n";
         }
         
         //Análisis de oligofrenia
 
-        if((duracion>60 && NR<=25) || 
+        if((registro.getTiempo_total()>60 && NR<=25) || 
                 (Fmasp>=45 && Fmasp<=60) &&
                 (Tp>=60) &&
                 (Bmas<=1) &&
@@ -291,9 +288,9 @@ public class AnalisisRorschach {
                 (Origmenosp>=30 && Origmenosp<=40)&&
                 (C<=4)){
             //Debiles de inteligencia            
-            perfil = perfil + BDPerfiles.buscarId(52).getDescripcion();
+            perfil = perfil + BDPerfiles.buscarId(49).getDescripcion()+"\n";
         
-        }else if((duracion>60 && NR<=25) || 
+        }else if((registro.getTiempo_total()>60 && NR<=25) || 
                 (Fmasp>=0 && Fmasp<=45) &&
                 (Tp>=60) &&
                 (Bmas<=1) &&
@@ -301,27 +298,27 @@ public class AnalisisRorschach {
                 (Origmenosp>=40 && Origmenosp<=70)&&
                 (C<=4)){
             //Bajos de inteligencia
-            perfil = perfil + BDPerfiles.buscarId(53).getDescripcion();
+            perfil = perfil + BDPerfiles.buscarId(50).getDescripcion()+"\n";
         }
         
         //Análisis de los choques
         if(ChoqueNegro>0 || (choques[0]!=0 || choques[1]!=0 || choques[2]!=0 || choques[3]!=0 || choques[4]!=0 || choques[5]!=0 || choques[6]!=0)){
-            perfil = perfil + BDPerfiles.buscarId(54).getDescripcion();
+            perfil = perfil + BDPerfiles.buscarId(51).getDescripcion()+"\n";
         }
         if(ChoqueRojo>0 || (choques[1]!=0 || choques[2]!=0)){
-            perfil = perfil + BDPerfiles.buscarId(55).getDescripcion();
+            perfil = perfil + BDPerfiles.buscarId(52).getDescripcion()+"\n";
         }
         if(ChoqueLVI>0 || choques[5]!=0){
-            perfil = perfil + BDPerfiles.buscarId(56).getDescripcion();
+            perfil = perfil + BDPerfiles.buscarId(53).getDescripcion()+"\n";
         }
         if(ChoqueColor>0 || (choques[7]!=0 || choques[8]!=0 || choques[9]!=0)){
-            perfil = perfil + BDPerfiles.buscarId(57).getDescripcion();
+            perfil = perfil + BDPerfiles.buscarId(54).getDescripcion()+"\n";
         }
         if(ChoqueSexual>0 || (choques[0]!=0 || choques[1]!=0 || choques[2]!=0 || choques[3]!=0 || choques[5]!=0 || choques[6]!=0 || choques[8]!=0)){
-            perfil = perfil + BDPerfiles.buscarId(58).getDescripcion();
+            perfil = perfil + BDPerfiles.buscarId(55).getDescripcion()+"\n";
         }
         if(ChoqueKinestesico>0 || (choques[0]!=0 || choques[1]!=0 || choques[2]!=0 || choques[8]!=0)){
-            perfil = perfil + BDPerfiles.buscarId(59).getDescripcion();
+            perfil = perfil + BDPerfiles.buscarId(56).getDescripcion()+"\n";
         }
         
         //Resultado del analisis

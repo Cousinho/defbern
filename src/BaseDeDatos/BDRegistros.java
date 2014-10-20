@@ -16,7 +16,7 @@ public class BDRegistros {
         int codigo=mayor()+1;
         Connection conexion = Conexion_BD.getConnection();
         PreparedStatement sentencia_insertar= null;
-        sentencia_insertar = conexion.prepareStatement("insert into registros (codigo, ci, nombre, apellido, descripcion, fecha, id_usuario, id_perfil,codigo_grupo,respuestas) VALUES (?,?,?,?,?,?,?,?,?,?)");
+        sentencia_insertar = conexion.prepareStatement("insert into registros (codigo, ci, nombre, apellido, descripcion, fecha, id_usuario, codigo_grupo,respuestas,tiempo_total,perfil) VALUES (?,?,?,?,?,?,?,?,?,?,?)");
         sentencia_insertar.setInt(1, codigo);
         sentencia_insertar.setInt(2, registro.getCi());
         sentencia_insertar.setString(3, registro.getNombre());
@@ -24,9 +24,10 @@ public class BDRegistros {
         sentencia_insertar.setString(5, registro.getDescripcion());
         sentencia_insertar.setDate(6, registro.getFecha());
         sentencia_insertar.setInt(7, registro.getUsuario().getCodigo());
-        sentencia_insertar.setInt(8, registro.getPerfil().getCodigo());
-        sentencia_insertar.setInt(9, registro.getCodigo_grupo());
-        sentencia_insertar.setString(10, CrearCadena(registro.getRespuestas()));
+        sentencia_insertar.setInt(8, registro.getCodigo_grupo());
+        sentencia_insertar.setString(9, CrearCadena(registro.getRespuestas()));
+        sentencia_insertar.setInt(10, registro.getTiempo_total());
+        sentencia_insertar.setString(11, registro.getPerfil());
         try {
             sentencia_insertar.executeUpdate();
         } catch (SQLException ex) {
@@ -59,13 +60,15 @@ public class BDRegistros {
     public static boolean actualizar(Registro registro) throws SQLException {
         Connection conexion = Conexion_BD.getConnection();
         PreparedStatement sentencia_actualizar = null;
-        sentencia_actualizar = conexion.prepareStatement("update registros set ci=?, nombre=?, apellido=?, descripcion=?, id_usuario=?, respuestas=? where codigo=" + registro.getCodigo());
+        sentencia_actualizar = conexion.prepareStatement("update registros set ci=?, nombre=?, apellido=?, descripcion=?, id_usuario=?, respuestas=?, tiempo_total=?, perfil=? where codigo=" + registro.getCodigo());
         sentencia_actualizar.setInt(1, registro.getCi());
         sentencia_actualizar.setString(2, registro.getNombre());
         sentencia_actualizar.setString(3, registro.getApellido());
         sentencia_actualizar.setString(4, registro.getDescripcion());
         sentencia_actualizar.setInt(5, registro.getUsuario().getCodigo());
         sentencia_actualizar.setString(6, CrearCadena(registro.getRespuestas()));
+        sentencia_actualizar.setInt(7, registro.getTiempo_total());
+        sentencia_actualizar.setString(8, registro.getPerfil());
         int rowsUpdated = sentencia_actualizar.executeUpdate();
            conexion.close();
            sentencia_actualizar.close();
@@ -98,9 +101,9 @@ public class BDRegistros {
                 registro.setDescripcion(resultado.getString("descripcion"));
                 registro.setFecha(resultado.getDate("fecha"));
                 registro.setUsuario(BDUsuarios.buscarId(resultado.getInt("id_usuario")));
-                registro.setPerfil(BDPerfiles.buscarId(resultado.getInt("id_perfil")));
                 registro.setCodigo_grupo(resultado.getInt("codigo_grupo"));
                 registro.setRespuestas(CrearArray(resultado.getString("respuestas")));
+                registro.setPerfil(resultado.getString("perfil"));
             }
             conexion.close();
             sentencia_buscar.close();
@@ -133,8 +136,8 @@ public class BDRegistros {
                 registro.setFecha(resultado.getDate("fecha"));
                 registro.setCodigo_grupo(resultado.getInt("codigo_grupo"));
                 registro.setUsuario(BDUsuarios.buscarId(resultado.getInt("id_usuario")));
-                registro.setPerfil(BDPerfiles.buscarId(resultado.getInt("id_perfil")));
                 registro.setRespuestas(CrearArray(resultado.getString("id_respuestas")));
+                registro.setPerfil(resultado.getString("perfil"));
             }
             conexion.close();
             sentencia_buscar.close();
@@ -163,9 +166,10 @@ public class BDRegistros {
                 registro.setDescripcion(resultado.getString("descripcion"));
                 registro.setFecha(resultado.getDate("fecha"));
                 registro.setUsuario(BDUsuarios.buscarId(resultado.getInt("id_usuario")));
-                registro.setPerfil(BDPerfiles.buscarId(resultado.getInt("id_perfil")));
                 registro.setCodigo_grupo(resultado.getInt("codigo_grupo"));
                 registro.setRespuestas(CrearArray(resultado.getString("respuestas")));
+                registro.setPerfil(resultado.getString("perfil"));
+       
                 lista.add(registro);
             }
             conexion.close();
@@ -191,14 +195,17 @@ public class BDRegistros {
     
     private static String CrearCadena(String[] Lista){
         String resultado="";
-        for(int x=0;x<Lista.length;x++){
-            if(x==0){
-                resultado=Lista[x];
-            }else{
-                resultado=resultado+","+Lista[x];
+        if(Lista!=null){
+            for(int x=0;x<Lista.length;x++){
+                if(x==0){
+                    resultado=Lista[x];
+                }else{
+                    resultado=resultado+","+Lista[x];
+                }
             }
         }
         return resultado;
+        
     }
     
     private static String[] CrearArray(String Lista){
