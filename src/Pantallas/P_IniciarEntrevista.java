@@ -1,16 +1,16 @@
 package Pantallas;
 
+import Analisis.AnalisisRorschach;
 import BaseDeDatos.BDEntrevistas;
 import BaseDeDatos.BDGrupos;
-import BaseDeDatos.BDPerfiles;
 import BaseDeDatos.BDRegistros;
-import BaseDeDatos.BDUsuarios;
 import Entidades.Entrevista;
 import Entidades.Grupo;
-import Entidades.Perfil;
 import Entidades.Registro;
 import Entidades.Usuario;
 import Util.AlfanumericoEspacio;
+import Util.Bloqueo;
+import Util.Caracteres;
 import Util.Numerico;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -19,29 +19,25 @@ import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import org.opencv.highgui.VideoCapture;
 
 public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
     private Usuario usuario_actual=new Usuario();
     private java.awt.Frame pantalla_padre;
     private Registro registro_actual=new Registro();
     private Grupo grupo_actual=BDGrupos.buscarId(0);
-    private Perfil perfil_actual=new Perfil();
     private java.util.Date fecha_actual = new java.util.Date();
     private String[] Respuestas;
     public P_IniciarEntrevista(java.awt.Frame padre,boolean grupal,Usuario usuario) throws SQLException {
         System.loadLibrary("opencv_java249");
         initComponents();
+        label_analizando.setVisible(false);
         usuario_actual=usuario;
-        b_entrevista.setEnabled(false);
-        b_analizar.setEnabled(false);
-        b_informe.setEnabled(false);
-        texto_perfil.setEnabled(false);
         pantalla_padre = padre;
         if(grupal){
             Seleccionar();
         }
         FormatoCampos();
-        CargarDatos();
         CargarBox();
     }
     
@@ -65,18 +61,9 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
     
     private void FormatoCampos(){
         texto_ci.setDocument(new Numerico(texto_ci,15));
-        texto_nombre.setDocument(new AlfanumericoEspacio(texto_nombre, 50));
-        texto_apellido.setDocument(new AlfanumericoEspacio(texto_apellido,50));
+        texto_nombre.setDocument(new Caracteres(texto_nombre, 50));
+        texto_apellido.setDocument(new Caracteres(texto_apellido,50));
         texto_descripcion.setDocument(new AlfanumericoEspacio(texto_descripcion,100));
-    }
-    
-    private void CargarDatos() throws SQLException{
-        perfil_actual.setDescripcion("");
-        perfil_actual.setCodigo(BDPerfiles.insertar(perfil_actual));
-        texto_grupo.setText(String.valueOf(grupo_actual.getCodigo()));
-        texto_descripciongrupo.setText(grupo_actual.getDescripcion());
-        texto_perfil.setText(String.valueOf(perfil_actual.getCodigo()));
-
     }
     
     private void CargarBox(){
@@ -100,7 +87,6 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
                 registro_actual.setNombre(texto_nombre.getText());
                 registro_actual.setApellido(texto_apellido.getText());
                 registro_actual.setDescripcion(texto_descripcion.getText());
-                registro_actual.setPerfil(perfil_actual);
                 registro_actual.setCodigo_grupo(grupo_actual.getCodigo());
                 registro_actual.setUsuario(usuario_actual);
                 registro_actual.setRespuestas(Respuestas);
@@ -122,41 +108,84 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
         
     }
     
-    public void setRespuestas(String[] respuestas){
-        Respuestas=respuestas;
-        Guardar();
+    private void Actualizar(){
+        try {
+            BDRegistros.actualizar(registro_actual);
+        } catch (SQLException ex) {
+            Logger.getLogger(P_IniciarEntrevista.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void setRespuestas(String[] respuestas,int tiempo_mitad,int tiempo_total){
+        registro_actual.setRespuestas(respuestas);
+        registro_actual.setTiempo_total(tiempo_total);
+        Actualizar();
         texto_codigo.setText(String.valueOf(registro_actual.getCodigo()));
     }
+    
+    
+    public void ProcesosAnalizar()
+    {
+    Runnable miRunnable = new Runnable()
+    {
+    public void run()
+    {
+    try
+    {
+        Analizar();
+    }
+    catch (Exception e)
+    {
+    e.printStackTrace();
+    }
+    }
+    };
+    Thread hilo = new Thread (miRunnable);
+    hilo.start();
+    }
+    
+
+   
+    private void Analizar(){
+        label_analizando.setVisible(true);
+        Bloqueo.setEnableContainer(panel_principal, false);
+        setDefaultCloseOperation(0);
+        String perfil = "";
+        AnalisisRorschach analisis=new AnalisisRorschach();
+        try {
+            perfil=analisis.AnalizarRegistro(registro_actual);
+        } catch (SQLException ex) {
+            Logger.getLogger(P_IniciarEntrevista.class.getName()).log(Level.SEVERE, null, ex);  
+        }
+        
+        registro_actual.setPerfil(perfil);
+        Actualizar();
+        setDefaultCloseOperation(1);
+        label_analizando.setVisible(false);
+        this.dispose();
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        texto_perfil = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        texto_ci = new javax.swing.JTextField();
-        b_cancelar = new javax.swing.JButton();
-        texto_nombre = new javax.swing.JTextField();
-        b_aceptar = new javax.swing.JButton();
-        texto_descripcion = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
-        texto_apellido = new javax.swing.JTextField();
-        b_analizar = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        b_informe = new javax.swing.JButton();
-        texto_grupo = new javax.swing.JTextField();
-        jLabel9 = new javax.swing.JLabel();
-        b_entrevista = new javax.swing.JButton();
-        jLabel10 = new javax.swing.JLabel();
-        texto_descripciongrupo = new javax.swing.JTextField();
-        lista_entrevistas = new javax.swing.JComboBox();
-        jLabel1 = new javax.swing.JLabel();
+        label_analizando = new javax.swing.JLabel();
+        panel_principal = new javax.swing.JPanel();
         texto_codigo = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        texto_ci = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        texto_nombre = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        texto_apellido = new javax.swing.JTextField();
+        texto_descripcion = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        b_cancelar = new javax.swing.JButton();
+        b_aceptar = new javax.swing.JButton();
+        lista_entrevistas = new javax.swing.JComboBox();
 
         setClosable(true);
 
@@ -164,30 +193,44 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
         jPanel1.setPreferredSize(new java.awt.Dimension(100, 41));
 
         jLabel8.setForeground(new java.awt.Color(254, 254, 254));
-        jLabel8.setText("Entrevistas");
+        jLabel8.setText("                                         Entrevistas");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(147, 147, 147)
-                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(400, 400, 400)
+                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 487, Short.MAX_VALUE)
+                .addGap(400, 400, 400))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
                 .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(16, 16, 16))
+                .addContainerGap())
         );
+
+        label_analizando.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Util/gif-load.gif"))); // NOI18N
+        label_analizando.setText("Analizando");
+
+        texto_codigo.setEditable(false);
+        texto_codigo.setEnabled(false);
+
+        jLabel1.setText("Código");
 
         jLabel2.setText("CI");
 
         jLabel3.setText("Nombre");
 
         jLabel4.setText("Apellido");
+
+        texto_apellido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                texto_apellidoActionPerformed(evt);
+            }
+        });
 
         jLabel5.setText("Descripcion");
 
@@ -207,224 +250,161 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel7.setText("Perfil");
-
-        texto_apellido.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                texto_apellidoActionPerformed(evt);
-            }
-        });
-
-        b_analizar.setText("Analizar");
-
-        jTextArea1.setEditable(false);
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
-
-        b_informe.setText("Generar Informe");
-        b_informe.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                b_informeActionPerformed(evt);
-            }
-        });
-
-        texto_grupo.setEditable(false);
-
-        jLabel9.setText("Código Grupo");
-
-        b_entrevista.setText("Inicar Entrevista");
-        b_entrevista.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                b_entrevistaActionPerformed(evt);
-            }
-        });
-
-        jLabel10.setText("Descripción Grupo");
-
-        texto_descripciongrupo.setEditable(false);
-
         lista_entrevistas.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jLabel1.setText("Código");
+        javax.swing.GroupLayout panel_principalLayout = new javax.swing.GroupLayout(panel_principal);
+        panel_principal.setLayout(panel_principalLayout);
+        panel_principalLayout.setHorizontalGroup(
+            panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_principalLayout.createSequentialGroup()
+                .addContainerGap(30, Short.MAX_VALUE)
+                .addGroup(panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lista_entrevistas, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(panel_principalLayout.createSequentialGroup()
+                        .addGroup(panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_principalLayout.createSequentialGroup()
+                                .addGroup(panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel1))
+                                .addGap(27, 27, 27))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_principalLayout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addGap(18, 18, 18)))
+                        .addGroup(panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(panel_principalLayout.createSequentialGroup()
+                                .addComponent(b_aceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(b_cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(texto_descripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(texto_codigo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(texto_ci, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(texto_nombre, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(texto_apellido)))))
+                .addGap(20, 20, 20))
+        );
 
-        texto_codigo.setEditable(false);
+        panel_principalLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {texto_apellido, texto_ci, texto_codigo, texto_descripcion, texto_nombre});
+
+        panel_principalLayout.setVerticalGroup(
+            panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panel_principalLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(texto_codigo, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addGap(27, 27, 27)
+                .addGroup(panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(texto_ci, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addGap(32, 32, 32)
+                .addGroup(panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(texto_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addGap(18, 18, 18)
+                .addGroup(panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
+                    .addComponent(texto_apellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(29, 29, 29)
+                .addGroup(panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(texto_descripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addGap(18, 18, 18)
+                .addGroup(panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(b_cancelar)
+                    .addComponent(b_aceptar))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lista_entrevistas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        panel_principalLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {b_aceptar, b_cancelar, lista_entrevistas});
+
+        panel_principalLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {texto_apellido, texto_ci, texto_codigo, texto_nombre});
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 875, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1287, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(66, 66, 66)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel9)
-                            .addComponent(jLabel10)
-                            .addComponent(jLabel1))
-                        .addGap(10, 10, 10)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(texto_grupo)
-                            .addComponent(texto_nombre)
-                            .addComponent(texto_ci)
-                            .addComponent(texto_apellido)
-                            .addComponent(texto_descripcion)
-                            .addComponent(texto_perfil, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                            .addComponent(texto_descripciongrupo)
-                            .addComponent(texto_codigo)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(b_aceptar)
-                        .addGap(61, 61, 61)
-                        .addComponent(b_cancelar)))
-                .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(b_entrevista)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lista_entrevistas, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(b_analizar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(b_informe))
-                    .addComponent(jScrollPane1))
-                .addContainerGap())
+                        .addGap(537, 537, 537)
+                        .addComponent(label_analizando))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(397, 397, 397)
+                        .addComponent(panel_principal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {b_aceptar, b_analizar, b_cancelar, b_entrevista, b_informe, lista_entrevistas});
-
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(38, 38, 38)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1)
-                                    .addComponent(texto_codigo, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(texto_ci, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel2))
-                                .addGap(27, 27, 27)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(texto_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel3))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(texto_apellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel4))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(texto_descripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel5))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(texto_perfil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel7))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(texto_grupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel9))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel10)
-                                    .addComponent(texto_descripciongrupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(b_entrevista, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lista_entrevistas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(b_analizar, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(b_informe, javax.swing.GroupLayout.Alignment.TRAILING)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(394, 394, 394)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(b_aceptar)
-                            .addComponent(b_cancelar))))
-                .addGap(39, 39, 39))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
+                .addComponent(panel_principal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
+                .addComponent(label_analizando)
+                .addContainerGap(30, Short.MAX_VALUE))
         );
-
-        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {b_aceptar, b_analizar, b_cancelar, b_entrevista, b_informe, lista_entrevistas});
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void b_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_cancelarActionPerformed
-        if(registro_actual == null){
+    private void b_aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_aceptarActionPerformed
+         VideoCapture cap= new VideoCapture(0);
+        if(cap!=null){
+            Guardar();
+            P_Presentacion entrevista = null;
             try {
-                BDPerfiles.eliminar(perfil_actual.getCodigo());
-                this.dispose();
+                entrevista = new P_Presentacion(BDEntrevistas.buscarNombre((String) lista_entrevistas.getSelectedItem()),registro_actual.getCodigo(),this);
             } catch (SQLException ex) {
                 Logger.getLogger(P_IniciarEntrevista.class.getName()).log(Level.SEVERE, null, ex);
-            }  
+            }
+            entrevista.setLocationRelativeTo(null);
+            entrevista.setVisible(true);
+            entrevista.addWindowListener(new WindowAdapter() {
+            public void windowClosed(WindowEvent e) {
+               ProcesosAnalizar();
+            }
+        });
+
         }else{
-            this.dispose();
+            
         }
         
-        
-    }//GEN-LAST:event_b_cancelarActionPerformed
 
-    private void b_aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_aceptarActionPerformed
-        b_entrevista.setEnabled(true);
     }//GEN-LAST:event_b_aceptarActionPerformed
 
     private void texto_apellidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_texto_apellidoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_texto_apellidoActionPerformed
-
-    private void b_informeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_informeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_b_informeActionPerformed
     
     
-    private void b_entrevistaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_entrevistaActionPerformed
-        P_Presentacion1 entrevista = null;
-        try {
-            entrevista = new P_Presentacion1(BDEntrevistas.buscarNombre((String) lista_entrevistas.getSelectedItem()),perfil_actual.getCodigo(),this);
-        } catch (SQLException ex) {
-            Logger.getLogger(P_IniciarEntrevista.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        entrevista.setLocationRelativeTo(null);
-        entrevista.setVisible(true);
-    }//GEN-LAST:event_b_entrevistaActionPerformed
+    private void b_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_cancelarActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_b_cancelarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton b_aceptar;
-    private javax.swing.JButton b_analizar;
     private javax.swing.JButton b_cancelar;
-    private javax.swing.JButton b_entrevista;
-    private javax.swing.JButton b_informe;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JLabel label_analizando;
     private javax.swing.JComboBox lista_entrevistas;
+    private javax.swing.JPanel panel_principal;
     private javax.swing.JTextField texto_apellido;
     private javax.swing.JTextField texto_ci;
     private javax.swing.JTextField texto_codigo;
     private javax.swing.JTextField texto_descripcion;
-    private javax.swing.JTextField texto_descripciongrupo;
-    private javax.swing.JTextField texto_grupo;
     private javax.swing.JTextField texto_nombre;
-    private javax.swing.JTextField texto_perfil;
     // End of variables declaration//GEN-END:variables
 }

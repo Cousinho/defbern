@@ -95,7 +95,7 @@ public class D_Codigo extends javax.swing.JDialog {
                 } catch (SQLException ex) {
                     Logger.getLogger(D_Codigo.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                if(grupo.getDescripcion()!=null){
+                if(grupo.getDescripcion()!=null&&grupo.getCodigo()!=0){
                     pantalla_padre_entrevista.SetCodigo(grupo);
                     dispose();
                 }else{

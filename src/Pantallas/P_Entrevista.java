@@ -16,7 +16,6 @@ import javax.swing.table.TableRowSorter;
 public class P_Entrevista extends javax.swing.JInternalFrame {
     TablaModelo LEntrevistas = new TablaModelo();
     TableRowSorter sorter = new TableRowSorter(LEntrevistas);
-    private Entrevista entrevista_actual=new Entrevista();
     private ArrayList<String> permisos_actuales = new ArrayList();
     boolean seleccion=false;
     java.awt.Frame pantalla_padre;

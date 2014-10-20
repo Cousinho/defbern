@@ -1,34 +1,17 @@
 package Pantallas;
 
 import BaseDeDatos.BDPermisos;
-import BaseDeDatos.Conexion_BD;
 import Entidades.Permiso;
 import Entidades.Usuario;
 import Reportes.P_Reportes;
 import Reportes.P_ReportesGrupos;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.beans.PropertyVetoException;
-import java.io.File;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.util.JRLoader;
-import net.sf.jasperreports.view.JasperViewer;
 
-/**
- *
- * @author alejandroalen
- */
 public class P_Principal extends javax.swing.JFrame {
     Usuario usuario;
     ArrayList<String> permisos = new ArrayList();
@@ -36,7 +19,6 @@ public class P_Principal extends javax.swing.JFrame {
     public P_Principal(Usuario parametro_usuario) throws SQLException {
         this.setTitle("Sistema de Analisis");
         usuario=parametro_usuario;
-        
         initComponents();
         BloquearComponentes();
         HabilitarComponentes();
@@ -295,7 +277,7 @@ public class P_Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void S_SalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_S_SalirActionPerformed
-         dispose();
+        System.exit(0);
     }//GEN-LAST:event_S_SalirActionPerformed
 
     private void S_CerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_S_CerrarActionPerformed

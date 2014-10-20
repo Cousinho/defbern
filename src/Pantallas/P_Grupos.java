@@ -334,11 +334,14 @@ public class P_Grupos extends javax.swing.JInternalFrame {
                     //recupera el objeto fila de la tabla a modificar
                     Object valor = tabla.getValueAt(fila, 0);
                     try {
-                        //solicita eliminar fila selecionada
-                        BDGrupos.eliminar(Integer.parseInt(valor.toString()));
+                        if(Integer.parseInt(valor.toString())==0){
+                            JOptionPane.showMessageDialog(null, "No se puede eliminar grupo");
+                        }else{
+                            //solicita eliminar fila selecionada
+                            BDGrupos.eliminar(Integer.parseInt(valor.toString()));
+                        }
                     } catch (SQLException ex) {
                         JOptionPane.showMessageDialog(null, "No se puede eliminar grupo");
-
                     }
 
                     //actualiza tabla despues de eliminar fila

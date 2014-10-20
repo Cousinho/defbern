@@ -240,7 +240,7 @@ public class P_ReportesGrupos extends javax.swing.JInternalFrame {
         //recibe numero de fila seleccionada
         Connection conexion = Conexion_BD.getConnection();
         int fila=tabla.getSelectedRow();
-        File archivo=new File("reportes/ReporteGrupos.jasper");
+        File archivo=new File("reportes/ReporteGrupal.jasper");
         JasperReport reporte = null;
         try {
             reporte = (JasperReport) JRLoader.loadObject(archivo);

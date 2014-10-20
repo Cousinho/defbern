@@ -5,13 +5,13 @@ import BaseDeDatos.BDOpciones;
 import Entidades.Entrevista;
 import Entidades.Lamina;
 import Entidades.Opciones;
-import Pantallas.D_MuestraNeutra;
-import Pantallas.P_IniciarEntrevista;
 import Util.Directorios;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
@@ -42,35 +42,39 @@ public class P_Presentacion extends javax.swing.JFrame {
     double alto;
     double ancho;
     int angulo;
+    int tiempo_total;
+    int tiempo_mitad;
     Entrevista entrevista;
     ArrayList<Lamina> Lista;
     int TamañoLista = 0;
     int IndiceLista = 0;
-    int Id_perfil = 0;
+    int Id_registro = 0;
     VideoCapture cap= new VideoCapture(0);
     Mat imagen = new Mat();
     int IndiceMuestra = 0;
-    int NumeroMuestras = 2;
+    int NumeroMuestras = 5;
     boolean primero = true;
     private String[] Respuestas;
     P_IniciarEntrevista pantalla_padre;
     DefaultTableModel ModeloTabla = new DefaultTableModel();
     private int tamaño_lista=0;
     private boolean Insertar=false;
-    public P_Presentacion(Entrevista entrevista,int perfil, P_IniciarEntrevista padre) throws SQLException {
+    public P_Presentacion(Entrevista entrevista,int registro, P_IniciarEntrevista padre) throws SQLException {
         initComponents();
-//        this.setAlwaysOnTop(true);
+        this.setAlwaysOnTop(true);
         setDefaultCloseOperation(0);
         pantalla_padre = padre;
         Visible(false);
         b_finalizar.setVisible(false);
-        Id_perfil = perfil;
+        Id_registro = registro;
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         Lista = BDLaminas.Lista(entrevista.getCodigo());
         TamañoLista = Lista.size();
         CrearDirectorio();
         MuestraInicial();
         this.setExtendedState(MAXIMIZED_BOTH);
+        t = new javax.swing.Timer(1000, acciones);
+        t.start();
         angulo = 90;
         Image imagen = null;
         if (TamañoLista != 0) {
@@ -89,7 +93,7 @@ public class P_Presentacion extends javax.swing.JFrame {
     }
     
     private void MuestraInicial(){
-        D_MuestraNeutra muestra=new D_MuestraNeutra(this,true,Id_perfil,cap);
+        D_MuestraNeutra muestra=new D_MuestraNeutra(this,true,Id_registro,cap);
         muestra.setLocationRelativeTo(null);
         muestra.setVisible(true);
     }
@@ -102,8 +106,8 @@ public class P_Presentacion extends javax.swing.JFrame {
         try {
             ArrayList<Opciones> ListaResultado = BDOpciones.ListaOpciones(texto_buscar.getText(),  Lista.get(IndiceLista-1).getCodigo());
             tamaño_lista=ListaResultado.size();
-            int columnas= (int) Math.ceil((double)tamaño_lista/5);
-            panel_opciones.setLayout( new GridLayout( columnas, 5 ) );
+            int columnas= (int) Math.ceil((double)tamaño_lista/3);
+            panel_opciones.setLayout( new GridLayout( columnas, 3 ) );
             for (Iterator<Opciones> it = ListaResultado.iterator(); it.hasNext();) {
                 Opciones opcion = it.next();
                 panel_opciones.add( new JCheckBox(opcion.getDescripcion()));
@@ -172,42 +176,25 @@ public class P_Presentacion extends javax.swing.JFrame {
     private void initComponents() {
 
         lamina = new javax.swing.JLabel();
-        b_rotar = new javax.swing.JButton();
-        b_siguiente = new javax.swing.JButton();
-        b_finalizar = new javax.swing.JButton();
         panel_respuestas = new javax.swing.JPanel();
         b_nada = new javax.swing.JButton();
         texto_buscar = new javax.swing.JTextField();
         ayuda1 = new javax.swing.JLabel();
         ayuda2 = new javax.swing.JLabel();
         panel_opciones = new javax.swing.JPanel();
+        b_siguiente = new javax.swing.JButton();
+        b_finalizar = new javax.swing.JButton();
+        b_rotar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lamina.setAlignmentY(0.0F);
         lamina.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         lamina.setMinimumSize(new java.awt.Dimension(1200, 500));
+        getContentPane().add(lamina, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 11, 1015, 500));
 
-        b_rotar.setText("Rotar");
-        b_rotar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                b_rotarActionPerformed(evt);
-            }
-        });
-
-        b_siguiente.setText("Siguiente");
-        b_siguiente.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                b_siguienteActionPerformed(evt);
-            }
-        });
-
-        b_finalizar.setText("Finalizar");
-        b_finalizar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                b_finalizarActionPerformed(evt);
-            }
-        });
+        panel_respuestas.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         b_nada.setText("No veo nada");
         b_nada.setMaximumSize(new java.awt.Dimension(100, 40));
@@ -217,12 +204,16 @@ public class P_Presentacion extends javax.swing.JFrame {
                 b_nadaActionPerformed(evt);
             }
         });
+        panel_respuestas.add(b_nada, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 91, 118, 40));
 
         texto_buscar.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        panel_respuestas.add(texto_buscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, 262, 51));
 
         ayuda1.setText("Escriba su respuesta aquí");
+        panel_respuestas.add(ayuda1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        ayuda2.setText("Marque lo que ve en la lista");
+        ayuda2.setText("  Marque lo que ve en la lista ");
+        panel_respuestas.add(ayuda2, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 0, 140, 20));
 
         panel_opciones.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         panel_opciones.setMaximumSize(new java.awt.Dimension(300, 500));
@@ -237,88 +228,40 @@ public class P_Presentacion extends javax.swing.JFrame {
         panel_opciones.setLayout(panel_opcionesLayout);
         panel_opcionesLayout.setHorizontalGroup(
             panel_opcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 522, Short.MAX_VALUE)
+            .addGap(0, 706, Short.MAX_VALUE)
         );
         panel_opcionesLayout.setVerticalGroup(
             panel_opcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 496, Short.MAX_VALUE)
         );
 
-        javax.swing.GroupLayout panel_respuestasLayout = new javax.swing.GroupLayout(panel_respuestas);
-        panel_respuestas.setLayout(panel_respuestasLayout);
-        panel_respuestasLayout.setHorizontalGroup(
-            panel_respuestasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panel_respuestasLayout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addGroup(panel_respuestasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ayuda1)
-                    .addComponent(texto_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(b_nada, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(panel_respuestasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panel_respuestasLayout.createSequentialGroup()
-                        .addGap(31, 31, 31)
-                        .addComponent(ayuda2))
-                    .addGroup(panel_respuestasLayout.createSequentialGroup()
-                        .addGap(41, 41, 41)
-                        .addComponent(panel_opciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        panel_respuestasLayout.setVerticalGroup(
-            panel_respuestasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_respuestasLayout.createSequentialGroup()
-                .addGroup(panel_respuestasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ayuda2, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ayuda1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panel_respuestasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(panel_respuestasLayout.createSequentialGroup()
-                        .addComponent(panel_opciones, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(panel_respuestasLayout.createSequentialGroup()
-                        .addComponent(texto_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(b_nada, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))))
-        );
+        panel_respuestas.add(panel_opciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(293, 20, 710, 114));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(100, 100, 100)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lamina, javax.swing.GroupLayout.PREFERRED_SIZE, 1015, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(b_rotar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(b_siguiente, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(b_finalizar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(40, 40, 40)
-                        .addComponent(panel_respuestas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(209, 209, 209))
-        );
+        getContentPane().add(panel_respuestas, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 530, -1, -1));
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {b_finalizar, b_rotar, b_siguiente});
+        b_siguiente.setText("Siguiente");
+        b_siguiente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_siguienteActionPerformed(evt);
+            }
+        });
+        getContentPane().add(b_siguiente, new org.netbeans.lib.awtextra.AbsoluteConstraints(1080, 620, 100, 40));
 
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lamina, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panel_respuestas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(b_siguiente, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(b_rotar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(29, 29, 29)
-                        .addComponent(b_finalizar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))))
-        );
+        b_finalizar.setText("Finalizar");
+        b_finalizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_finalizarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(b_finalizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1200, 620, 100, 40));
 
-        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {b_rotar, b_siguiente});
+        b_rotar.setText("Rotar");
+        b_rotar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_rotarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(b_rotar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1080, 550, 100, 40));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -329,6 +272,7 @@ public class P_Presentacion extends javax.swing.JFrame {
         texto_buscar.setVisible(estado);
         ayuda1.setVisible(estado);
         ayuda2.setVisible(estado);
+        b_siguiente.setVisible(estado);
     }
 
     private void CargarImagen(Image imagen) {
@@ -356,7 +300,7 @@ public class P_Presentacion extends javax.swing.JFrame {
                                 primero = false;
                             }
                             cap.read(imagen);
-                            Highgui.imwrite("imagen/Muestras/" + Id_perfil + "/" + (IndiceLista) + "/" + IndiceMuestra + ".png", imagen);
+                            Highgui.imwrite("imagen/Muestras/" + Id_registro + "/" + (IndiceLista) + "/" + IndiceMuestra + ".png", imagen);
                             if (!imagen.empty()) {
                                 IndiceMuestra++;
                             }
@@ -404,6 +348,9 @@ public class P_Presentacion extends javax.swing.JFrame {
        if(Respuestas[IndiceLista-1].equals("")){
             JOptionPane.showMessageDialog(null, "Por pavor elija alguna repuesta");
        }else{ 
+            if(IndiceLista==5){
+                tiempo_mitad=s;
+            }
             IndiceMuestra = 0;
             texto_buscar.setText("");
             actualizartabla();
@@ -425,13 +372,14 @@ public class P_Presentacion extends javax.swing.JFrame {
     }//GEN-LAST:event_b_siguienteActionPerformed
 
     private void b_finalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_finalizarActionPerformed
-        pantalla_padre.setRespuestas(Respuestas);
+        pantalla_padre.setRespuestas(Respuestas,tiempo_mitad,s);
+        t.stop();
         cap.release();
         this.dispose();
     }//GEN-LAST:event_b_finalizarActionPerformed
 
     private void b_nadaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_nadaActionPerformed
-        Respuestas[IndiceLista-1] = "nada";
+        Respuestas[IndiceLista-1] = "Nada";
         if(IndiceLista==TamañoLista){
             b_finalizarActionPerformed(evt);
         }else{
@@ -532,8 +480,19 @@ public class P_Presentacion extends javax.swing.JFrame {
 
     private void CrearDirectorio() {
         Directorios carpeta = new Directorios();
-        carpeta.Crear(TamañoLista, Id_perfil);
+        carpeta.Crear(TamañoLista,Id_registro);
     }
+    
+    javax.swing.Timer t;
+    int s = 0;
+     ActionListener acciones = new ActionListener(){
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            s++;
+        }
+        
+    };
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

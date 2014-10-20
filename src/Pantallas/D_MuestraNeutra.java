@@ -10,7 +10,7 @@ public class D_MuestraNeutra extends javax.swing.JDialog {
     Mat imagen = new Mat();
     private boolean primero=true;
     private int IndiceMuestra=0;
-    private int NumeroMuestras=15;
+    private int NumeroMuestras=5;
     public D_MuestraNeutra(java.awt.Frame parent, boolean modal,int Id_perfil, VideoCapture cap) {
         super(parent, modal);
         initComponents();
@@ -64,7 +64,7 @@ public class D_MuestraNeutra extends javax.swing.JDialog {
         jTextArea1.setColumns(20);
         jTextArea1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jTextArea1.setRows(5);
-        jTextArea1.setText("Por favor mire fijamente a la pantalla\n\n               \n              permazca serio");
+        jTextArea1.setText("Por favor mire fijamente a la pantalla\n\n               \n              permanezca serio");
         jTextArea1.setBorder(null);
         jTextArea1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jScrollPane1.setViewportView(jTextArea1);

@@ -7,7 +7,7 @@ public class Directorios {
         File local= new File("");
         File principal=new File(local.getAbsolutePath()+"//imagen//Muestras//"+id);
         principal.mkdir();
-        for(int contador=1; contador<=Numero;contador++){
+        for(int contador=0; contador<=Numero;contador++){
             File aux=new File(principal.getAbsolutePath()+"//"+contador);
             aux.mkdir();
         }

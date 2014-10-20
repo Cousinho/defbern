@@ -40,7 +40,7 @@ public class D_Conexion extends javax.swing.JDialog {
              if(!properties.isEmpty()){
                  texto_usuario.setText(properties.getProperty("usuario"));
                  texto_contrasenha.setText(properties.getProperty("contrasena"));
-                 
+                 texto_puerto.setText(properties.getProperty("url"));
              }
          } catch (IOException ex) {
             Logger.getLogger(D_Conexion.class.getName()).log(Level.SEVERE, null, ex);
@@ -60,6 +60,7 @@ public class D_Conexion extends javax.swing.JDialog {
              if(!properties.isEmpty()){
                 properties.setProperty("usuario", texto_usuario.getText());
                 properties.setProperty("contrasena", texto_contrasenha.getText());
+                properties.setProperty("url", texto_puerto.getText());
                 inputStream.close();
                 FileOutputStream fos=new FileOutputStream(archivo);
                 properties.store(fos,null);
@@ -83,6 +84,8 @@ public class D_Conexion extends javax.swing.JDialog {
         jLabel5 = new javax.swing.JLabel();
         b_aceptar = new javax.swing.JButton();
         b_cancelar = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        texto_puerto = new javax.swing.JTextField();
 
         jPanel1.setBackground(new java.awt.Color(81, 106, 138));
         jPanel1.setPreferredSize(new java.awt.Dimension(100, 41));
@@ -123,17 +126,17 @@ public class D_Conexion extends javax.swing.JDialog {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(185, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(90, 90, 90))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(16, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jLabel5)
-                .addContainerGap())
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         b_aceptar.setText("Aceptar");
@@ -150,26 +153,29 @@ public class D_Conexion extends javax.swing.JDialog {
             }
         });
 
+        jLabel4.setText("Puerto");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 331, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel4)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel1)
+                        .addComponent(jLabel2)))
                 .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(b_aceptar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
                         .addComponent(b_cancelar))
                     .addComponent(texto_usuario)
-                    .addComponent(texto_contrasenha))
+                    .addComponent(texto_contrasenha)
+                    .addComponent(texto_puerto))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -186,7 +192,11 @@ public class D_Conexion extends javax.swing.JDialog {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel2)
                         .addComponent(texto_contrasenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(texto_puerto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(b_aceptar)
                     .addComponent(b_cancelar))
@@ -253,9 +263,9 @@ public class D_Conexion extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JTextField texto_contrasenha;
+    private javax.swing.JTextField texto_puerto;
     private javax.swing.JTextField texto_usuario;
     // End of variables declaration//GEN-END:variables
 }

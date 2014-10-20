@@ -298,7 +298,6 @@ public class P_Usuario extends javax.swing.JInternalFrame {
     private void b_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_eliminarActionPerformed
         //recibe numero de fila seleccionada
         int fila=tabla_usuarios.getSelectedRow();
-        
         //verifica que este seleccionada una fila
         if (fila!=-1){
             int seleccion = JOptionPane.showOptionDialog(

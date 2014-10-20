@@ -597,7 +597,7 @@ public class P_Registro extends javax.swing.JInternalFrame {
         }
         try {
             Map parametros = new HashMap();
-            parametros.put("id_registro",fila);
+            parametros.put("id_registro",Integer.valueOf(tabla_registros.getValueAt(fila, 0).toString()));
             JasperPrint reporte_view = JasperFillManager.fillReport( reporte, parametros, conexion);
             JasperViewer.viewReport( reporte_view,false);
             byte[] bytes = JasperRunManager.runReportToPdf(archivo.getPath(), parametros, conexion);
