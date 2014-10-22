@@ -29,51 +29,55 @@ public class P_Principal extends javax.swing.JFrame {
                 Permiso permiso = it.next();
                 permisos.add(permiso.getDescripcion());
         }
+        if(permisos.indexOf("configurar conexion")!=-1){
+            M_Configuracion.setVisible(true);
+        }
         if(permisos.indexOf("agregar entrevistas")!=-1 || permisos.indexOf("modificar entrevistas")!=-1 || permisos.indexOf("eliminar entrevistas")!=-1){
-            SM_Entrevista.setEnabled(true);
+            SM_Entrevista.setVisible(true);
         }
         if(permisos.indexOf("agregar laminas")!=-1 || permisos.indexOf("modificar laminas")!=-1 || permisos.indexOf("eliminar laminas")!=-1){
-            SM_Lamina.setEnabled(true);
+            SM_Lamina.setVisible(true);
         }
         if(permisos.indexOf("agregar perfiles")!=-1 || permisos.indexOf("modificar perfiles")!=-1 || permisos.indexOf("eliminar perfiles")!=-1){
-            SM_Perfil.setEnabled(true);
+            SM_Perfil.setVisible(true);
         }
         if(permisos.indexOf("agregar usuarios")!=-1 || permisos.indexOf("modificar usuarios")!=-1 || permisos.indexOf("eliminar usuarios")!=-1){
-            SM_Usuario.setEnabled(true);
+            SM_Usuario.setVisible(true);
         }
         if(permisos.indexOf("modificar registros")!=-1 || permisos.indexOf("eliminar registros")!=-1){
-            SM_Registro.setEnabled(true);
+            SM_Registro.setVisible(true);
         }
         if(permisos.indexOf("agregar grupos")!=-1 || permisos.indexOf("modificar grupos")!=-1 || permisos.indexOf("eliminar grupos")!=-1){
-            SM_Grupos.setEnabled(true);
+            SM_Grupos.setVisible(true);
         }
         if(permisos.indexOf("agregar roles")!=-1 || permisos.indexOf("modificar roles")!=-1 || permisos.indexOf("eliminar roles")!=-1){
-            SM_Rol.setEnabled(true);
+            SM_Rol.setVisible(true);
         }
         /*if(permisos.indexOf("agregar permisos")!=-1 || permisos.indexOf("modificar permisos")!=-1 || permisos.indexOf("eliminar permisos")!=-1){
             SM_Permiso.setEnabled(true);
         }*/
         if(permisos.indexOf("crear informes")!=-1){
-            SM_Informes.setEnabled(true);
+            SM_Informes.setVisible(true);
         }
         if(permisos.indexOf("realizar entrevista")!=-1){
-            SM_EntrevistaIndividual.setEnabled(true);
-            SM_EntrevistaGrupal.setEnabled(true);
+            SM_EntrevistaIndividual.setVisible(true);
+            SM_EntrevistaGrupal.setVisible(true);
         }
     }
     
     private void BloquearComponentes(){
-        SM_Entrevista.setEnabled(false);
-        SM_Lamina.setEnabled(false);
-        SM_Perfil.setEnabled(false);
-        SM_Usuario.setEnabled(false);
-        SM_Registro.setEnabled(false);
-        SM_Grupos.setEnabled(false);
-        SM_Rol.setEnabled(false);
+        M_Configuracion.setVisible(false);
+        SM_Entrevista.setVisible(false);
+        SM_Lamina.setVisible(false);
+        SM_Perfil.setVisible(false);
+        SM_Usuario.setVisible(false);
+        SM_Registro.setVisible(false);
+        SM_Grupos.setVisible(false);
+        SM_Rol.setVisible(false);
         //SM_Permiso.setEnabled(false);
-        SM_Informes.setEnabled(false);
-        SM_EntrevistaIndividual.setEnabled(false);
-        SM_EntrevistaGrupal.setEnabled(false);
+        SM_Informes.setVisible(false);
+        SM_EntrevistaIndividual.setVisible(false);
+        SM_EntrevistaGrupal.setVisible(false);
     }
     
     

@@ -61,7 +61,7 @@ public class P_Presentacion extends javax.swing.JFrame {
     private boolean Insertar=false;
     public P_Presentacion(Entrevista entrevista,int registro, P_IniciarEntrevista padre) throws SQLException {
         initComponents();
-        this.setAlwaysOnTop(true);
+        //this.setAlwaysOnTop(true);
         setDefaultCloseOperation(0);
         pantalla_padre = padre;
         Visible(false);
@@ -177,11 +177,11 @@ public class P_Presentacion extends javax.swing.JFrame {
 
         lamina = new javax.swing.JLabel();
         panel_respuestas = new javax.swing.JPanel();
-        b_nada = new javax.swing.JButton();
-        texto_buscar = new javax.swing.JTextField();
         ayuda1 = new javax.swing.JLabel();
         ayuda2 = new javax.swing.JLabel();
         panel_opciones = new javax.swing.JPanel();
+        texto_buscar = new javax.swing.JTextField();
+        b_nada = new javax.swing.JButton();
         b_siguiente = new javax.swing.JButton();
         b_finalizar = new javax.swing.JButton();
         b_rotar = new javax.swing.JButton();
@@ -196,24 +196,11 @@ public class P_Presentacion extends javax.swing.JFrame {
 
         panel_respuestas.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        b_nada.setText("No veo nada");
-        b_nada.setMaximumSize(new java.awt.Dimension(100, 40));
-        b_nada.setMinimumSize(new java.awt.Dimension(100, 40));
-        b_nada.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                b_nadaActionPerformed(evt);
-            }
-        });
-        panel_respuestas.add(b_nada, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 91, 118, 40));
-
-        texto_buscar.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        panel_respuestas.add(texto_buscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, 262, 51));
-
         ayuda1.setText("Escriba su respuesta aquí");
-        panel_respuestas.add(ayuda1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        panel_respuestas.add(ayuda1, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 0, -1, -1));
 
         ayuda2.setText("  Marque lo que ve en la lista ");
-        panel_respuestas.add(ayuda2, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 0, 140, 20));
+        panel_respuestas.add(ayuda2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 140, 20));
 
         panel_opciones.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         panel_opciones.setMaximumSize(new java.awt.Dimension(300, 500));
@@ -228,16 +215,29 @@ public class P_Presentacion extends javax.swing.JFrame {
         panel_opciones.setLayout(panel_opcionesLayout);
         panel_opcionesLayout.setHorizontalGroup(
             panel_opcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 706, Short.MAX_VALUE)
+            .addGap(0, 866, Short.MAX_VALUE)
         );
         panel_opcionesLayout.setVerticalGroup(
             panel_opcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 496, Short.MAX_VALUE)
         );
 
-        panel_respuestas.add(panel_opciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(293, 20, 710, 114));
+        panel_respuestas.add(panel_opciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, 870, 114));
 
-        getContentPane().add(panel_respuestas, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 530, -1, -1));
+        texto_buscar.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        panel_respuestas.add(texto_buscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 20, 240, 51));
+
+        b_nada.setText("No veo nada");
+        b_nada.setMaximumSize(new java.awt.Dimension(100, 40));
+        b_nada.setMinimumSize(new java.awt.Dimension(100, 40));
+        b_nada.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_nadaActionPerformed(evt);
+            }
+        });
+        panel_respuestas.add(b_nada, new org.netbeans.lib.awtextra.AbsoluteConstraints(1020, 90, 100, 40));
+
+        getContentPane().add(panel_respuestas, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 530, 1130, -1));
 
         b_siguiente.setText("Siguiente");
         b_siguiente.addActionListener(new java.awt.event.ActionListener() {
@@ -245,7 +245,7 @@ public class P_Presentacion extends javax.swing.JFrame {
                 b_siguienteActionPerformed(evt);
             }
         });
-        getContentPane().add(b_siguiente, new org.netbeans.lib.awtextra.AbsoluteConstraints(1080, 620, 100, 40));
+        getContentPane().add(b_siguiente, new org.netbeans.lib.awtextra.AbsoluteConstraints(1190, 550, 100, 40));
 
         b_finalizar.setText("Finalizar");
         b_finalizar.addActionListener(new java.awt.event.ActionListener() {
@@ -253,7 +253,7 @@ public class P_Presentacion extends javax.swing.JFrame {
                 b_finalizarActionPerformed(evt);
             }
         });
-        getContentPane().add(b_finalizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1200, 620, 100, 40));
+        getContentPane().add(b_finalizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1190, 620, 100, 40));
 
         b_rotar.setText("Rotar");
         b_rotar.addActionListener(new java.awt.event.ActionListener() {
@@ -261,7 +261,7 @@ public class P_Presentacion extends javax.swing.JFrame {
                 b_rotarActionPerformed(evt);
             }
         });
-        getContentPane().add(b_rotar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1080, 550, 100, 40));
+        getContentPane().add(b_rotar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1190, 470, 100, 40));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -362,6 +362,7 @@ public class P_Presentacion extends javax.swing.JFrame {
             IndiceLista++;
             if(IndiceLista==TamañoLista){
                 b_siguiente.setVisible(false);
+                b_siguiente.setEnabled(false);
                 b_finalizar.setVisible(true);
             }
             Respuestas[IndiceLista-1]="";

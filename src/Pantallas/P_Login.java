@@ -167,9 +167,9 @@ public class P_Login extends javax.swing.JFrame {
     }//GEN-LAST:event_b_aceptarKeyPressed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        P_Principal Principal = null ;
+        P_PrincipalEntrevista Principal = null ;
         try {
-            Principal = new P_Principal(BDUsuarios.buscarId(0));
+            Principal = new P_PrincipalEntrevista(BDUsuarios.buscarId(0));
         } catch (SQLException ex) {
             Logger.getLogger(P_Login.class.getName()).log(Level.SEVERE, null, ex);
         }

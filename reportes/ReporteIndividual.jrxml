@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReporteIndividual" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4a0cc380-5137-4bd0-abed-b7458d61c503">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="id_registro" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select registros.nombre,registros.apellido,registros.fecha,registros.perfil from registros where registros.codigo=$P{id_registro}]]>
+	</queryString>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="apellido" class="java.lang.String"/>
+	<field name="fecha" class="java.sql.Date"/>
+	<field name="perfil" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="43" width="408" height="36" uuid="03ae2c95-3adb-4c0c-8f78-e8bf9b63f390"/>
+				<textElement>
+					<font size="18"/>
+				</textElement>
+				<text><![CDATA[Informe de Entrevista]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="56" splitType="Stretch">
+			<staticText>
+				<reportElement x="398" y="0" width="157" height="20" uuid="520673c5-c0df-406c-a168-ded864ff47d5"/>
+				<text><![CDATA[Entrevista Realizada en Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="20" uuid="d5483a07-dd44-4def-891b-fbe4df94b7a6"/>
+				<text><![CDATA[Entrevistado]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="32" width="146" height="20" uuid="8f61aa2f-7ccb-4428-a72b-9395da0a9f9c"/>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="146" y="32" width="143" height="20" uuid="a8b9f75b-1ed2-4c5e-a899-ab2bca5731e4"/>
+				<textFieldExpression><![CDATA[$F{apellido}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy" isBlankWhenNull="false">
+				<reportElement x="398" y="30" width="157" height="20" uuid="b9dc77d6-4587-49f4-8dbd-740492a415cb"/>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="32" width="316" height="29" uuid="6792a201-4c4a-4f86-ad59-cc3131679719"/>
+				<textElement>
+					<font size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Perfil Psicológico del Entrevistado]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="295" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="555" height="295" uuid="8f776a27-e433-46ce-9c11-763aaa53253b"/>
+				<textFieldExpression><![CDATA[$F{perfil}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="455" y="34" width="100" height="20" uuid="fc58bed5-b592-40db-8132-aa0c65be55c3"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

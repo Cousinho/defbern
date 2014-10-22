@@ -19,7 +19,7 @@ public class BDUsuarios {
         sentencia_insertar.setString(2, usuario.getNombre());
         sentencia_insertar.setString(3, usuario.getContrasenha());
         sentencia_insertar.setInt(4, usuario.getRol().getCodigo());
-        sentencia_insertar.setInt(4, 1);
+        sentencia_insertar.setInt(5, 1);
         try {
             sentencia_insertar.executeUpdate();
         } catch (SQLException ex) {
