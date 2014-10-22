@@ -138,21 +138,29 @@ public class P_Login extends javax.swing.JFrame {
             //si encontro algo en la base de datos
             if(usuario!=null){
                 //si datos coinciden inicia pantalla principal
-                if (nombre_usuario.equals(usuario.getNombre()) && contraseña.equals(usuario.getContrasenha())) {
-                    try {
-                        P_Principal Principal = new P_Principal(usuario) ;
-                        Principal.setSize(600, 600);
-                        Principal.setExtendedState(MAXIMIZED_BOTH);
-                        Principal.setVisible(true);
+                if(usuario.getCambio()==1){
+                        P_CambioContrasenha cambiar = null;
+                        cambiar = new P_CambioContrasenha(usuario);
+                        cambiar.setLocationRelativeTo(null);
+                        cambiar.setResizable(false);
+                        cambiar.setVisible(true);
                         this.dispose();
-                    } catch (SQLException ex) {
-                        Logger.getLogger(P_Login.class.getName()).log(Level.SEVERE, null, ex);
+                }else{
+                    if (nombre_usuario.equals(usuario.getNombre()) && contraseña.equals(usuario.getContrasenha())) {
+                        try {
+                            P_Principal Principal = new P_Principal(usuario) ;
+                            Principal.setSize(600, 600);
+                            Principal.setExtendedState(MAXIMIZED_BOTH);
+                            Principal.setVisible(true);
+                            this.dispose();
+                        } catch (SQLException ex) {
+                            Logger.getLogger(P_Login.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null, "La contraseña ingresada es incorrecta");
                     }
                 }
-                else{
-                    JOptionPane.showMessageDialog(null, "La contraseña ingresada es incorrecta");
-                }
-
             }
             else{
                 JOptionPane.showMessageDialog(null, "El Usuario ingresado es incorrecto");
