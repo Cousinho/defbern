@@ -94,20 +94,22 @@ public class AnalisisRorschach {
         
         
         //Analisis de nomenclaturas
-        if(Math.abs(C-M)!=0.5){
-            perfil = perfil + BDPerfiles.buscarId(3).getDescripcion()+"\n";
-            vivencia = "ambigual";
-        }else{
-            if(C>M){
-                perfil = perfil + BDPerfiles.buscarId(1).getDescripcion()+"\n";
-                vivencia = "introtensivo";
+        if(C>0 || M>0){
+            if(Math.abs(C-M)!=0.5){
+                perfil = perfil + BDPerfiles.buscarId(3).getDescripcion()+"\n";
+                vivencia = "ambigual";
             }else{
-                perfil = perfil + BDPerfiles.buscarId(2).getDescripcion()+"\n";
-                vivencia = "extratensivo";
+                if(C>M){
+                    perfil = perfil + BDPerfiles.buscarId(1).getDescripcion()+"\n";
+                    vivencia = "introtensivo";
+                }else{
+                    perfil = perfil + BDPerfiles.buscarId(2).getDescripcion()+"\n";
+                    vivencia = "extratensivo";
+                }
             }
         }
         
-        if(G<33){
+        if(G<33 && G>0){
             perfil = perfil + BDPerfiles.buscarId(4).getDescripcion()+"\n";
         }else if((80<=G)&&(G>=33)){
             perfil = perfil + BDPerfiles.buscarId(6).getDescripcion()+"\n";
@@ -121,14 +123,13 @@ public class AnalisisRorschach {
         
         if(Dp<=75){
             perfil = perfil + BDPerfiles.buscarId(8).getDescripcion()+"\n";
-            if(Dp==0){
-                perfil = perfil + BDPerfiles.buscarId(9).getDescripcion()+"\n";
-            }
         }else if(Dp>75){
             perfil = perfil + BDPerfiles.buscarId(10).getDescripcion()+"\n";
+        }else if(Dp==0){
+                perfil = perfil + BDPerfiles.buscarId(9).getDescripcion()+"\n";
         }
         
-        if(M<=3){
+        if(M<=3 && M>0){
             perfil = perfil + BDPerfiles.buscarId(11).getDescripcion()+"\n";
         }else if(M==4){
             perfil = perfil + BDPerfiles.buscarId(12).getDescripcion()+"\n";
@@ -138,7 +139,7 @@ public class AnalisisRorschach {
         
         if(Tp>=30 && Tp<=50){
             perfil = perfil + BDPerfiles.buscarId(14).getDescripcion()+"\n";
-        }else if(Tp<30){
+        }else if(Tp<30 && Tp>0){
             perfil = perfil + BDPerfiles.buscarId(15).getDescripcion()+"\n";
         }else{
             perfil = perfil + BDPerfiles.buscarId(16).getDescripcion()+"\n";
@@ -191,7 +192,7 @@ public class AnalisisRorschach {
         }
         
         //Análisis de determinantes
-        if(Anat<=12){
+        if(Anat<=12 && Anat>0){
             perfil = perfil + BDPerfiles.buscarId(32).getDescripcion()+"\n";
         }else{
             perfil = perfil + BDPerfiles.buscarId(33).getDescripcion()+"\n";
