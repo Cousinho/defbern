@@ -56,6 +56,7 @@ public class P_Presentacion extends javax.swing.JFrame {
     boolean primero = true;
     private String[] Respuestas;
     P_IniciarEntrevista pantalla_padre;
+    P_Presentacion pantalla_padre2;
     DefaultTableModel ModeloTabla = new DefaultTableModel();
     private int tamaño_lista=0;
     private boolean Insertar=false;
@@ -182,6 +183,7 @@ public class P_Presentacion extends javax.swing.JFrame {
         panel_opciones = new javax.swing.JPanel();
         texto_buscar = new javax.swing.JTextField();
         b_nada = new javax.swing.JButton();
+        b_otrarespuesta = new javax.swing.JButton();
         b_siguiente = new javax.swing.JButton();
         b_finalizar = new javax.swing.JButton();
         b_rotar = new javax.swing.JButton();
@@ -235,7 +237,15 @@ public class P_Presentacion extends javax.swing.JFrame {
                 b_nadaActionPerformed(evt);
             }
         });
-        panel_respuestas.add(b_nada, new org.netbeans.lib.awtextra.AbsoluteConstraints(1020, 90, 100, 40));
+        panel_respuestas.add(b_nada, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 90, 100, 40));
+
+        b_otrarespuesta.setText("Otra respuesta");
+        b_otrarespuesta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_otrarespuestaActionPerformed(evt);
+            }
+        });
+        panel_respuestas.add(b_otrarespuesta, new org.netbeans.lib.awtextra.AbsoluteConstraints(1010, 90, 110, 40));
 
         getContentPane().add(panel_respuestas, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 530, 1130, -1));
 
@@ -393,6 +403,18 @@ public class P_Presentacion extends javax.swing.JFrame {
 
     }//GEN-LAST:event_panel_opcionesMouseClicked
 
+    private void b_otrarespuestaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_otrarespuestaActionPerformed
+        D_NuevaRespuesta insertar = null;
+        try {
+            insertar = new D_NuevaRespuesta(pantalla_padre2,true,BDLaminas.buscarId(IndiceLista));
+            insertar.setLocationRelativeTo(null);
+            insertar.setResizable(false);
+            insertar.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(P_Presentacion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_b_otrarespuestaActionPerformed
+
     private void CambiarAngulo(int ang) {
         BufferedImage image = null;
         image = (BufferedImage) img;
@@ -540,6 +562,7 @@ public class P_Presentacion extends javax.swing.JFrame {
     private javax.swing.JLabel ayuda2;
     private javax.swing.JButton b_finalizar;
     private javax.swing.JButton b_nada;
+    private javax.swing.JButton b_otrarespuesta;
     private javax.swing.JButton b_rotar;
     private javax.swing.JButton b_siguiente;
     private javax.swing.JLabel lamina;

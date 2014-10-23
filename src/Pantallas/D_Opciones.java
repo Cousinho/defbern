@@ -70,7 +70,7 @@ public class D_Opciones extends javax.swing.JDialog {
         opcion_actual.setNomenclatura(texto_nomenclatura.getText());
         opcion_actual.setDescripcion(textoa_descripcion.getText());
         guardar=BDOpciones.insertar(opcion_actual);
-         return guardar;
+        return guardar;
     }
     
     //método que actualiza datos si esto es una edición
