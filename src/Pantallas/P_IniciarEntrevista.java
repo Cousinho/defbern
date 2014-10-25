@@ -354,7 +354,7 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void b_aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_aceptarActionPerformed
-         VideoCapture cap= new VideoCapture(0);
+        VideoCapture cap= new VideoCapture(0);
         if(cap!=null){
             Guardar();
             P_Presentacion entrevista = null;

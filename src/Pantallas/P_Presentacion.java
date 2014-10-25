@@ -5,6 +5,7 @@ import BaseDeDatos.BDOpciones;
 import Entidades.Entrevista;
 import Entidades.Lamina;
 import Entidades.Opciones;
+import Prueba.Rostro;
 import Util.Directorios;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -302,6 +303,8 @@ public class P_Presentacion extends javax.swing.JFrame {
         TimerTask tt = new TimerTask() {
             @Override
             public void run() {
+                String archivo;
+                String directorio;
                 if (IndiceMuestra < NumeroMuestras) {
                     if (cap.isOpened()) {
                         try {
@@ -311,8 +314,11 @@ public class P_Presentacion extends javax.swing.JFrame {
                             }
                             cap.read(imagen);
                             Highgui.imwrite("imagen/Muestras/" + Id_registro + "/" + (IndiceLista) + "/" + IndiceMuestra + ".png", imagen);
+                            archivo = IndiceMuestra+".png";
+                            directorio = "imagen/Muestras/" + Id_registro + "/" + (0) + "/";
                             if (!imagen.empty()) {
                                 IndiceMuestra++;
+                                VerificarPosicion(archivo, directorio);
                             }
 
                         } catch (Exception ex) {
@@ -332,6 +338,14 @@ public class P_Presentacion extends javax.swing.JFrame {
 
     }
 
+    private void VerificarPosicion(String archivo, String directorio){
+        Rostro rostro = new Rostro();
+        if(!rostro.Buscar(archivo, directorio)){
+            JOptionPane.showMessageDialog(null, "Por favor mantenga su rostro en dirección a la cámara.");
+            IndiceMuestra = IndiceMuestra - 1;
+        }
+    }    
+    
     private void b_rotarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_rotarActionPerformed
         CambiarAngulo(angulo);
         switch (angulo) {

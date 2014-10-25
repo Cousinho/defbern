@@ -1,7 +1,9 @@
 package Pantallas;
 
+import Prueba.Rostro;
 import java.util.Timer;
 import java.util.TimerTask;
+import javax.swing.JOptionPane;
 import org.opencv.core.Mat;
 import org.opencv.highgui.Highgui;
 import org.opencv.highgui.VideoCapture;
@@ -24,6 +26,8 @@ public class D_MuestraNeutra extends javax.swing.JDialog {
         TimerTask tt = new TimerTask() {
             @Override
             public void run() {
+                String archivo;
+                String directorio;
                 if (IndiceMuestra < NumeroMuestras) {
                     if (cap.isOpened()) {
                         try {
@@ -33,8 +37,11 @@ public class D_MuestraNeutra extends javax.swing.JDialog {
                             }
                             cap.read(imagen);
                             Highgui.imwrite("imagen/Muestras/" + Id_perfil + "/" + (0) + "/" + IndiceMuestra + ".png", imagen);
+                            archivo = IndiceMuestra+".png";
+                            directorio = "imagen/Muestras/" + Id_perfil + "/" + (0) + "/";
                             if (!imagen.empty()) {
                                 IndiceMuestra++;
+                                VerificarPosicion(archivo, directorio);
                             }
                         } catch (Exception ex) {
                         }
@@ -51,6 +58,15 @@ public class D_MuestraNeutra extends javax.swing.JDialog {
         t.schedule(tt, 1, 200);
 
     }
+    
+    private void VerificarPosicion(String archivo, String directorio){
+        Rostro rostro = new Rostro();
+        if(!rostro.Buscar(archivo, directorio)){
+            JOptionPane.showMessageDialog(null, "Por favor mantenga su rostro en dirección a la cámara.");
+            IndiceMuestra = IndiceMuestra - 1;
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
