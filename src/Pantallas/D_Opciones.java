@@ -33,8 +33,8 @@ public class D_Opciones extends javax.swing.JDialog {
         nuevo=true;
         opcion_actual.setLamina(lamina);
         initComponents();
-        //llama a metodo que formatea metodo de ingreso de campos
-        FormatoCampos();
+        CargarBox();
+
     }
     
     public D_Opciones(java.awt.Frame parent, boolean modal, Opciones opcion,Lamina lamina){
@@ -45,38 +45,75 @@ public class D_Opciones extends javax.swing.JDialog {
         opcion_actual=opcion;
         opcion_actual.setLamina(lamina);
         initComponents();
-        //llama a metodo que formatea metodo de ingreso de campos
-        FormatoCampos();
-        //carga datos del perfil recibido
+        CargarBox();
         CargarDatos();
     }
     
-    
+  
+    private void CargarBox(){
+        box_1.removeAllItems();
+        box_1.addItem("D");
+        box_1.addItem("G");
+        box_1.addItem("Dd");
+        box_2.removeAllItems();
+        box_2.addItem("B");
+        box_2.addItem("B+");
+        box_2.addItem("B-");
+        box_2.addItem("C");
+        box_2.addItem("F");
+        box_2.addItem("F+");
+        box_2.addItem("F-");
+        box_3.removeAllItems();
+        box_3.addItem("M");
+        box_3.addItem("Md");
+        box_3.addItem("T");
+        box_3.addItem("Td");
+        box_3.addItem("Abstr");
+        box_3.addItem("Anat");
+        box_3.addItem("Sex");
+        box_3.addItem("Geo");
+        box_3.addItem("Obj");
+        box_3.addItem("Mascara");
+        box_3.addItem("Sangre");
+        box_3.addItem("Fuego");
+        box_3.addItem("Refl");
+        box_3.addItem("Simetria");
+        box_3.addItem("Pinza");
+        box_3.addItem("Arq");
+        box_4.removeAllItems();
+        box_4.addItem("");
+        box_4.addItem("Orig");
+        box_4.addItem("Orig+");
+        box_4.addItem("Orig-");
+        box_4.addItem("V*");
+    }
+ 
     //método que carga datos recibidos
     public void CargarDatos(){
-        textoa_descripcion.setText(opcion_actual.getDescripcion());
-        texto_nomenclatura.setText(opcion_actual.getNomenclatura());
+        texto_descripcion.setText(opcion_actual.getDescripcion());
+        String[] respuestas = opcion_actual.getNomenclatura().split(",");
+        box_1.setSelectedItem(respuestas[0]);
+        box_2.setSelectedItem(respuestas[1]);
+        box_3.setSelectedItem(respuestas[2]);
+        if(respuestas.length!=3){
+            box_4.setSelectedItem(respuestas[3]);
+        }else{
+            box_4.setSelectedItem("");
+        }
+        
     }
     
-    //método que define el formato de inserción 
-     public void FormatoCampos(){
-        texto_nomenclatura.setDocument(new Alfanumerico(texto_nomenclatura, 5));
-        //textoa_descripcion.setDocument(new Alfanumerico(textoa_descripcion,50));
-    }
-     
     //método que carga guardo datos nuevos
     private boolean Guardar() throws SQLException{
         boolean guardar;
-        opcion_actual.setNomenclatura(texto_nomenclatura.getText());
-        opcion_actual.setDescripcion(textoa_descripcion.getText());
+        opcion_actual.setDescripcion(texto_descripcion.getText());
         guardar=BDOpciones.insertar(opcion_actual);
         return guardar;
     }
     
     //método que actualiza datos si esto es una edición
     private boolean Actualizar() throws SQLException{
-        opcion_actual.setNomenclatura(texto_nomenclatura.getText());
-        opcion_actual.setDescripcion(textoa_descripcion.getText());
+        opcion_actual.setDescripcion(texto_descripcion.getText());
         BDOpciones.actualizar(opcion_actual);
         return true;
     } 
@@ -93,11 +130,14 @@ public class D_Opciones extends javax.swing.JDialog {
         jLabel3 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        texto_nomenclatura = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        textoa_descripcion = new javax.swing.JTextArea();
+        texto_descripcion = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        box_1 = new javax.swing.JComboBox();
+        box_2 = new javax.swing.JComboBox();
+        box_3 = new javax.swing.JComboBox();
+        box_4 = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -129,9 +169,9 @@ public class D_Opciones extends javax.swing.JDialog {
 
         jLabel2.setText("Nomenclatura");
 
-        textoa_descripcion.setColumns(20);
-        textoa_descripcion.setRows(5);
-        jScrollPane1.setViewportView(textoa_descripcion);
+        texto_descripcion.setColumns(20);
+        texto_descripcion.setRows(5);
+        jScrollPane1.setViewportView(texto_descripcion);
 
         jButton1.setText("Aceptar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -146,6 +186,14 @@ public class D_Opciones extends javax.swing.JDialog {
                 jButton2ActionPerformed(evt);
             }
         });
+
+        box_1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        box_2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        box_3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        box_4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -164,7 +212,15 @@ public class D_Opciones extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton2))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE)
-                    .addComponent(texto_nomenclatura, javax.swing.GroupLayout.Alignment.LEADING))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(box_1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(20, 20, 20)
+                        .addComponent(box_2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(20, 20, 20)
+                        .addComponent(box_3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(20, 20, 20)
+                        .addComponent(box_4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(23, 23, 23))
         );
         layout.setVerticalGroup(
@@ -177,8 +233,11 @@ public class D_Opciones extends javax.swing.JDialog {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(texto_nomenclatura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
+                    .addComponent(jLabel2)
+                    .addComponent(box_1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(box_2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(box_3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(box_4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
@@ -260,6 +319,10 @@ public class D_Opciones extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox box_1;
+    private javax.swing.JComboBox box_2;
+    private javax.swing.JComboBox box_3;
+    private javax.swing.JComboBox box_4;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
@@ -267,7 +330,6 @@ public class D_Opciones extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField texto_nomenclatura;
-    private javax.swing.JTextArea textoa_descripcion;
+    private javax.swing.JTextArea texto_descripcion;
     // End of variables declaration//GEN-END:variables
 }

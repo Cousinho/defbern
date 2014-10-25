@@ -1,11 +1,11 @@
 package Pantallas;
 
+import Analisis.Rostro;
 import BaseDeDatos.BDLaminas;
 import BaseDeDatos.BDOpciones;
 import Entidades.Entrevista;
 import Entidades.Lamina;
 import Entidades.Opciones;
-import Prueba.Rostro;
 import Util.Directorios;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -57,7 +57,6 @@ public class P_Presentacion extends javax.swing.JFrame {
     boolean primero = true;
     private String[] Respuestas;
     P_IniciarEntrevista pantalla_padre;
-    P_Presentacion pantalla_padre2;
     DefaultTableModel ModeloTabla = new DefaultTableModel();
     private int tamaño_lista=0;
     private boolean Insertar=false;
@@ -188,6 +187,7 @@ public class P_Presentacion extends javax.swing.JFrame {
         b_siguiente = new javax.swing.JButton();
         b_finalizar = new javax.swing.JButton();
         b_rotar = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -195,15 +195,17 @@ public class P_Presentacion extends javax.swing.JFrame {
         lamina.setAlignmentY(0.0F);
         lamina.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         lamina.setMinimumSize(new java.awt.Dimension(1200, 500));
-        getContentPane().add(lamina, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 11, 1015, 500));
+        getContentPane().add(lamina, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 31, 1015, 490));
 
         panel_respuestas.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        ayuda1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         ayuda1.setText("Escriba su respuesta aquí");
-        panel_respuestas.add(ayuda1, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 0, -1, -1));
+        panel_respuestas.add(ayuda1, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 0, 160, -1));
 
+        ayuda2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         ayuda2.setText("  Marque lo que ve en la lista ");
-        panel_respuestas.add(ayuda2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 140, 20));
+        panel_respuestas.add(ayuda2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 230, 20));
 
         panel_opciones.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         panel_opciones.setMaximumSize(new java.awt.Dimension(300, 500));
@@ -238,7 +240,7 @@ public class P_Presentacion extends javax.swing.JFrame {
                 b_nadaActionPerformed(evt);
             }
         });
-        panel_respuestas.add(b_nada, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 90, 100, 40));
+        panel_respuestas.add(b_nada, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 90, 120, 40));
 
         b_otrarespuesta.setText("Otra respuesta");
         b_otrarespuesta.addActionListener(new java.awt.event.ActionListener() {
@@ -274,6 +276,10 @@ public class P_Presentacion extends javax.swing.JFrame {
         });
         getContentPane().add(b_rotar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1190, 470, 100, 40));
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel1.setText("Qué puede ser esto?");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 0, -1, -1));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
     private void Visible(boolean estado) {
@@ -287,6 +293,11 @@ public class P_Presentacion extends javax.swing.JFrame {
     }
 
     private void CargarImagen(Image imagen) {
+        if(IndiceLista==TamañoLista){
+            b_siguiente.setVisible(false);
+            b_siguiente.setEnabled(false);
+            
+        }
         lamina.setFont(new Font("Monospaced", Font.PLAIN, 24));
         lamina.setBorder(BorderFactory.createEtchedBorder());
         img = imagen;
@@ -320,6 +331,7 @@ public class P_Presentacion extends javax.swing.JFrame {
                                 IndiceMuestra++;
                                 VerificarPosicion(archivo, directorio);
                             }
+                            
 
                         } catch (Exception ex) {
                         }
@@ -337,14 +349,14 @@ public class P_Presentacion extends javax.swing.JFrame {
         t.schedule(tt, 1, 200);
 
     }
-
+    
     private void VerificarPosicion(String archivo, String directorio){
         Rostro rostro = new Rostro();
         if(!rostro.Buscar(archivo, directorio)){
             JOptionPane.showMessageDialog(null, "Por favor mantenga su rostro en dirección a la cámara.");
             IndiceMuestra = IndiceMuestra - 1;
         }
-    }    
+    }
     
     private void b_rotarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_rotarActionPerformed
         CambiarAngulo(angulo);
@@ -385,8 +397,6 @@ public class P_Presentacion extends javax.swing.JFrame {
             Image img2 = Lista.get(IndiceLista).getImagen();
             IndiceLista++;
             if(IndiceLista==TamañoLista){
-                b_siguiente.setVisible(false);
-                b_siguiente.setEnabled(false);
                 b_finalizar.setVisible(true);
             }
             Respuestas[IndiceLista-1]="";
@@ -397,10 +407,14 @@ public class P_Presentacion extends javax.swing.JFrame {
     }//GEN-LAST:event_b_siguienteActionPerformed
 
     private void b_finalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_finalizarActionPerformed
-        pantalla_padre.setRespuestas(Respuestas,tiempo_mitad,s);
-        t.stop();
-        cap.release();
-        this.dispose();
+        if(Respuestas[IndiceLista-1].equals("")){
+            JOptionPane.showMessageDialog(null, "Por pavor elija alguna repuesta");
+        }else{
+            pantalla_padre.setRespuestas(Respuestas,tiempo_mitad,s);
+            t.stop();
+            cap.release();
+            this.dispose();
+        }    
     }//GEN-LAST:event_b_finalizarActionPerformed
 
     private void b_nadaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_nadaActionPerformed
@@ -420,7 +434,7 @@ public class P_Presentacion extends javax.swing.JFrame {
     private void b_otrarespuestaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_otrarespuestaActionPerformed
         D_NuevaRespuesta insertar = null;
         try {
-            insertar = new D_NuevaRespuesta(pantalla_padre2,true,BDLaminas.buscarId(IndiceLista));
+            insertar = new D_NuevaRespuesta(this,true,BDLaminas.buscarId(IndiceLista));
             insertar.setLocationRelativeTo(null);
             insertar.setResizable(false);
             insertar.setVisible(true);
@@ -428,7 +442,10 @@ public class P_Presentacion extends javax.swing.JFrame {
             Logger.getLogger(P_Presentacion.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_b_otrarespuestaActionPerformed
-
+    public void setRespuesta(Opciones opcion){
+        System.out.println(opcion.getNomenclatura());
+        Respuestas[IndiceLista-1]=opcion.getNomenclatura();
+    }
     private void CambiarAngulo(int ang) {
         BufferedImage image = null;
         image = (BufferedImage) img;
@@ -579,6 +596,7 @@ public class P_Presentacion extends javax.swing.JFrame {
     private javax.swing.JButton b_otrarespuesta;
     private javax.swing.JButton b_rotar;
     private javax.swing.JButton b_siguiente;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lamina;
     private javax.swing.JPanel panel_opciones;
     private javax.swing.JPanel panel_respuestas;

@@ -1,16 +1,9 @@
 package Pantallas;
 
 import BaseDeDatos.BDOpciones;
-import BaseDeDatos.BDRoles;
-import BaseDeDatos.BDUsuarios;
 import Entidades.Lamina;
 import Entidades.Opciones;
-import Entidades.Rol;
-import Entidades.Usuario;
-import Util.AlfanumericoEspacio;
-import Util.Numerico;
 import java.sql.SQLException;
-import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -18,9 +11,11 @@ import javax.swing.JOptionPane;
 public class D_NuevaRespuesta extends javax.swing.JDialog {
 
     Opciones opcion_actual=new Opciones() {};
+    Lamina lamina_actual=new Lamina();
     public D_NuevaRespuesta(java.awt.Frame parent, boolean modal, Lamina lamina) throws SQLException{
         //bloque la ventana padre de jdialog
         super(parent, modal);
+        lamina_actual=lamina;
         initComponents();
         //llama a metodo que formatea metodo de ingreso de campos
         //FormatoCampos();
@@ -37,6 +32,7 @@ public class D_NuevaRespuesta extends javax.swing.JDialog {
     }
     
     private void setDatos() throws SQLException{
+        opcion_actual.setLamina(lamina_actual);
         String nomenclatura="";
         opcion_actual.setDescripcion(textoa_descripcion.getText());
         if(lista_primera.getSelectedItem()=="Toda la lamina"){

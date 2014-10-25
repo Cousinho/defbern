@@ -5,13 +5,16 @@ import Entidades.Permiso;
 import Entidades.Usuario;
 import Reportes.P_Reportes;
 import Reportes.P_ReportesGrupos;
+import java.awt.Desktop;
 import java.beans.PropertyVetoException;
+import java.io.File;
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import java.net.*;
 public class P_Principal extends javax.swing.JFrame {
     Usuario usuario;
     ArrayList<String> permisos = new ArrayList();
@@ -110,6 +113,8 @@ public class P_Principal extends javax.swing.JFrame {
         SM_Informes = new javax.swing.JMenuItem();
         M_Configuracion = new javax.swing.JMenu();
         SM_Conexion = new javax.swing.JMenuItem();
+        M_Ayuda = new javax.swing.JMenu();
+        SM_Ayuda = new javax.swing.JMenuItem();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -261,6 +266,23 @@ public class P_Principal extends javax.swing.JFrame {
         M_Configuracion.add(SM_Conexion);
 
         Menu_Principal.add(M_Configuracion);
+
+        M_Ayuda.setText("Ayuda");
+        M_Ayuda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                M_AyudaActionPerformed(evt);
+            }
+        });
+
+        SM_Ayuda.setText("Contenido de Ayuda");
+        SM_Ayuda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SM_AyudaActionPerformed(evt);
+            }
+        });
+        M_Ayuda.add(SM_Ayuda);
+
+        Menu_Principal.add(M_Ayuda);
 
         setJMenuBar(Menu_Principal);
 
@@ -441,6 +463,27 @@ public class P_Principal extends javax.swing.JFrame {
         conexion.setResizable(false);
         conexion.setVisible(true);
     }//GEN-LAST:event_SM_ConexionActionPerformed
+
+    private void M_AyudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_M_AyudaActionPerformed
+       try{
+//           Desktop.getDesktop().browse(new URL("ayuda/Defbern.html").toURI());
+           Desktop.getDesktop().browse(new URL("http://www.google.com").toURI());
+
+       }catch(Exception e){
+           e.printStackTrace();
+       }
+         
+    }//GEN-LAST:event_M_AyudaActionPerformed
+
+    private void SM_AyudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SM_AyudaActionPerformed
+        File local= new File("");
+        File principal=new File("file:///"+local.getAbsolutePath()+"/ayuda/Defbern.html");
+        try{
+           Desktop.getDesktop().browse(new URL(principal.getPath()).toURI());
+       }catch(Exception e){
+           e.printStackTrace();
+       }
+    }//GEN-LAST:event_SM_AyudaActionPerformed
     
     public void CodigoGrupo(int codigo){
         CodigoGrupo=codigo;
@@ -488,12 +531,14 @@ public class P_Principal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu M_Administrar;
     private javax.swing.JMenu M_Archivo;
+    private javax.swing.JMenu M_Ayuda;
     private javax.swing.JMenu M_Configuracion;
     private javax.swing.JMenu M_Entrevista;
     private javax.swing.JMenu M_Informes;
     private javax.swing.JMenuBar Menu_Principal;
     private javax.swing.JLayeredPane Panel_Principal;
     private javax.swing.JLayeredPane Panel_Principal1;
+    private javax.swing.JMenuItem SM_Ayuda;
     private javax.swing.JMenuItem SM_Conexion;
     private javax.swing.JMenuItem SM_Entrevista;
     private javax.swing.JMenuItem SM_EntrevistaGrupal;

@@ -1,6 +1,6 @@
 package Pantallas;
 
-import Prueba.Rostro;
+import Analisis.Rostro;
 import java.util.Timer;
 import java.util.TimerTask;
 import javax.swing.JOptionPane;
@@ -66,7 +66,6 @@ public class D_MuestraNeutra extends javax.swing.JDialog {
             IndiceMuestra = IndiceMuestra - 1;
         }
     }
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

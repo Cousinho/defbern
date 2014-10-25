@@ -51,9 +51,9 @@
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="172" max="-2" attributes="0"/>
-                      <Component id="b_aceptar" min="-2" pref="77" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="76" max="-2" attributes="0"/>
-                      <Component id="b_cancelar" min="-2" max="-2" attributes="0"/>
+                      <Component id="b_aceptar" min="-2" pref="86" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="57" max="-2" attributes="0"/>
+                      <Component id="b_cancelar" min="-2" pref="85" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>

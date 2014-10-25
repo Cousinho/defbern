@@ -57,7 +57,7 @@ public class AnalisisRorschach {
     private int Origd,Origg,Origmenosp;
     private int ChoqueNegro, ChoqueColor,ChoqueRojo,ChoqueKinestesico,ChoqueSexual,ChoqueLVI;
     private String perfil="";
-    private String vivencia;
+    private String vivencia="";
     private Analisis analizar=new Analisis();
     private int[] choques;
     
@@ -94,8 +94,8 @@ public class AnalisisRorschach {
         
         
         //Analisis de nomenclaturas
-        if(C>0 || M>0){
-            if(Math.abs(C-M)!=0.5){
+        if(C>0 && M>0){
+            if(Math.abs(C-M)<=0.5){
                 perfil = perfil + BDPerfiles.buscarId(3).getDescripcion()+"\n";
                 vivencia = "ambigual";
             }else{
@@ -121,7 +121,7 @@ public class AnalisisRorschach {
             perfil = perfil + BDPerfiles.buscarId(7).getDescripcion()+"\n";
         }
         
-        if(Dp<=75){
+        if(Dp<=75&&Dp>0){
             perfil = perfil + BDPerfiles.buscarId(8).getDescripcion()+"\n";
         }else if(Dp>75){
             perfil = perfil + BDPerfiles.buscarId(10).getDescripcion()+"\n";
@@ -194,7 +194,7 @@ public class AnalisisRorschach {
         //Análisis de determinantes
         if(Anat<=12 && Anat>0){
             perfil = perfil + BDPerfiles.buscarId(32).getDescripcion()+"\n";
-        }else{
+        }else if(Anat>12){
             perfil = perfil + BDPerfiles.buscarId(33).getDescripcion()+"\n";
         }
         
@@ -431,29 +431,31 @@ public class AnalisisRorschach {
             if(nomenclaturas[i].contains("Arq")){
                 Arq++;
             }
+            
             if(nomenclaturas[i].contains("N")){
+                if(nomenclaturas[i].contains("Nada") && (lamina+1>0 && lamina+1<8)){
+                    ChoqueNegro++;
+                }
+                if(nomenclaturas[i].contains("Nada") && (lamina+1==2 || lamina+1==3)){
+                    ChoqueRojo++;
+                }
+                if(nomenclaturas[i].contains("Nada") && (lamina+1==6)){
+                    ChoqueLVI++;
+                }
+                if(nomenclaturas[i].contains("Nada") && (lamina+1==8 || lamina+1==9 || lamina+1==10)){
+                    ChoqueColor++;
+                }
+                if((nomenclaturas[i].contains("Nada") || nomenclaturas[i].contains("Sex")) && (lamina+1==1 || lamina+1==2 || lamina+1==3 || lamina+1==4 || lamina+1==6 || lamina+1==7 || lamina+1==9)){
+                    ChoqueSexual++;
+                }
+                if((nomenclaturas[i].contains("Nada") || nomenclaturas[i].contains("B")==false) && (lamina+1==1 || lamina+1==2 || lamina+1==3 || lamina+1==9)){
+                    ChoqueKinestesico++;
+                }
+            }
+            if(!nomenclaturas[i].contains("Nada")){
                 N++;
             }
-            if(nomenclaturas[i].contains("Nada") && (lamina+1>0 && lamina+1<8)){
-                ChoqueNegro++;
-            }
-            if(nomenclaturas[i].contains("Nada") && (lamina+1==2 || lamina+1==3)){
-                ChoqueRojo++;
-            }
-            if(nomenclaturas[i].contains("Nada") && (lamina+1==6)){
-                ChoqueLVI++;
-            }
-            if(nomenclaturas[i].contains("Nada") && (lamina+1==8 || lamina+1==9 || lamina+1==10)){
-                ChoqueColor++;
-            }
-            if((nomenclaturas[i].contains("Nada") || nomenclaturas[i].contains("Sex")) && (lamina+1==1 || lamina+1==2 || lamina+1==3 || lamina+1==4 || lamina+1==6 || lamina+1==7 || lamina+1==9)){
-                ChoqueSexual++;
-            }
-            if((nomenclaturas[i].contains("Nada") || nomenclaturas[i].contains("B")==false) && (lamina+1==1 || lamina+1==2 || lamina+1==3 || lamina+1==9)){
-                ChoqueKinestesico++;
-            }
         }
-        
         
         
         

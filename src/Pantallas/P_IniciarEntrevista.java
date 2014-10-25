@@ -11,6 +11,7 @@ import Entidades.Usuario;
 import Util.AlfanumericoEspacio;
 import Util.Bloqueo;
 import Util.Caracteres;
+import Util.Directorios;
 import Util.Numerico;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -79,10 +80,6 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
     }
     
     private void Guardar(){
-        if(texto_nombre.getText().equals("")||texto_apellido.getText().equals("")||
-           texto_ci.getText().equals("")||texto_descripcion.getText().equals("")){
-             JOptionPane.showMessageDialog(null, "Complete todos los campos necesarios");
-        }else{
                 registro_actual.setCi(Integer.valueOf(texto_ci.getText()));
                 registro_actual.setNombre(texto_nombre.getText());
                 registro_actual.setApellido(texto_apellido.getText());
@@ -101,11 +98,6 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
                 texto_nombre.setEnabled(false);
                 texto_apellido.setEnabled(false);
                 texto_descripcion.setEnabled(false);
-                
-            
-            
-        }
-        
     }
     
     private void Actualizar(){
@@ -120,7 +112,6 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
         registro_actual.setRespuestas(respuestas);
         registro_actual.setTiempo_total(tiempo_total);
         Actualizar();
-        texto_codigo.setText(String.valueOf(registro_actual.getCodigo()));
     }
     
     
@@ -162,6 +153,8 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
         Actualizar();
         setDefaultCloseOperation(1);
         label_analizando.setVisible(false);
+        Directorios directorio=new Directorios();
+        directorio.Borrar(registro_actual.getCodigo());
         this.dispose();
     }
     
@@ -173,8 +166,6 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
         jLabel8 = new javax.swing.JLabel();
         label_analizando = new javax.swing.JLabel();
         panel_principal = new javax.swing.JPanel();
-        texto_codigo = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
         texto_ci = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         texto_nombre = new javax.swing.JTextField();
@@ -192,47 +183,52 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
         jPanel1.setBackground(new java.awt.Color(81, 106, 138));
         jPanel1.setPreferredSize(new java.awt.Dimension(100, 41));
 
+        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(254, 254, 254));
-        jLabel8.setText("                                         Entrevistas");
+        jLabel8.setText("                         Datos Personales");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(400, 400, 400)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(482, 482, 482)
                 .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 487, Short.MAX_VALUE)
-                .addGap(400, 400, 400))
+                .addGap(318, 318, 318))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
         );
 
+        label_analizando.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         label_analizando.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Util/gif-load.gif"))); // NOI18N
         label_analizando.setText("Analizando");
 
-        texto_codigo.setEditable(false);
-        texto_codigo.setEnabled(false);
+        texto_ci.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-        jLabel1.setText("Código");
-
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel2.setText("CI");
 
+        texto_nombre.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel3.setText("Nombre");
 
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel4.setText("Apellido");
 
+        texto_apellido.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         texto_apellido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 texto_apellidoActionPerformed(evt);
             }
         });
 
-        jLabel5.setText("Descripcion");
+        texto_descripcion.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel5.setText("Descripción");
 
         b_cancelar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         b_cancelar.setText("Cancelar");
@@ -257,62 +253,49 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
         panel_principalLayout.setHorizontalGroup(
             panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_principalLayout.createSequentialGroup()
-                .addContainerGap(30, Short.MAX_VALUE)
+                .addContainerGap(36, Short.MAX_VALUE)
                 .addGroup(panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lista_entrevistas, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5))
+                .addGroup(panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panel_principalLayout.createSequentialGroup()
-                        .addGroup(panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_principalLayout.createSequentialGroup()
-                                .addGroup(panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel1))
-                                .addGap(27, 27, 27))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_principalLayout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addGap(18, 18, 18)))
-                        .addGroup(panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGap(193, 193, 193)
+                        .addComponent(lista_entrevistas, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panel_principalLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(panel_principalLayout.createSequentialGroup()
                                 .addComponent(b_aceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 81, Short.MAX_VALUE)
                                 .addComponent(b_cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(texto_descripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(texto_codigo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(texto_ci, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(texto_nombre, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(texto_apellido)))))
-                .addGap(20, 20, 20))
+                            .addComponent(texto_ci)
+                            .addComponent(texto_nombre)
+                            .addComponent(texto_apellido)
+                            .addComponent(texto_descripcion))))
+                .addContainerGap())
         );
-
-        panel_principalLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {texto_apellido, texto_ci, texto_codigo, texto_descripcion, texto_nombre});
-
         panel_principalLayout.setVerticalGroup(
             panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel_principalLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(texto_codigo, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addGap(27, 27, 27)
+                .addGap(30, 30, 30)
                 .addGroup(panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(texto_ci, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
-                .addGap(32, 32, 32)
+                .addGap(30, 30, 30)
                 .addGroup(panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(texto_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
-                .addGap(18, 18, 18)
-                .addGroup(panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addComponent(texto_apellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(29, 29, 29)
+                .addGap(30, 30, 30)
+                .addGroup(panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(texto_apellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addGap(30, 30, 30)
                 .addGroup(panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(texto_descripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
-                .addGap(18, 18, 18)
+                .addGap(30, 30, 30)
                 .addGroup(panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(b_cancelar)
                     .addComponent(b_aceptar))
@@ -322,7 +305,7 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
 
         panel_principalLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {b_aceptar, b_cancelar, lista_entrevistas});
 
-        panel_principalLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {texto_apellido, texto_ci, texto_codigo, texto_nombre});
+        panel_principalLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {texto_apellido, texto_ci, texto_nombre});
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -330,51 +313,56 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1287, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(537, 537, 537)
-                        .addComponent(label_analizando))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(397, 397, 397)
-                        .addComponent(panel_principal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(440, 440, 440)
+                .addComponent(panel_principal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(label_analizando)
+                .addGap(524, 524, 524))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
+                .addGap(29, 29, 29)
                 .addComponent(panel_principal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
+                .addGap(18, 18, 18)
                 .addComponent(label_analizando)
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(56, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void b_aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_aceptarActionPerformed
-        VideoCapture cap= new VideoCapture(0);
-        if(cap!=null){
-            Guardar();
-            P_Presentacion entrevista = null;
-            try {
-                entrevista = new P_Presentacion(BDEntrevistas.buscarNombre((String) lista_entrevistas.getSelectedItem()),registro_actual.getCodigo(),this);
-            } catch (SQLException ex) {
-                Logger.getLogger(P_IniciarEntrevista.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            entrevista.setLocationRelativeTo(null);
-            entrevista.setVisible(true);
-            entrevista.addWindowListener(new WindowAdapter() {
-            public void windowClosed(WindowEvent e) {
-               ProcesosAnalizar();
-            }
-        });
-
+        if(texto_nombre.getText().equals("")||texto_apellido.getText().equals("")||
+            texto_ci.getText().equals("")||texto_descripcion.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Complete todos los campos necesarios");
         }else{
-            
+            VideoCapture cap= new VideoCapture(0);
+            if(cap != null){
+                cap.release();
+                Guardar();
+                P_Presentacion entrevista = null;
+                try {
+                    entrevista = new P_Presentacion(BDEntrevistas.buscarNombre((String) lista_entrevistas.getSelectedItem()),registro_actual.getCodigo(),this);
+                } catch (SQLException ex) {
+                    Logger.getLogger(P_IniciarEntrevista.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                entrevista.setLocationRelativeTo(null);
+                entrevista.setVisible(true);
+                entrevista.addWindowListener(new WindowAdapter() {
+                public void windowClosed(WindowEvent e) {
+                   ProcesosAnalizar();
+                }
+            });
+
+            }else{
+                JOptionPane.showMessageDialog(null, "Camara web no disponible");
+
+            }
         }
-        
 
     }//GEN-LAST:event_b_aceptarActionPerformed
 
@@ -391,7 +379,6 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton b_aceptar;
     private javax.swing.JButton b_cancelar;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -403,7 +390,6 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
     private javax.swing.JPanel panel_principal;
     private javax.swing.JTextField texto_apellido;
     private javax.swing.JTextField texto_ci;
-    private javax.swing.JTextField texto_codigo;
     private javax.swing.JTextField texto_descripcion;
     private javax.swing.JTextField texto_nombre;
     // End of variables declaration//GEN-END:variables
