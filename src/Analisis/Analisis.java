@@ -146,7 +146,7 @@ public class Analisis  {
             }else{
                 return 1;
             }
-                
+            
         }
         return 0;
     }
@@ -166,7 +166,7 @@ public class Analisis  {
            distancia31=P/((Distancia(ojo1,boca)+Distancia(ojo2,boca))/2);
            distancia41=P/((Distancia(ceja1,boca)+Distancia(ceja2,boca))/2);
            distancia51=P/((Distancia(ojo1,ceja1)+Distancia(ojo2,ceja2))/2);
-           distancia61=P/((Distancia(ceja1,nariz)+Distancia(ceja2,nariz))/2); 
+           distancia61=P/((Distancia(ceja1,nariz)+Distancia(ceja2,nariz))/2);
          }else{
            double P=Distancia(ojo1,ojo2);
            distancia12=P/tamañoboca.x;

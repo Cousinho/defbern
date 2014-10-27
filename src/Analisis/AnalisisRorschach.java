@@ -38,13 +38,14 @@ public class AnalisisRorschach {
     
     Abstr ->Respuestas abstractas
     Anat->Respuestas Respuestas de anatomia humana
-    Sex->Respuestas en que se integra de alguna manera lo sexual
+    Destr->Respuestas que involucren objetos destruidos, explosiones, etc.
     Geo->Respuestas que involucren accidentes geograficos
     Obj->Respuestas de objetos en gral.
     Mascara->Respuestas de mascaras o disfraces
     Sangre->Respuestas que involucren sangre
     Fuego->Respuestas de fuego, llamas
     Refl->Respuestas en que una mitad de la lamina es considerada el reflejo de la otra
+    Sex->Respuestas en que se integra de alguna manera lo sexual
     Simetria->Su nombre lo indica
     Pinza, abismo->Sus nombres lo indican
     Arq->Respuestas que involucren construccion
@@ -52,7 +53,7 @@ public class AnalisisRorschach {
     */
     private double C,M;
     private int G,D,Dd,Fmas,Fmenos,Md,Origmas,Origmenos,Bmas,Bmenos/*,H,Hd,*/,
-                A,Ad,NR,V,T,Td,Anat,Geo,GAbs,Simetria,Abstr,Sex,Obj,Mascara,Sangre,Refl,Fuego,Pinza,Arq,N;
+                A,Ad,NR,V,T,Td,Anat,Geo,GAbs,Simetria,Abstr,Sex,Obj,Mascara,Sangre,Refl,Fuego,Pinza,Arq,N,Destr;
     private int Gp,Dp,Bmasp,Fmasp,Bmenosp,Fp,IR,Tp,Bp,Origp;
     private int Origd,Origg,Origmenosp;
     private int ChoqueNegro, ChoqueColor,ChoqueRojo,ChoqueKinestesico,ChoqueSexual,ChoqueLVI;
@@ -230,12 +231,14 @@ public class AnalisisRorschach {
         }
         if(Arq>0){
             perfil = perfil + BDPerfiles.buscarId(44).getDescripcion()+"\n";
-        }
-        
+        }        
         if(N>0){
             perfil = perfil + BDPerfiles.buscarId(45).getDescripcion()+"\n";
         }
-        
+        if(Destr>0){
+            perfil = perfil + BDPerfiles.buscarId(46).getDescripcion()+"\n";
+        }
+
         //Determinación de los tres tipos verdaderos de inteligencia, según Rorschach
         //La aptitud abstracta-teórica
         if(GAbs>5 && 
@@ -246,14 +249,14 @@ public class AnalisisRorschach {
                 (Tp>=35 && Tp<=45) &&
                 (vivencia.equals("ambigual"))){
             
-                perfil = perfil + BDPerfiles.buscarId(46).getDescripcion()+"\n";
+                perfil = perfil + BDPerfiles.buscarId(47).getDescripcion()+"\n";
         }
         //La aptitud práctica es
         if(vivencia.equals("extratensivo") &&
                 (A>Ad) &&
                 (Origd>Origg)){
             
-                perfil = perfil + BDPerfiles.buscarId(47).getDescripcion()+"\n";
+                perfil = perfil + BDPerfiles.buscarId(48).getDescripcion()+"\n";
             
         }
         if(vivencia.equals("ambigual")&&
@@ -266,7 +269,7 @@ public class AnalisisRorschach {
                 (Tp>=30 && Tp<=40)&&
                 (T>Td)){
             
-                perfil = perfil + BDPerfiles.buscarId(48).getDescripcion()+"\n";
+                perfil = perfil + BDPerfiles.buscarId(49).getDescripcion()+"\n";
         
         }
         //La aptitud artística es
@@ -278,7 +281,7 @@ public class AnalisisRorschach {
                 (Tp<=30) &&
                 (vivencia.equals("ambigual"))){
                 
-            perfil = perfil + BDPerfiles.buscarId(49).getDescripcion()+"\n";
+            perfil = perfil + BDPerfiles.buscarId(50).getDescripcion()+"\n";
         }
         
         //Análisis de oligofrenia
@@ -291,7 +294,7 @@ public class AnalisisRorschach {
                 (Origmenosp>=30 && Origmenosp<=40)&&
                 (C<=4)){
             //Debiles de inteligencia            
-            perfil = perfil + BDPerfiles.buscarId(50).getDescripcion()+"\n";
+            perfil = perfil + BDPerfiles.buscarId(51).getDescripcion()+"\n";
         
         }else if((registro.getTiempo_total()>60 && NR<=25) || 
                 (Fmasp>=0 && Fmasp<=45) &&
@@ -301,27 +304,27 @@ public class AnalisisRorschach {
                 (Origmenosp>=40 && Origmenosp<=70)&&
                 (C<=4)){
             //Bajos de inteligencia
-            perfil = perfil + BDPerfiles.buscarId(51).getDescripcion()+"\n";
+            perfil = perfil + BDPerfiles.buscarId(52).getDescripcion()+"\n";
         }
         
         //Análisis de los choques
         if(ChoqueNegro>0 || (choques[0]!=0 || choques[1]!=0 || choques[2]!=0 || choques[3]!=0 || choques[4]!=0 || choques[5]!=0 || choques[6]!=0)){
-            perfil = perfil + BDPerfiles.buscarId(52).getDescripcion()+"\n";
-        }
-        if(ChoqueRojo>0 || (choques[1]!=0 || choques[2]!=0)){
             perfil = perfil + BDPerfiles.buscarId(53).getDescripcion()+"\n";
         }
-        if(ChoqueLVI>0 || choques[5]!=0){
+        if(ChoqueRojo>0 || (choques[1]!=0 || choques[2]!=0)){
             perfil = perfil + BDPerfiles.buscarId(54).getDescripcion()+"\n";
         }
-        if(ChoqueColor>0 || (choques[7]!=0 || choques[8]!=0 || choques[9]!=0)){
+        if(ChoqueLVI>0 || choques[5]!=0){
             perfil = perfil + BDPerfiles.buscarId(55).getDescripcion()+"\n";
         }
-        if(ChoqueSexual>0 || (choques[0]!=0 || choques[1]!=0 || choques[2]!=0 || choques[3]!=0 || choques[5]!=0 || choques[6]!=0 || choques[8]!=0)){
+        if(ChoqueColor>0 || (choques[7]!=0 || choques[8]!=0 || choques[9]!=0)){
             perfil = perfil + BDPerfiles.buscarId(56).getDescripcion()+"\n";
         }
-        if(ChoqueKinestesico>0 || (choques[0]!=0 || choques[1]!=0 || choques[2]!=0 || choques[8]!=0)){
+        if(ChoqueSexual>0 || (choques[0]!=0 || choques[1]!=0 || choques[2]!=0 || choques[3]!=0 || choques[5]!=0 || choques[6]!=0 || choques[8]!=0)){
             perfil = perfil + BDPerfiles.buscarId(57).getDescripcion()+"\n";
+        }
+        if(ChoqueKinestesico>0 || (choques[0]!=0 || choques[1]!=0 || choques[2]!=0 || choques[8]!=0)){
+            perfil = perfil + BDPerfiles.buscarId(58).getDescripcion()+"\n";
         }
         
         //Resultado del analisis
@@ -431,7 +434,9 @@ public class AnalisisRorschach {
             if(nomenclaturas[i].contains("Arq")){
                 Arq++;
             }
-            
+            if(nomenclaturas[i].contains("Destr")){
+                Destr++;
+            }
             if(nomenclaturas[i].contains("N")){
                 if(nomenclaturas[i].contains("Nada") && (lamina+1>0 && lamina+1<8)){
                     ChoqueNegro++;
