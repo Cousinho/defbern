@@ -38,14 +38,13 @@ public class AnalisisRorschach {
     
     Abstr ->Respuestas abstractas
     Anat->Respuestas Respuestas de anatomia humana
-    Destr->Respuestas que involucren objetos destruidos, explosiones, etc.
+    Sex->Respuestas en que se integra de alguna manera lo sexual
     Geo->Respuestas que involucren accidentes geograficos
     Obj->Respuestas de objetos en gral.
     Mascara->Respuestas de mascaras o disfraces
     Sangre->Respuestas que involucren sangre
     Fuego->Respuestas de fuego, llamas
     Refl->Respuestas en que una mitad de la lamina es considerada el reflejo de la otra
-    Sex->Respuestas en que se integra de alguna manera lo sexual
     Simetria->Su nombre lo indica
     Pinza, abismo->Sus nombres lo indican
     Arq->Respuestas que involucren construccion
@@ -53,7 +52,7 @@ public class AnalisisRorschach {
     */
     private double C,M;
     private int G,D,Dd,Fmas,Fmenos,Md,Origmas,Origmenos,Bmas,Bmenos/*,H,Hd,*/,
-                A,Ad,NR,V,T,Td,Anat,Geo,GAbs,Simetria,Abstr,Sex,Obj,Mascara,Sangre,Refl,Fuego,Pinza,Arq,N,Destr;
+                A,Ad,NR,V,T,Td,Anat,Geo,GAbs,Simetria,Abstr,Sex,Obj,Mascara,Sangre,Refl,Fuego,Pinza,Arq,Destr,N;
     private int Gp,Dp,Bmasp,Fmasp,Bmenosp,Fp,IR,Tp,Bp,Origp;
     private int Origd,Origg,Origmenosp;
     private int ChoqueNegro, ChoqueColor,ChoqueRojo,ChoqueKinestesico,ChoqueSexual,ChoqueLVI;
@@ -231,14 +230,14 @@ public class AnalisisRorschach {
         }
         if(Arq>0){
             perfil = perfil + BDPerfiles.buscarId(44).getDescripcion()+"\n";
-        }        
-        if(N>0){
+        }
+        if(N>2){
             perfil = perfil + BDPerfiles.buscarId(45).getDescripcion()+"\n";
         }
         if(Destr>0){
             perfil = perfil + BDPerfiles.buscarId(46).getDescripcion()+"\n";
         }
-
+        
         //Determinación de los tres tipos verdaderos de inteligencia, según Rorschach
         //La aptitud abstracta-teórica
         if(GAbs>5 && 
@@ -308,22 +307,22 @@ public class AnalisisRorschach {
         }
         
         //Análisis de los choques
-        if(ChoqueNegro>0 || (choques[0]!=0 || choques[1]!=0 || choques[2]!=0 || choques[3]!=0 || choques[4]!=0 || choques[5]!=0 || choques[6]!=0)){
+        if(ChoqueNegro>0 || (choques[1]!=0 || choques[2]!=0 || choques[3]!=0 || choques[4]!=0 || choques[5]!=0 || choques[6]!=0 || choques[7]!=0)){
             perfil = perfil + BDPerfiles.buscarId(53).getDescripcion()+"\n";
         }
-        if(ChoqueRojo>0 || (choques[1]!=0 || choques[2]!=0)){
+        if(ChoqueRojo>0 || (choques[2]!=0 || choques[3]!=0)){
             perfil = perfil + BDPerfiles.buscarId(54).getDescripcion()+"\n";
         }
-        if(ChoqueLVI>0 || choques[5]!=0){
+        if(ChoqueLVI>0 || choques[6]!=0){
             perfil = perfil + BDPerfiles.buscarId(55).getDescripcion()+"\n";
         }
-        if(ChoqueColor>0 || (choques[7]!=0 || choques[8]!=0 || choques[9]!=0)){
+        if(ChoqueColor>0 || (choques[8]!=0 || choques[9]!=0 || choques[10]!=0)){
             perfil = perfil + BDPerfiles.buscarId(56).getDescripcion()+"\n";
         }
-        if(ChoqueSexual>0 || (choques[0]!=0 || choques[1]!=0 || choques[2]!=0 || choques[3]!=0 || choques[5]!=0 || choques[6]!=0 || choques[8]!=0)){
+        if(ChoqueSexual>0 || (choques[1]!=0 || choques[2]!=0 || choques[3]!=0 || choques[4]!=0 || choques[6]!=0 || choques[7]!=0 || choques[9]!=0)){
             perfil = perfil + BDPerfiles.buscarId(57).getDescripcion()+"\n";
         }
-        if(ChoqueKinestesico>0 || (choques[0]!=0 || choques[1]!=0 || choques[2]!=0 || choques[8]!=0)){
+        if(ChoqueKinestesico>0 || (choques[1]!=0 || choques[2]!=0 || choques[3]!=0 || choques[9]!=0)){
             perfil = perfil + BDPerfiles.buscarId(58).getDescripcion()+"\n";
         }
         
@@ -435,7 +434,7 @@ public class AnalisisRorschach {
                 Arq++;
             }
             if(nomenclaturas[i].contains("Destr")){
-                Destr++;
+                Arq++;
             }
             if(nomenclaturas[i].contains("N")){
                 if(nomenclaturas[i].contains("Nada") && (lamina+1>0 && lamina+1<8)){
