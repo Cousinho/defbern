@@ -3,6 +3,9 @@ package Pantallas;
 import BaseDeDatos.BDOpciones;
 import Entidades.Lamina;
 import Entidades.Opciones;
+import java.awt.Desktop;
+import java.io.File;
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -53,18 +56,30 @@ public class D_NuevaRespuesta extends javax.swing.JDialog {
             nomenclatura=nomenclatura + "Abismo";
         }else if(lista_tercera.getSelectedItem()=="Anatomia"){
             nomenclatura=nomenclatura + "Anat";
+        }else if(lista_tercera.getSelectedItem()=="Animal"){
+            nomenclatura=nomenclatura + "T";
+        }else if(lista_tercera.getSelectedItem()=="Partes de animales"){
+            nomenclatura=nomenclatura + "Td";    
         }else if(lista_tercera.getSelectedItem()=="Arquitectura"){
             nomenclatura=nomenclatura + "Arq";
         }else if(lista_tercera.getSelectedItem()=="Fuego"){
             nomenclatura=nomenclatura + "Fuego";
+        }else if(lista_tercera.getSelectedItem()=="Figura Humana"){
+            nomenclatura=nomenclatura + "Fuego";
+        }else if(lista_tercera.getSelectedItem()=="Destruccion"){
+            nomenclatura=nomenclatura + "Destr";
         }else if(lista_tercera.getSelectedItem()=="Geografica"){
             nomenclatura=nomenclatura + "Geo";
         }else if(lista_tercera.getSelectedItem()=="Mascara"){
             nomenclatura=nomenclatura + "Mascara";
         }else if(lista_tercera.getSelectedItem()=="Objetos"){
             nomenclatura=nomenclatura + "Obj";
+        }else if(lista_tercera.getSelectedItem()=="Paisaje"){
+            nomenclatura=nomenclatura + "N";
         }else if(lista_tercera.getSelectedItem()=="Pinza"){
             nomenclatura=nomenclatura + "Pinza";
+        }else if(lista_tercera.getSelectedItem()=="Planta"){
+            nomenclatura=nomenclatura + "Pl";
         }else if(lista_tercera.getSelectedItem()=="Reflejo"){
             nomenclatura=nomenclatura + "Refl";
         }else if(lista_tercera.getSelectedItem()=="Sangre"){
@@ -89,12 +104,18 @@ public class D_NuevaRespuesta extends javax.swing.JDialog {
         lista_tercera.addItem("Abstracta");
         lista_tercera.addItem("Abismo");
         lista_tercera.addItem("Anatomia");
+        lista_tercera.addItem("Animal");
+        lista_tercera.addItem("Partes de animales");
         lista_tercera.addItem("Arquitectura");
+        lista_tercera.addItem("Destruccion");
+        lista_tercera.addItem("Figura Humana");
         lista_tercera.addItem("Fuego");
         lista_tercera.addItem("Geografica");
         lista_tercera.addItem("Mascara");
         lista_tercera.addItem("Objetos");
+        lista_tercera.addItem("Paisaje");
         lista_tercera.addItem("Pinza");
+        lista_tercera.addItem("Planta");
         lista_tercera.addItem("Reflejo");
         lista_tercera.addItem("Sangre");
         lista_tercera.addItem("Sexual");
@@ -119,6 +140,7 @@ public class D_NuevaRespuesta extends javax.swing.JDialog {
         lista_tercera = new javax.swing.JComboBox();
         jScrollPane1 = new javax.swing.JScrollPane();
         textoa_descripcion = new javax.swing.JTextArea();
+        b_ayuda = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -165,14 +187,14 @@ public class D_NuevaRespuesta extends javax.swing.JDialog {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel5)
-                .addGap(277, 277, 277))
+                .addGap(252, 252, 252))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel5)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         lista_segunda.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -189,6 +211,13 @@ public class D_NuevaRespuesta extends javax.swing.JDialog {
         textoa_descripcion.setRows(5);
         jScrollPane1.setViewportView(textoa_descripcion);
 
+        b_ayuda.setText("AYUDA");
+        b_ayuda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_ayudaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -199,7 +228,9 @@ public class D_NuevaRespuesta extends javax.swing.JDialog {
                 .addComponent(b_aceptar)
                 .addGap(60, 60, 60)
                 .addComponent(b_cancelar)
-                .addGap(167, 167, 167))
+                .addGap(71, 71, 71)
+                .addComponent(b_ayuda, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -231,14 +262,15 @@ public class D_NuevaRespuesta extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lista_segunda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lista_tercera, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
                 .addGap(34, 34, 34)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(b_cancelar)
-                    .addComponent(b_aceptar))
+                    .addComponent(b_aceptar)
+                    .addComponent(b_ayuda))
                 .addContainerGap())
         );
 
@@ -263,6 +295,16 @@ public class D_NuevaRespuesta extends javax.swing.JDialog {
     private void b_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_cancelarActionPerformed
         this.dispose();
     }//GEN-LAST:event_b_cancelarActionPerformed
+
+    private void b_ayudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_ayudaActionPerformed
+        File local= new File("");
+        File principal=new File("file:///"+local.getAbsolutePath()+"/ayuda/Defbern.html");
+        try{
+           Desktop.getDesktop().browse(new URL(principal.getPath()).toURI());
+       }catch(Exception e){
+           e.printStackTrace();
+       }
+    }//GEN-LAST:event_b_ayudaActionPerformed
  
     /**
      * @param args the command line arguments
@@ -314,6 +356,7 @@ public class D_NuevaRespuesta extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton b_aceptar;
+    private javax.swing.JButton b_ayuda;
     private javax.swing.JButton b_cancelar;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel jLabel1;
