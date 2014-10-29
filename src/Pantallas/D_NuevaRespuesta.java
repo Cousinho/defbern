@@ -76,6 +76,8 @@ public class D_NuevaRespuesta extends javax.swing.JDialog {
             nomenclatura=nomenclatura + "Obj";
         }else if(lista_tercera.getSelectedItem()=="Paisaje"){
             nomenclatura=nomenclatura + "N";
+        }else if(lista_tercera.getSelectedItem()=="Partes Humanas"){
+            nomenclatura=nomenclatura + "Md";
         }else if(lista_tercera.getSelectedItem()=="Pinza"){
             nomenclatura=nomenclatura + "Pinza";
         }else if(lista_tercera.getSelectedItem()=="Planta"){
@@ -114,6 +116,7 @@ public class D_NuevaRespuesta extends javax.swing.JDialog {
         lista_tercera.addItem("Mascara");
         lista_tercera.addItem("Objetos");
         lista_tercera.addItem("Paisaje");
+        lista_tercera.addItem("Partes Humanas");
         lista_tercera.addItem("Pinza");
         lista_tercera.addItem("Planta");
         lista_tercera.addItem("Reflejo");
