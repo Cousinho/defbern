@@ -52,8 +52,9 @@ public class AnalisisRorschach {
     */
     private double C,M;
     private int G,D,Dd,Fmas,Fmenos,Md,Origmas,Origmenos,Bmas,Bmenos/*,H,Hd,*/,
-                A,Ad,NR,V,T,Td,Anat,Geo,GAbs,Simetria,Abstr,Sex,Obj,Mascara,Sangre,Refl,Fuego,Pinza,Arq,Destr,N;
-    private int Gp,Dp,Bmasp,Fmasp,Bmenosp,Fp,IR,Tp,Bp,Origp;
+                A,Ad,NR,V,T,Td,Anat,Geo,GAbs,Simetria,Abstr,Sex,Obj,Mascara,Sangre,
+                Refl,Fuego,Pinza,Arq,Destr,N,Cara;
+    private int Gp,Dp,Bmasp,Fmasp,Bmenosp,Fp,IR,Tp,Bp,Origp,Objp;
     private int Origd,Origg,Origmenosp;
     private int ChoqueNegro, ChoqueColor,ChoqueRojo,ChoqueKinestesico,ChoqueSexual,ChoqueLVI;
     private String perfil="";
@@ -64,12 +65,12 @@ public class AnalisisRorschach {
     
     public String AnalizarRegistro(Registro registro) throws SQLException{
         registro_actual = registro;
-        for(int i=1;i<registro_actual.getRespuestas().length;i++){
+        for(int i=0;i<registro_actual.getRespuestas().length;i++){
             respuestas = registro_actual.getRespuestas()[i].split(" ");
             for(int j=0;j<respuestas.length;j++){
                 nomenclaturas = respuestas[j].split(",");
                 NR++;
-                AnalizarRespuesta(nomenclaturas,j);
+                AnalizarRespuesta(nomenclaturas,i+1);
             }
         }
         choques = analizar.Analizar(registro_actual.getCodigo());
@@ -81,11 +82,11 @@ public class AnalisisRorschach {
             Fmasp = (Fmas*100)/(Fmas+Fmenos);
         }
         Fp = ((Fmas+Fmenos)*100)/NR;
-        //Hp = ((H+Hd)*100)/NR;
         Bmasp = (Bmas*100)/NR;
         Bmenosp = (Bmenos*100)/NR;
         Tp = ((T+Td)*100)/NR;
         Origp = ((Origmas+Origmenos)*100)/NR;
+        Objp = Obj * 100 / NR;
         if(Origmenos+Origmas==0){
             Origmenosp=0;
         }else{
@@ -207,7 +208,7 @@ public class AnalisisRorschach {
         if(Geo>0){
             perfil = perfil + BDPerfiles.buscarId(36).getDescripcion()+"\n";
         }
-        if(Obj>0){
+        if(Objp>40){
             perfil = perfil + BDPerfiles.buscarId(37).getDescripcion()+"\n";
         }
         if(Mascara>0){
@@ -237,7 +238,9 @@ public class AnalisisRorschach {
         if(Destr>0){
             perfil = perfil + BDPerfiles.buscarId(46).getDescripcion()+"\n";
         }
-        
+        if(Cara>0){
+            perfil = perfil + BDPerfiles.buscarId(47).getDescripcion()+"\n";
+        }
         //Determinación de los tres tipos verdaderos de inteligencia, según Rorschach
         //La aptitud abstracta-teórica
         if(GAbs>5 && 
@@ -248,14 +251,14 @@ public class AnalisisRorschach {
                 (Tp>=35 && Tp<=45) &&
                 (vivencia.equals("ambigual"))){
             
-                perfil = perfil + BDPerfiles.buscarId(47).getDescripcion()+"\n";
+                perfil = perfil + BDPerfiles.buscarId(48).getDescripcion()+"\n";
         }
         //La aptitud práctica es
         if(vivencia.equals("extratensivo") &&
                 (A>Ad) &&
                 (Origd>Origg)){
             
-                perfil = perfil + BDPerfiles.buscarId(48).getDescripcion()+"\n";
+                perfil = perfil + BDPerfiles.buscarId(49).getDescripcion()+"\n";
             
         }
         if(vivencia.equals("ambigual")&&
@@ -268,7 +271,7 @@ public class AnalisisRorschach {
                 (Tp>=30 && Tp<=40)&&
                 (T>Td)){
             
-                perfil = perfil + BDPerfiles.buscarId(49).getDescripcion()+"\n";
+                perfil = perfil + BDPerfiles.buscarId(50).getDescripcion()+"\n";
         
         }
         //La aptitud artística es
@@ -280,7 +283,7 @@ public class AnalisisRorschach {
                 (Tp<=30) &&
                 (vivencia.equals("ambigual"))){
                 
-            perfil = perfil + BDPerfiles.buscarId(50).getDescripcion()+"\n";
+            perfil = perfil + BDPerfiles.buscarId(51).getDescripcion()+"\n";
         }
         
         //Análisis de oligofrenia
@@ -293,7 +296,7 @@ public class AnalisisRorschach {
                 (Origmenosp>=30 && Origmenosp<=40)&&
                 (C<=4)){
             //Debiles de inteligencia            
-            perfil = perfil + BDPerfiles.buscarId(51).getDescripcion()+"\n";
+            perfil = perfil + BDPerfiles.buscarId(52).getDescripcion()+"\n";
         
         }else if((registro.getTiempo_total()>60 && NR<=25) || 
                 (Fmasp>=0 && Fmasp<=45) &&
@@ -303,27 +306,27 @@ public class AnalisisRorschach {
                 (Origmenosp>=40 && Origmenosp<=70)&&
                 (C<=4)){
             //Bajos de inteligencia
-            perfil = perfil + BDPerfiles.buscarId(52).getDescripcion()+"\n";
+            perfil = perfil + BDPerfiles.buscarId(53).getDescripcion()+"\n";
         }
         
         //Análisis de los choques
         if(ChoqueNegro>0 || (choques[1]!=0 || choques[2]!=0 || choques[3]!=0 || choques[4]!=0 || choques[5]!=0 || choques[6]!=0 || choques[7]!=0)){
-            perfil = perfil + BDPerfiles.buscarId(53).getDescripcion()+"\n";
-        }
-        if(ChoqueRojo>0 || (choques[2]!=0 || choques[3]!=0)){
             perfil = perfil + BDPerfiles.buscarId(54).getDescripcion()+"\n";
         }
-        if(ChoqueLVI>0 || choques[6]!=0){
+        if(ChoqueRojo>0 || (choques[2]!=0 || choques[3]!=0)){
             perfil = perfil + BDPerfiles.buscarId(55).getDescripcion()+"\n";
         }
-        if(ChoqueColor>0 || (choques[8]!=0 || choques[9]!=0 || choques[10]!=0)){
+        if(ChoqueLVI>0 || choques[6]!=0){
             perfil = perfil + BDPerfiles.buscarId(56).getDescripcion()+"\n";
         }
-        if(ChoqueSexual>0 || (choques[1]!=0 || choques[2]!=0 || choques[3]!=0 || choques[4]!=0 || choques[6]!=0 || choques[7]!=0 || choques[9]!=0)){
+        if(ChoqueColor>0 || (choques[8]!=0 || choques[9]!=0 || choques[10]!=0)){
             perfil = perfil + BDPerfiles.buscarId(57).getDescripcion()+"\n";
         }
-        if(ChoqueKinestesico>0 || (choques[1]!=0 || choques[2]!=0 || choques[3]!=0 || choques[9]!=0)){
+        if(ChoqueSexual>0 || (choques[1]!=0 || choques[2]!=0 || choques[3]!=0 || choques[4]!=0 || choques[6]!=0 || choques[7]!=0 || choques[9]!=0)){
             perfil = perfil + BDPerfiles.buscarId(58).getDescripcion()+"\n";
+        }
+        if(ChoqueKinestesico>0 || (choques[1]!=0 || choques[2]!=0 || choques[3]!=0 || choques[9]!=0)){
+            perfil = perfil + BDPerfiles.buscarId(59).getDescripcion()+"\n";
         }
         
         //Resultado del analisis
@@ -434,6 +437,9 @@ public class AnalisisRorschach {
                 Arq++;
             }
             if(nomenclaturas[i].contains("Destr")){
+                Arq++;
+            }
+            if(nomenclaturas[i].contains("Cara")){
                 Arq++;
             }
             if(nomenclaturas[i].contains("N")){

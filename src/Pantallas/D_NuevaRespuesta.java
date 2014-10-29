@@ -43,9 +43,9 @@ public class D_NuevaRespuesta extends javax.swing.JDialog {
         }else{
             nomenclatura=nomenclatura + "D,";
         }
-        if(lista_segunda.getSelectedItem()=="Movimiento"){
+        if(lista_segunda.getSelectedItem()=="El Movimiento"){
             nomenclatura=nomenclatura + "B,";
-        }else if(lista_segunda.getSelectedItem()=="Forma"){
+        }else if(lista_segunda.getSelectedItem()=="La Forma"){
             nomenclatura=nomenclatura + "F,";
         }else{
             nomenclatura=nomenclatura + "C,";
@@ -90,6 +90,8 @@ public class D_NuevaRespuesta extends javax.swing.JDialog {
             nomenclatura=nomenclatura + "Sex";
         }else if(lista_tercera.getSelectedItem()=="Simetria"){
             nomenclatura=nomenclatura + "Simetria";
+        }else if(lista_tercera.getSelectedItem()=="Cara - Rostro"){
+            nomenclatura=nomenclatura + "Cara";
         }
         opcion_actual.setNomenclatura(nomenclatura);
     }
@@ -99,14 +101,15 @@ public class D_NuevaRespuesta extends javax.swing.JDialog {
         lista_primera.addItem("Toda la lamina");
         lista_primera.addItem("Una parte de la lamina");
         lista_segunda.removeAllItems();
-        lista_segunda.addItem("Movimiento");
-        lista_segunda.addItem("Forma");
-        lista_segunda.addItem("Color");
+        lista_segunda.addItem("El Movimiento");
+        lista_segunda.addItem("La Forma");
+        lista_segunda.addItem("El Color");
         lista_tercera.removeAllItems();
         lista_tercera.addItem("Abstracta");
         lista_tercera.addItem("Abismo");
         lista_tercera.addItem("Anatomia");
         lista_tercera.addItem("Animal");
+        lista_tercera.addItem("Cara - Rostro");
         lista_tercera.addItem("Partes de animales");
         lista_tercera.addItem("Arquitectura");
         lista_tercera.addItem("Destruccion");
@@ -155,7 +158,7 @@ public class D_NuevaRespuesta extends javax.swing.JDialog {
         jLabel2.setText("En qué parte de la lámina está viendo eso?");
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel3.setText("Su respuesta contiene:");
+        jLabel3.setText("En su respuesta resalta:");
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel4.setText("Seleccione la categoría de su respuesta:");
@@ -225,29 +228,30 @@ public class D_NuevaRespuesta extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 643, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 949, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(b_aceptar)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(b_aceptar, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4))
+                        .addGap(29, 29, 29)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(lista_tercera, javax.swing.GroupLayout.Alignment.LEADING, 0, 190, Short.MAX_VALUE)
+                                .addComponent(lista_segunda, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lista_primera, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(47, 47, 47)))
                 .addGap(60, 60, 60)
                 .addComponent(b_cancelar)
                 .addGap(71, 71, 71)
                 .addComponent(b_ayuda, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lista_tercera, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lista_segunda, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lista_primera, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(47, 47, 47))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
