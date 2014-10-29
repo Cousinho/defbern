@@ -3,12 +3,9 @@ package Reportes;
 import BaseDeDatos.BDRegistros;
 import BaseDeDatos.Conexion_BD;
 import Entidades.Registro;
-import Pantallas.*;
 import Util.Bloqueo;
 import Util.FormatoFecha;
 import Util.TablaModelo;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -30,7 +27,6 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.JasperRunManager;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 
@@ -157,6 +153,7 @@ public class P_Reportes extends javax.swing.JInternalFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
+        b_cedula = new javax.swing.JButton();
 
         setClosable(true);
         setTitle("Registro de Entrevistas");
@@ -306,6 +303,13 @@ public class P_Reportes extends javax.swing.JInternalFrame {
 
         panel_filtroLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {texto_cedula, texto_codigo, texto_nombre});
 
+        b_cedula.setText("Reporte por Cedula");
+        b_cedula.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_cedulaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -320,9 +324,11 @@ public class P_Reportes extends javax.swing.JInternalFrame {
                         .addGap(526, 526, 526)
                         .addComponent(check_fecha))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addComponent(b_reportes, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(b_cedula, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
+                            .addComponent(b_reportes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(panel_filtro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -364,7 +370,11 @@ public class P_Reportes extends javax.swing.JInternalFrame {
                         .addComponent(panel_filtro, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(b_reportes, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(b_reportes, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(b_cedula, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 161, Short.MAX_VALUE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -513,8 +523,30 @@ public class P_Reportes extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_check_filtroActionPerformed
 
+    private void b_cedulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_cedulaActionPerformed
+         //recibe numero de fila seleccionada
+        Connection conexion = Conexion_BD.getConnection();
+        Object fila= tabla_registros.getValueAt(tabla_registros.getSelectedRow(),1);
+        File archivo=new File("reportes/ReporteCedula.jasper");
+        JasperReport reporte = null;
+        try {
+            reporte = (JasperReport) JRLoader.loadObject(archivo);
+        } catch (JRException ex) {
+            Logger.getLogger(P_Reportes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+             Map parametros = new HashMap();
+             parametros.put("cedula",Integer.valueOf(fila.toString()));
+            JasperPrint reporte_view = JasperFillManager.fillReport( reporte, parametros, conexion);
+            JasperViewer.viewReport( reporte_view,false ); 
+        } catch (JRException ex) {
+              Logger.getLogger(P_Reportes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_b_cedulaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton b_cedula;
     private javax.swing.JButton b_reportes;
     private javax.swing.JCheckBox check_fecha;
     private javax.swing.JCheckBox check_filtro;

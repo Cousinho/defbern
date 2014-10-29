@@ -455,10 +455,11 @@ public class AnalisisRorschach {
                 if((nomenclaturas[i].contains("Nada") || nomenclaturas[i].contains("B")==false) && (lamina+1==1 || lamina+1==2 || lamina+1==3 || lamina+1==9)){
                     ChoqueKinestesico++;
                 }
+                if(!nomenclaturas[i].contains("Nada")){
+                    N++;
+                }
             }
-            if(!nomenclaturas[i].contains("Nada")){
-                N++;
-            }
+            
         }
         
         

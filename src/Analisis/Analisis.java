@@ -21,7 +21,6 @@ public class Analisis  {
     private double distancia41, distancia42;
     private double distancia51, distancia52;
     private double distancia61, distancia62;
-    private double distancia71, distancia72;
     private String DirectorioPrincipal="imagen/Muestras/";
     private String Directorio;
     private String SubDirectorio="";
@@ -48,12 +47,19 @@ public class Analisis  {
             Resultados = new int[TamanhoMuestras];
             for(int x = 0;x<TamanhoMuestras;x++){
                 SubDirectorio=Directorio+x+"/";
-               if(x!=0){
+                if(x!=0){
                     Resultados[x]=AnalizarMuestras(SubDirectorio);
                     LimpiarDistancias();
 
                 }else{
-                    AnalizarNeutros(SubDirectorio);
+                    int neutros=AnalizarNeutros(SubDirectorio);
+                    if(neutros==0){
+                        x=TamanhoMuestras;
+                        for(int y=1;y<TamanhoMuestras;y++){
+                            Resultados[y]=0;
+                        }
+                        Resultados[0]=1;
+                    }
                 }
                
        }
@@ -72,7 +78,7 @@ public class Analisis  {
         if(lista_imagenes.exists()){
             numero_imagenes=lista_imagenes.list().length;
             if(numero_imagenes!=0){
-                for(int y=1;y<numero_imagenes;y++){
+                for(int y=0;y<numero_imagenes;y++){
                     String[] muestras = lista_imagenes.list();
                     Archivo=DirectorioMuestras+muestras[y];
                     int s=AnalizarImagen(Archivo);
@@ -87,11 +93,11 @@ public class Analisis  {
                 }
                 return emocion;
             }else{
-                return 4;
+                return 0;
                 
             }
         }else{
-            return 4;
+            return 0;
         }
         
     }
@@ -114,11 +120,11 @@ public class Analisis  {
                 }
                 return 0;
             }else{
-                return 4;
+                return 0;
                 
             }
         }else{
-            return 4;
+            return 0;
         }
         
     }
@@ -126,7 +132,7 @@ public class Analisis  {
     private int AnalizarImagen(String Archivo){
         LimpiarAnalisis();
         boolean positivo;
-        positivo=AnalisisRostro.Buscar(Archivo,DirectorioResultados); 
+        positivo=AnalisisRostro.Buscar(Archivo,DirectorioResultados,true); 
         if(positivo){
             AnalisisOjos.Analizar(DirectorioResultados+"Rostro.png", DirectorioResultados);
             ojo1=AnalisisOjos.getOjo1();
@@ -146,7 +152,7 @@ public class Analisis  {
             }else{
                 return 1;
             }
-            
+                
         }
         return 0;
     }
@@ -166,7 +172,7 @@ public class Analisis  {
            distancia31=P/((Distancia(ojo1,boca)+Distancia(ojo2,boca))/2);
            distancia41=P/((Distancia(ceja1,boca)+Distancia(ceja2,boca))/2);
            distancia51=P/((Distancia(ojo1,ceja1)+Distancia(ojo2,ceja2))/2);
-           distancia61=P/((Distancia(ceja1,nariz)+Distancia(ceja2,nariz))/2);
+           distancia61=P/((Distancia(ceja1,nariz)+Distancia(ceja2,nariz))/2); 
          }else{
            double P=Distancia(ojo1,ojo2);
            distancia12=P/tamañoboca.x;
@@ -175,7 +181,7 @@ public class Analisis  {
            distancia42=P/((Distancia(ceja1,boca)+Distancia(ceja2,boca))/2);
            distancia52=P/((Distancia(ojo1,ceja1)+Distancia(ojo2,ceja2))/2);
            distancia62=P/((Distancia(ceja1,nariz)+Distancia(ceja2,nariz))/2);
-        }
+         }
     }
      
     

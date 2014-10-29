@@ -110,6 +110,16 @@ public class D_Lamina extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "ERROR: " + e.getMessage());
         }
     }
+    public void actualizartabla(int opcion,int lamina,int fila){
+        Opciones opcionactualizada=new Opciones();
+        try {
+            opcionactualizada=BDOpciones.buscarId(opcion,lamina);
+        } catch (SQLException ex) {
+            Logger.getLogger(D_Lamina.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        LOpciones.setValueAt(opcionactualizada.getDescripcion(), fila, 1);
+        LOpciones.setValueAt(opcionactualizada.getNomenclatura(), fila, 2);
+    }
     
     public void limpiartabla(){
         int tamaño =LOpciones.getRowCount()-1;
@@ -340,12 +350,14 @@ public class D_Lamina extends javax.swing.JDialog {
     }//GEN-LAST:event_b_agregarActionPerformed
 
     private void b_modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_modificarActionPerformed
-        int columna=tabla_opciones.getSelectedRow();
+        final int columna=tabla_opciones.getSelectedRow();
         if (columna!=-1){
             try {
-                Opciones p_envia=new Opciones() {};
+                Opciones p_envia=new Opciones();
                 Object valor = tabla_opciones.getValueAt(columna, 0);
                 p_envia=BDOpciones.buscarId(Integer.parseInt(valor.toString()),lamina_actual.getCodigo());
+                final int codigo=p_envia.getCodigo();
+                final int codigo_lamina=p_envia.getLamina().getCodigo();
                 D_Opciones editar= new D_Opciones(pantalla_padre,true,p_envia,lamina_actual);
                 editar.setLocationRelativeTo(null);
                 editar.setResizable(false);
@@ -353,7 +365,7 @@ public class D_Lamina extends javax.swing.JDialog {
                 //Actualiza tabla despues de cerrar ventana modificar
                 editar.addWindowListener(new WindowAdapter() {
                     public void windowClosed(WindowEvent e) {
-                        actualizartabla();
+                        actualizartabla(codigo,codigo_lamina,columna);
                     }
                 });
             } catch (SQLException ex) {

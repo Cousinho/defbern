@@ -143,7 +143,7 @@ public class P_CambioContrasenha extends javax.swing.JFrame {
         {
             JOptionPane.showMessageDialog(null, "No puede dejar los campos vacios.");
         }else{
-            if(nueva==repetir){
+            if(nueva.equals(repetir)){
                 if(Guardar(nueva)){
                     P_Principal Principal = null;
                     try {

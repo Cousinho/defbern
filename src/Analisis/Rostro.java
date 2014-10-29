@@ -9,7 +9,7 @@ import org.opencv.objdetect.CascadeClassifier;
 public class Rostro {
     
     //Metodo que utiliza xml
-    public boolean Buscar (String Archivo,String Directorio){
+    public boolean Buscar (String Archivo,String Directorio,boolean crear){
     CascadeClassifier faceDetector = new CascadeClassifier("xml/Rostro.xml");
         Mat image;
         image = Highgui.imread(Archivo);
@@ -23,7 +23,9 @@ public class Rostro {
             int nu = 1;
             while (nu <= tamaño) {
                 //Genera una imagen de muestra
-                Highgui.imwrite(Directorio+"Rostro.png", region.adjustROI(nu, tamaño+rect.height/8, nu, nu));
+                if(crear){
+                    Highgui.imwrite(Directorio+"Rostro.png", region.adjustROI(nu, tamaño+rect.height/8, nu, nu));
+                }
                 nu++;
             }
             if(tamaño==0){

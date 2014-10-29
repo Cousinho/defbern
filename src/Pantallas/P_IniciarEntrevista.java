@@ -29,6 +29,7 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
     private Grupo grupo_actual=BDGrupos.buscarId(0);
     private java.util.Date fecha_actual = new java.util.Date();
     private String[] Respuestas;
+    private boolean movimiento=false;
     public P_IniciarEntrevista(java.awt.Frame padre,boolean grupal,Usuario usuario) throws SQLException {
         System.loadLibrary("opencv_java249");
         initComponents();
@@ -108,9 +109,10 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
         }
     }
     
-    public void setRespuestas(String[] respuestas,int tiempo_mitad,int tiempo_total){
+    public void setRespuestas(String[] respuestas,int tiempo_mitad,int tiempo_total,boolean movimiento){
         registro_actual.setRespuestas(respuestas);
         registro_actual.setTiempo_total(tiempo_total);
+        this.movimiento=movimiento;
         Actualizar();
     }
     
@@ -150,11 +152,14 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
         }
         
         registro_actual.setPerfil(perfil);
+        if(movimiento){
+            registro_actual.setPerfil(perfil+"Observación: El entrevistado ha salido mucho del foco de la camara esto podria alterar la calidad del resultado de la entrevista");
+        }
         Actualizar();
         setDefaultCloseOperation(1);
         label_analizando.setVisible(false);
         Directorios directorio=new Directorios();
-        directorio.Borrar(registro_actual.getCodigo());
+ //       directorio.Borrar(registro_actual.getCodigo());
         this.dispose();
     }
     
@@ -179,6 +184,7 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
         lista_entrevistas = new javax.swing.JComboBox();
 
         setClosable(true);
+        setTitle("Datos Personales Entrevista");
 
         jPanel1.setBackground(new java.awt.Color(81, 106, 138));
         jPanel1.setPreferredSize(new java.awt.Dimension(100, 41));

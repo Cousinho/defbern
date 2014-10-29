@@ -1,10 +1,17 @@
 package Pantallas;
 
 import Analisis.Rostro;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.Timer;
 import java.util.TimerTask;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfByte;
 import org.opencv.highgui.Highgui;
 import org.opencv.highgui.VideoCapture;
 
@@ -12,7 +19,7 @@ public class D_MuestraNeutra extends javax.swing.JDialog {
     Mat imagen = new Mat();
     private boolean primero=true;
     private int IndiceMuestra=0;
-    private int NumeroMuestras=5;
+    private int NumeroMuestras=10;
     public D_MuestraNeutra(java.awt.Frame parent, boolean modal,int Id_perfil, VideoCapture cap) {
         super(parent, modal);
         initComponents();
@@ -26,8 +33,9 @@ public class D_MuestraNeutra extends javax.swing.JDialog {
         TimerTask tt = new TimerTask() {
             @Override
             public void run() {
-                String archivo;
-                String directorio;
+                String directorio="";
+                String archivo="";
+                boolean estado=false;
                 if (IndiceMuestra < NumeroMuestras) {
                     if (cap.isOpened()) {
                         try {
@@ -37,11 +45,20 @@ public class D_MuestraNeutra extends javax.swing.JDialog {
                             }
                             cap.read(imagen);
                             Highgui.imwrite("imagen/Muestras/" + Id_perfil + "/" + (0) + "/" + IndiceMuestra + ".png", imagen);
+                            directorio = "imagen/Muestras/" + Id_perfil + "/" + 0 + "/";
                             archivo = IndiceMuestra+".png";
-                            directorio = "imagen/Muestras/" + Id_perfil + "/" + (0) + "/";
                             if (!imagen.empty()) {
-                                IndiceMuestra++;
-                                VerificarPosicion(archivo, directorio);
+                                Image img = convertir(imagen);
+                                ImageIcon icon = new ImageIcon(img.getScaledInstance(label_webcam.getWidth(), label_webcam.getHeight(), Image.SCALE_SMOOTH));
+                                label_webcam.setIcon(icon);
+                                if(IndiceMuestra!=0){
+                                    if(VerificarPosicion(directorio+archivo, directorio)){
+                                         IndiceMuestra++;
+                                    }   
+                                }else{
+                                    IndiceMuestra++;
+                                }
+                                
                             }
                         } catch (Exception ex) {
                         }
@@ -59,14 +76,37 @@ public class D_MuestraNeutra extends javax.swing.JDialog {
 
     }
     
-    private void VerificarPosicion(String archivo, String directorio){
-        Rostro rostro = new Rostro();
-        if(!rostro.Buscar(archivo, directorio)){
-            JOptionPane.showMessageDialog(null, "Por favor mantenga su rostro en dirección a la cámara.");
-            IndiceMuestra = IndiceMuestra - 1;
+      private Image convertir(Mat imagen) {
+        MatOfByte matOfByte = new MatOfByte();
+        Highgui.imencode(".jpg", imagen, matOfByte); 
+
+        byte[] byteArray = matOfByte.toArray();
+        BufferedImage bufImage = null;
+
+        try {
+
+            InputStream in = new ByteArrayInputStream(byteArray);
+            bufImage = ImageIO.read(in);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return (Image)bufImage;
+    }
+
+    
+    
+    
+    
+    private boolean VerificarPosicion(String archivo, String directorio){
+        Rostro rostro = new Rostro();
+        if(!rostro.Buscar(archivo, directorio,false)){
+            JOptionPane.showMessageDialog(null, "Por favor mantenga su rostro en dirección a la cámara.");
+            return false;
+        }
+        return true;
     }
     @SuppressWarnings("unchecked")
+    
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -74,6 +114,7 @@ public class D_MuestraNeutra extends javax.swing.JDialog {
         ayuda_1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        label_webcam = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -89,21 +130,30 @@ public class D_MuestraNeutra extends javax.swing.JDialog {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
 
+        label_webcam.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(b_iniciar)
-                .addGap(457, 457, 457))
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(213, Short.MAX_VALUE)
+                .addContainerGap(364, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(ayuda_1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(213, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(501, 501, 501)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(label_webcam, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(93, 93, 93)
+                                .addComponent(b_iniciar)))
+                        .addGap(110, 110, 110)))
+                .addContainerGap(365, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -112,11 +162,16 @@ public class D_MuestraNeutra extends javax.swing.JDialog {
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ayuda_1)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addComponent(b_iniciar)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
+                        .addGap(58, 58, 58))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(label_webcam, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(b_iniciar)
+                        .addGap(38, 38, 38))))
         );
 
         pack();
@@ -175,5 +230,6 @@ public class D_MuestraNeutra extends javax.swing.JDialog {
     private javax.swing.JButton b_iniciar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel label_webcam;
     // End of variables declaration//GEN-END:variables
 }

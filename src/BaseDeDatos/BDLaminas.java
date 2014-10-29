@@ -133,8 +133,33 @@ public class BDLaminas {
     }
 
     
-    //método que devuelve una lista de todas los usuarios 
+    //método que devuelve una lista de todas las laminas
     public static ArrayList<Lamina> Lista(int id_entrevista) throws SQLException {
+            Connection conexion = Conexion_BD.getConnection();
+            PreparedStatement sentencia_mostrar = null;
+            ArrayList<Lamina> lista = new ArrayList<Lamina>();
+
+            sentencia_mostrar = conexion.prepareStatement("select * from laminas where id_entrevista="+id_entrevista+" order by codigo");
+            ResultSet resultado = sentencia_mostrar.executeQuery();
+            while (resultado.next()) {
+                Lamina lamina = new Lamina() {
+                };
+                lamina.setCodigo(resultado.getInt("codigo"));
+          //      try {
+          //         lamina.setImagen(ConvertirImagen(resultado.getBytes("imagen")));
+          //      } catch (IOException ex) {
+          //          Logger.getLogger(BDLaminas.class.getName()).log(Level.SEVERE, null, ex);
+         //       }
+                lamina.setDescripcion(resultado.getString("descripcion"));
+                lamina.setEntrevista(BDEntrevistas.buscarId(resultado.getInt("id_entrevista")));
+                lista.add(lamina);
+            }
+            conexion.close();
+            sentencia_mostrar.close();
+            return lista;
+        }
+      //método que devuelve una lista de todas las laminas
+    public static ArrayList<Lamina> ListaLaminas(int id_entrevista) throws SQLException {
             Connection conexion = Conexion_BD.getConnection();
             PreparedStatement sentencia_mostrar = null;
             ArrayList<Lamina> lista = new ArrayList<Lamina>();
@@ -158,7 +183,7 @@ public class BDLaminas {
             sentencia_mostrar.close();
             return lista;
         }
-     
+    
     private static Image ConvertirImagen(byte[] bytes) throws IOException {
         ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
         Iterator readers = ImageIO.getImageReadersByFormatName("jpeg");    

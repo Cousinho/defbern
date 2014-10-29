@@ -38,6 +38,8 @@ import org.opencv.highgui.VideoCapture;
 
 public class P_Presentacion extends javax.swing.JFrame {
     private int listamuestras[] = new int[20];
+    boolean primero=true;
+    int movimiento=0;
     int angle = 0;
     Image img;
     double alto;
@@ -54,7 +56,6 @@ public class P_Presentacion extends javax.swing.JFrame {
     Mat imagen = new Mat();
     int IndiceMuestra = 0;
     int NumeroMuestras = 5;
-    boolean primero = true;
     private String[] Respuestas;
     P_IniciarEntrevista pantalla_padre;
     DefaultTableModel ModeloTabla = new DefaultTableModel();
@@ -69,7 +70,7 @@ public class P_Presentacion extends javax.swing.JFrame {
         b_finalizar.setVisible(false);
         Id_registro = registro;
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        Lista = BDLaminas.Lista(entrevista.getCodigo());
+        Lista = BDLaminas.ListaLaminas(entrevista.getCodigo());
         TamañoLista = Lista.size();
         CrearDirectorio();
         MuestraInicial();
@@ -195,13 +196,13 @@ public class P_Presentacion extends javax.swing.JFrame {
         lamina.setAlignmentY(0.0F);
         lamina.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         lamina.setMinimumSize(new java.awt.Dimension(1200, 500));
-        getContentPane().add(lamina, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 31, 1015, 490));
+        getContentPane().add(lamina, new org.netbeans.lib.awtextra.AbsoluteConstraints(205, 31, 930, 490));
 
         panel_respuestas.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         ayuda1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         ayuda1.setText("Escriba su respuesta aquí");
-        panel_respuestas.add(ayuda1, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 0, 160, -1));
+        panel_respuestas.add(ayuda1, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 0, 180, -1));
 
         ayuda2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         ayuda2.setText("  Marque lo que ve en la lista ");
@@ -220,17 +221,17 @@ public class P_Presentacion extends javax.swing.JFrame {
         panel_opciones.setLayout(panel_opcionesLayout);
         panel_opcionesLayout.setHorizontalGroup(
             panel_opcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 866, Short.MAX_VALUE)
+            .addGap(0, 836, Short.MAX_VALUE)
         );
         panel_opcionesLayout.setVerticalGroup(
             panel_opcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 496, Short.MAX_VALUE)
         );
 
-        panel_respuestas.add(panel_opciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, 870, 114));
+        panel_respuestas.add(panel_opciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, 840, 100));
 
         texto_buscar.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        panel_respuestas.add(texto_buscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 20, 240, 51));
+        panel_respuestas.add(texto_buscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 20, 260, 51));
 
         b_nada.setText("No veo nada");
         b_nada.setMaximumSize(new java.awt.Dimension(100, 40));
@@ -240,7 +241,7 @@ public class P_Presentacion extends javax.swing.JFrame {
                 b_nadaActionPerformed(evt);
             }
         });
-        panel_respuestas.add(b_nada, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 90, 120, 40));
+        panel_respuestas.add(b_nada, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 80, 120, 40));
 
         b_otrarespuesta.setText("Otra respuesta");
         b_otrarespuesta.addActionListener(new java.awt.event.ActionListener() {
@@ -248,9 +249,9 @@ public class P_Presentacion extends javax.swing.JFrame {
                 b_otrarespuestaActionPerformed(evt);
             }
         });
-        panel_respuestas.add(b_otrarespuesta, new org.netbeans.lib.awtextra.AbsoluteConstraints(1010, 90, 110, 40));
+        panel_respuestas.add(b_otrarespuesta, new org.netbeans.lib.awtextra.AbsoluteConstraints(980, 80, 140, 40));
 
-        getContentPane().add(panel_respuestas, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 530, 1130, -1));
+        getContentPane().add(panel_respuestas, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 544, 1130, 120));
 
         b_siguiente.setText("Siguiente");
         b_siguiente.addActionListener(new java.awt.event.ActionListener() {
@@ -314,24 +315,21 @@ public class P_Presentacion extends javax.swing.JFrame {
         TimerTask tt = new TimerTask() {
             @Override
             public void run() {
-                String archivo;
-                String directorio;
+                String directorio="";
+                String archivo="";
                 if (IndiceMuestra < NumeroMuestras) {
                     if (cap.isOpened()) {
                         try {
-                            if (primero) {
-                                Thread.sleep(2000);
-                                primero = false;
-                            }
                             cap.read(imagen);
                             Highgui.imwrite("imagen/Muestras/" + Id_registro + "/" + (IndiceLista) + "/" + IndiceMuestra + ".png", imagen);
-                            archivo = IndiceMuestra+".png";
-                            directorio = "imagen/Muestras/" + Id_registro + "/" + (0) + "/";
+                            archivo="imagen/Muestras/" + Id_registro + "/" + (IndiceLista) + "/" + IndiceMuestra + ".png";
+                            directorio="imagen/Muestras/" + Id_registro + "/" + (IndiceLista) + "/";
                             if (!imagen.empty()) {
-                                IndiceMuestra++;
-                                VerificarPosicion(archivo, directorio);
+                                if(VerificarPosicion(archivo,directorio)){
+                                    IndiceMuestra++;
+                                }
+                                
                             }
-                            
 
                         } catch (Exception ex) {
                         }
@@ -350,14 +348,16 @@ public class P_Presentacion extends javax.swing.JFrame {
 
     }
     
-    private void VerificarPosicion(String archivo, String directorio){
+    private boolean VerificarPosicion(String archivo, String directorio){
         Rostro rostro = new Rostro();
-        if(!rostro.Buscar(archivo, directorio)){
+        if(!rostro.Buscar(archivo, directorio,false)){
             JOptionPane.showMessageDialog(null, "Por favor mantenga su rostro en dirección a la cámara.");
-            IndiceMuestra = IndiceMuestra - 1;
+            movimiento++;
+            return false;
         }
+        return true;
     }
-    
+
     private void b_rotarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_rotarActionPerformed
         CambiarAngulo(angulo);
         switch (angulo) {
@@ -407,10 +407,15 @@ public class P_Presentacion extends javax.swing.JFrame {
     }//GEN-LAST:event_b_siguienteActionPerformed
 
     private void b_finalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_finalizarActionPerformed
+        BuscarRespuesta();
         if(Respuestas[IndiceLista-1].equals("")){
             JOptionPane.showMessageDialog(null, "Por pavor elija alguna repuesta");
         }else{
-            pantalla_padre.setRespuestas(Respuestas,tiempo_mitad,s);
+            boolean movi=false;
+            if(movimiento>5){
+                movi=true;
+            }
+            pantalla_padre.setRespuestas(Respuestas,tiempo_mitad,s,movi);
             t.stop();
             cap.release();
             this.dispose();

@@ -14,6 +14,7 @@ public class Registro {
     private Date fecha;
     private int tiempo_total;
     private String perfil;
+    private String emociones;
     /**
      * @return the ci
      */
@@ -167,5 +168,19 @@ public class Registro {
      */
     public void setPerfil(String perfil) {
         this.perfil = perfil;
+    }
+
+    /**
+     * @return the emociones
+     */
+    public String getEmociones() {
+        return emociones;
+    }
+
+    /**
+     * @param emociones the emociones to set
+     */
+    public void setEmociones(String emociones) {
+        this.emociones = emociones;
     }
 }
