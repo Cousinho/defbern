@@ -24,13 +24,14 @@ public class Ojos {
     private String NombreArchivo="";
     //Tamaño de la lista de ojos
     private int tamaño=0;
-    
+    private int valor=1;
     public void Analizar(String Archivo,String Directorio) {
             NombreArchivo=Archivo;
             //si no encuentra nada con el primer clasificador busca con el segundo
-             Buscar("1",Directorio);
+            Buscar("1",Directorio);
             if(tamaño==0){
                 Buscar("2",Directorio);
+                valor=2;
             }
             SelecionarOjos();
             
@@ -38,7 +39,7 @@ public class Ojos {
     
         //Metodo que detecta los ojos en la imagen
         public void Buscar(String numero,String Directorio){
-                    CascadeClassifier faceDetector = new CascadeClassifier("xml/Ojos"+numero+".xml");
+                CascadeClassifier faceDetector = new CascadeClassifier("xml/Ojos"+numero+".xml");
                     Mat image;
                     MatOfRect faceDetections;
                     image = Highgui.imread(NombreArchivo);
@@ -137,5 +138,9 @@ public class Ojos {
        //Metodo que devuelve el valor del Tamaño Ojo1 
        public Point getTamaño2(){
            return tamañoojo2;
+       }
+       
+       public int valor(){
+           return valor;
        }
 }

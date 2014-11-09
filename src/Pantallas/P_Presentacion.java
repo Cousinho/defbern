@@ -46,7 +46,6 @@ public class P_Presentacion extends javax.swing.JFrame {
     double ancho;
     int angulo;
     int tiempo_total;
-    int tiempo_mitad;
     Entrevista entrevista;
     ArrayList<Lamina> Lista;
     int TamañoLista = 0;
@@ -57,6 +56,9 @@ public class P_Presentacion extends javax.swing.JFrame {
     int IndiceMuestra = 0;
     int NumeroMuestras = 5;
     private String[] Respuestas;
+    private String NuevasRespuestas="";
+    boolean otrarespuesta=false;
+    boolean nuevasrespuestas=false;
     P_IniciarEntrevista pantalla_padre;
     DefaultTableModel ModeloTabla = new DefaultTableModel();
     private int tamaño_lista=0;
@@ -81,7 +83,7 @@ public class P_Presentacion extends javax.swing.JFrame {
         Image imagen = null;
         if (TamañoLista != 0) {
             imagen = Lista.get(IndiceLista).getImagen();
-            Respuestas = new String[TamañoLista];
+            Respuestas = new String[TamañoLista+1];
         }
         CargarImagen(imagen);
         if (primero) {
@@ -160,11 +162,17 @@ public class P_Presentacion extends javax.swing.JFrame {
                             } catch (SQLException ex) {
                                 Logger.getLogger(P_Presentacion.class.getName()).log(Level.SEVERE, null, ex);
                             }
-                            if(Respuestas[IndiceLista-1].equals("")){
+                            System.out.println(Respuestas[IndiceLista-1].equals(""));
+                            if(!Respuestas[IndiceLista-1].equals("")){
+                                System.out.println(Respuestas[IndiceLista-1]);
+                                Respuestas[IndiceLista-1]=Respuestas[IndiceLista-1]+";"+Nomenclatura;
+                                System.out.println(Respuestas[IndiceLista-1]);
+                                Insertar=true;
+                            }else{
                                 Respuestas[IndiceLista-1]=Nomenclatura;
                                 b_siguiente.setVisible(true);
-                            }else{
-                                Respuestas[IndiceLista-1]=Respuestas[IndiceLista-1]+" "+Nomenclatura;
+                                b_nada.setVisible(false);
+                                Insertar=true;
                             }
                         }
 
@@ -228,7 +236,7 @@ public class P_Presentacion extends javax.swing.JFrame {
             .addGap(0, 496, Short.MAX_VALUE)
         );
 
-        panel_respuestas.add(panel_opciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, 840, 100));
+        panel_respuestas.add(panel_opciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, 840, 130));
 
         texto_buscar.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         panel_respuestas.add(texto_buscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 20, 260, 51));
@@ -251,7 +259,7 @@ public class P_Presentacion extends javax.swing.JFrame {
         });
         panel_respuestas.add(b_otrarespuesta, new org.netbeans.lib.awtextra.AbsoluteConstraints(980, 80, 140, 40));
 
-        getContentPane().add(panel_respuestas, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 544, 1130, 120));
+        getContentPane().add(panel_respuestas, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 524, 1130, 150));
 
         b_siguiente.setText("Siguiente");
         b_siguiente.addActionListener(new java.awt.event.ActionListener() {
@@ -381,12 +389,13 @@ public class P_Presentacion extends javax.swing.JFrame {
 
     private void b_siguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_siguienteActionPerformed
        BuscarRespuesta();
-       if(Respuestas[IndiceLista-1].equals("")){
+       if(Respuestas[IndiceLista-1].equals("")&&otrarespuesta==false){
             JOptionPane.showMessageDialog(null, "Por pavor elija alguna repuesta");
        }else{ 
-            if(IndiceLista==5){
-                tiempo_mitad=s;
+            if(Respuestas[IndiceLista-1].equals("")){
+               Respuestas[IndiceLista-1]="nueva"; 
             }
+            otrarespuesta=false;
             IndiceMuestra = 0;
             texto_buscar.setText("");
             actualizartabla();
@@ -408,14 +417,15 @@ public class P_Presentacion extends javax.swing.JFrame {
 
     private void b_finalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_finalizarActionPerformed
         BuscarRespuesta();
-        if(Respuestas[IndiceLista-1].equals("")){
+        if(Respuestas[IndiceLista-1].equals("")&&!otrarespuesta){
             JOptionPane.showMessageDialog(null, "Por pavor elija alguna repuesta");
         }else{
             boolean movi=false;
             if(movimiento>5){
                 movi=true;
             }
-            pantalla_padre.setRespuestas(Respuestas,tiempo_mitad,s,movi);
+            Respuestas[IndiceLista]=NuevasRespuestas;
+            pantalla_padre.setRespuestas(Respuestas,s,movi,nuevasrespuestas);
             t.stop();
             cap.release();
             this.dispose();
@@ -447,9 +457,15 @@ public class P_Presentacion extends javax.swing.JFrame {
             Logger.getLogger(P_Presentacion.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_b_otrarespuestaActionPerformed
+    
     public void setRespuesta(Opciones opcion){
-        System.out.println(opcion.getNomenclatura());
-        Respuestas[IndiceLista-1]=opcion.getNomenclatura();
+        if(nuevasrespuestas==false){
+            nuevasrespuestas=true;
+            NuevasRespuestas=NuevasRespuestas+opcion.getCodigo()+";"+opcion.getLamina().getCodigo();
+        }else{
+            NuevasRespuestas=NuevasRespuestas+","+opcion.getCodigo()+","+opcion.getLamina().getCodigo();
+        }
+        otrarespuesta=true;
     }
     private void CambiarAngulo(int ang) {
         BufferedImage image = null;

@@ -80,7 +80,7 @@ public class P_Perfil extends javax.swing.JInternalFrame {
     public void limpiartabla(){
         int tamaño =LPerfiles.getRowCount()-1;
         for(int i=tamaño; i>=0;i--){
-              LPerfiles.removeRow(i );
+              LPerfiles.removeRow(i);
         }
     }
     

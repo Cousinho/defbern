@@ -16,7 +16,7 @@ public class BDRegistros {
         int codigo=mayor()+1;
         Connection conexion = Conexion_BD.getConnection();
         PreparedStatement sentencia_insertar= null;
-        sentencia_insertar = conexion.prepareStatement("insert into registros (codigo, ci, nombre, apellido, descripcion, fecha, id_usuario, codigo_grupo,respuestas,tiempo_total,perfil,emociones) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
+        sentencia_insertar = conexion.prepareStatement("insert into registros (codigo, ci, nombre, apellido, descripcion, fecha, id_usuario, codigo_grupo,respuestas,tiempo_total,perfil,emociones,analizado) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
         sentencia_insertar.setInt(1, codigo);
         sentencia_insertar.setInt(2, registro.getCi());
         sentencia_insertar.setString(3, registro.getNombre());
@@ -29,7 +29,7 @@ public class BDRegistros {
         sentencia_insertar.setInt(10, registro.getTiempo_total());
         sentencia_insertar.setString(11, registro.getPerfil());
         sentencia_insertar.setString(12, registro.getEmociones());
-        
+        sentencia_insertar.setBoolean(13, registro.getAnalizado());
         try {
             sentencia_insertar.executeUpdate();
         } catch (SQLException ex) {
@@ -62,7 +62,7 @@ public class BDRegistros {
     public static boolean actualizar(Registro registro) throws SQLException {
         Connection conexion = Conexion_BD.getConnection();
         PreparedStatement sentencia_actualizar = null;
-        sentencia_actualizar = conexion.prepareStatement("update registros set ci=?, nombre=?, apellido=?, descripcion=?, id_usuario=?, respuestas=?, tiempo_total=?, perfil=?,emociones=? where codigo=" + registro.getCodigo());
+        sentencia_actualizar = conexion.prepareStatement("update registros set ci=?, nombre=?, apellido=?, descripcion=?, id_usuario=?, respuestas=?, tiempo_total=?, perfil=?,emociones=?,analizado=? where codigo=" + registro.getCodigo());
         sentencia_actualizar.setInt(1, registro.getCi());
         sentencia_actualizar.setString(2, registro.getNombre());
         sentencia_actualizar.setString(3, registro.getApellido());
@@ -72,6 +72,7 @@ public class BDRegistros {
         sentencia_actualizar.setInt(7, registro.getTiempo_total());
         sentencia_actualizar.setString(8, registro.getPerfil());
         sentencia_actualizar.setString(9, registro.getEmociones());
+        sentencia_actualizar.setBoolean(10, registro.getAnalizado());
         int rowsUpdated = sentencia_actualizar.executeUpdate();
            conexion.close();
            sentencia_actualizar.close();
@@ -108,6 +109,7 @@ public class BDRegistros {
                 registro.setRespuestas(CrearArray(resultado.getString("respuestas")));
                 registro.setPerfil(resultado.getString("perfil"));
                 registro.setEmociones(resultado.getString("emociones"));
+                registro.setAnalizado(resultado.getBoolean("analizado"));
             }
             conexion.close();
             sentencia_buscar.close();
@@ -143,7 +145,7 @@ public class BDRegistros {
                 registro.setRespuestas(CrearArray(resultado.getString("id_respuestas")));
                 registro.setPerfil(resultado.getString("perfil"));
                 registro.setEmociones(resultado.getString("emociones"));
-
+                registro.setAnalizado(resultado.getBoolean("analizando"));
             }
             conexion.close();
             sentencia_buscar.close();
@@ -160,7 +162,7 @@ public class BDRegistros {
             PreparedStatement sentencia_mostrar = null;
             ArrayList<Registro> lista = new ArrayList<Registro>();
 
-            sentencia_mostrar = conexion.prepareStatement("select * from registros order by codigo");
+            sentencia_mostrar = conexion.prepareStatement("select * from registros where analizado=TRUE order by codigo");
             ResultSet resultado = sentencia_mostrar.executeQuery();
             while (resultado.next()) {
                 Registro registro = new Registro() {
@@ -176,6 +178,37 @@ public class BDRegistros {
                 registro.setRespuestas(CrearArray(resultado.getString("respuestas")));
                 registro.setPerfil(resultado.getString("perfil"));
                 registro.setEmociones(resultado.getString("emociones"));
+                registro.setAnalizado(resultado.getBoolean("analizado"));
+                lista.add(registro);
+            }
+            conexion.close();
+            sentencia_mostrar.close();
+            return lista;
+        }
+    
+//método que devuelve una lista de todas los usuarios 
+    public static ArrayList<Registro> ListaSinAnalizar() throws SQLException {
+            Connection conexion = Conexion_BD.getConnection();
+            PreparedStatement sentencia_mostrar = null;
+            ArrayList<Registro> lista = new ArrayList<Registro>();
+
+            sentencia_mostrar = conexion.prepareStatement("select * from registros where analizado=FALSE order by codigo");
+            ResultSet resultado = sentencia_mostrar.executeQuery();
+            while (resultado.next()) {
+                Registro registro = new Registro() {
+                };
+                registro.setCodigo(resultado.getInt("codigo"));
+                registro.setCi(resultado.getInt("ci"));
+                registro.setNombre(resultado.getString("nombre"));
+                registro.setApellido(resultado.getString("apellido"));
+                registro.setDescripcion(resultado.getString("descripcion"));
+                registro.setFecha(resultado.getDate("fecha"));
+                registro.setUsuario(BDUsuarios.buscarId(resultado.getInt("id_usuario")));
+                registro.setCodigo_grupo(resultado.getInt("codigo_grupo"));
+                registro.setRespuestas(CrearArray(resultado.getString("respuestas")));
+                registro.setPerfil(resultado.getString("perfil"));
+                registro.setEmociones(resultado.getString("emociones"));
+                registro.setAnalizado(resultado.getBoolean("analizado"));
                 lista.add(registro);
             }
             conexion.close();
@@ -206,7 +239,7 @@ public class BDRegistros {
                 if(x==0){
                     resultado=Lista[x];
                 }else{
-                    resultado=resultado+","+Lista[x];
+                    resultado=resultado+" "+Lista[x];
                 }
             }
         }
@@ -216,7 +249,7 @@ public class BDRegistros {
     
     private static String[] CrearArray(String Lista){
         String[] resultado;
-        resultado = Lista.split(",");
+        resultado = Lista.split(" ");
         return resultado;
     }
 }

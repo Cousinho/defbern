@@ -358,7 +358,7 @@ public class D_Lamina extends javax.swing.JDialog {
                 p_envia=BDOpciones.buscarId(Integer.parseInt(valor.toString()),lamina_actual.getCodigo());
                 final int codigo=p_envia.getCodigo();
                 final int codigo_lamina=p_envia.getLamina().getCodigo();
-                D_Opciones editar= new D_Opciones(pantalla_padre,true,p_envia,lamina_actual);
+                D_Opciones editar= new D_Opciones(pantalla_padre,true,p_envia,lamina_actual,true);
                 editar.setLocationRelativeTo(null);
                 editar.setResizable(false);
                 editar.setVisible(true);
@@ -405,9 +405,9 @@ public class D_Lamina extends javax.swing.JDialog {
                         JOptionPane.showMessageDialog(null, "No se puede eliminar opción");
 
                     }
-
                     //actualiza tabla despues de eliminar fila
-                    actualizartabla();
+                    LOpciones.removeRow(fila);
+                    //actualizartabla();
                 }
               }
         }

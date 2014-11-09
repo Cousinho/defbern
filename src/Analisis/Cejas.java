@@ -22,29 +22,32 @@ public class Cejas {
            
     public void Analizar(String Nombre,String Directorio,Point ojo1, Point ojo2,Point tamañoojo) {
             NombreArchivo=Nombre;
-            BuscarCejas(ojo1,ojo2,tamañoojo,Directorio);
-            SelecionarCejas(ojo1, ojo2); 
+            BuscarCejas1(ojo1,ojo2,tamañoojo,Directorio);
+            if(tamaño==0){
+                BuscarCejas2(ojo1,ojo2,tamañoojo,Directorio);
+            }
+            SelecionarCejas(ojo1, ojo2);
     }
     
     //Copia y genera valores si solo se encuentra 1 ceja
     private void CopiarValores(Point ojo1,Point ojo2){
-       int Distancia=Math.abs((int)(listacejas[1][1]-ojo1.x));
-               if(Distancia>DistanciaMinima){
-                   ceja2.x=listacejas[1][1]+Math.abs(listacejas[1][1]-ojo2.x);
-                   ceja2.y=listacejas[1][2];
-                   ceja1.x=ojo1.x;
-                   ceja1.y=ojo1.y+(ceja2.y-ojo2.y);   
-               }else{
-                   ceja1.x=listacejas[1][1];
-                   ceja1.y=listacejas[1][2];
-                   ceja2.x=ojo2.x+Distancia;
-                   ceja2.y=ojo2.y+(ceja1.y-ojo1.y);
-               } 
+        int Distancia=Math.abs((int)(listacejas[1][1]-ojo1.x));
+        if(Distancia>DistanciaMinima){
+            ceja2.x=listacejas[1][1]+Math.abs(listacejas[1][1]-ojo2.x);
+            ceja2.y=listacejas[1][2];
+            ceja1.x=ojo1.x;
+            ceja1.y=ojo1.y+(ceja2.y-ojo2.y);   
+        }else{
+            ceja1.x=listacejas[1][1];
+            ceja1.y=listacejas[1][2];
+            ceja2.x=ojo2.x+Distancia;
+            ceja2.y=ojo2.y+(ceja1.y-ojo1.y);
+        } 
     }
             
     //Utiliza el xml para encontrar la lista de Cejas
-    public void BuscarCejas(Point Ojo1, Point Ojo2, Point tamañoojo,String Directorio){
-        CascadeClassifier faceDetector = new CascadeClassifier("xml/Cejas.xml");
+    public void BuscarCejas1(Point Ojo1, Point Ojo2, Point tamañoojo,String Directorio){
+        CascadeClassifier faceDetector = new CascadeClassifier("xml/Cejas1.xml");
         String nombre="Cejas";
         Mat image;
         MatOfRect faceDetections;
@@ -63,8 +66,8 @@ public class Cejas {
                     listacejas[nu][3]=rect.width;
                     listacejas[nu][4]=rect.height;
                     tamaño++;
-                    Core.rectangle(image, new Point(rect.x, rect.y), new Point(rect.x +rect.width, rect.y +rect.height), new Scalar(0, 240, 0));
-                    Highgui.imwrite(Directorio+"Cejas.png", image);
+                    Core.rectangle(image, new Point(rect.x, rect.y), new Point(rect.x +(rect.width), rect.y +(rect.height)), new Scalar(0, 240, 0));
+                    Highgui.imwrite(Directorio+"Ceja1.png", image);
                     nu++;
                 }
             }
@@ -80,13 +83,57 @@ public class Cejas {
                         tamaño++;
                         //Core.rectangle(image, new Point(rect.x+(rect.width/2), rect.y+(rect.height/2)), new Point(rect.x+(rect.width/2)+5, rect.y+(rect.height/2)+5), new Scalar(0, 240, 0));
                         Core.rectangle(image, new Point(rect.x, rect.y), new Point(rect.x +rect.width, rect.y +rect.height), new Scalar(0, 240, 0));
-                        Highgui.imwrite(Directorio+"Cejas.png", image);
+                        Highgui.imwrite(Directorio+"Cejas1.png", image);
                         nu++;
                     }
                 }
             }
        }
     
+    
+    //Utiliza el xml para encontrar la lista de Cejas
+    public void BuscarCejas2(Point Ojo1, Point Ojo2, Point tamañoojo,String Directorio){
+        CascadeClassifier faceDetector = new CascadeClassifier("xml/Cejas2.xml");
+        String nombre="Cejas";
+        Mat image;
+        MatOfRect faceDetections;
+        image = Highgui.imread(NombreArchivo);
+        DistanciaMinima=image.width()/15;
+        faceDetections = new MatOfRect();    
+        faceDetector.detectMultiScale(image, faceDetections);
+        boolean vacio=true;
+        // Busca las cejas que se encuentren por encima de los ojos y a una distancia minima de ellos
+            for (Rect rect : faceDetections.toArray()) {
+                if(rect.y+(rect.height/2)<Ojo1.y && DistanciaMinima<Math.abs((rect.y+(rect.height/2))-Ojo1.y)&&
+                    tamañoojo.x>rect.x){
+                    vacio=false;
+                    listacejas[nu][1]=rect.x+(rect.width/2);
+                    listacejas[nu][2]=rect.y+(rect.height/5);
+                    listacejas[nu][3]=rect.width;
+                    listacejas[nu][4]=rect.height/5;
+                    tamaño++;
+                    Core.rectangle(image, new Point(rect.x, rect.y), new Point(rect.x +(rect.width), rect.y +(rect.height/2.5)), new Scalar(0, 240, 0));
+                    Highgui.imwrite(NombreArchivo+"Cejas2.png", image);
+                    nu++;
+                }
+            }
+            //Si la lista esta vacia crea de nuevo la misma sin restricción de distancia
+            if(vacio){
+                for (Rect rect : faceDetections.toArray()) {
+                    if(rect.y+(rect.height/2)<Ojo1.y ){
+                        vacio=false;
+                        listacejas[nu][1]=rect.x+(rect.width/2);
+                        listacejas[nu][2]=rect.y+(rect.height/5);
+                        listacejas[nu][3]=rect.width;
+                        listacejas[nu][4]=rect.height;
+                        tamaño++;
+                        Core.rectangle(image, new Point(rect.x, rect.y), new Point(rect.x +rect.width, rect.y +rect.height/2.5), new Scalar(0, 240, 0));
+                        Highgui.imwrite(NombreArchivo+"Cejas2.png", image);
+                        nu++;
+                    }
+                }
+            }
+       }
     
     
     public void SelecionarCejas(Point ojo1, Point ojo2){

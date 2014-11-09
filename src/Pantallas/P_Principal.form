@@ -47,7 +47,7 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="SM_Entrevista">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Entrevista"/>
+                <Property name="text" type="java.lang.String" value="Entrevistas"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SM_EntrevistaActionPerformed"/>
@@ -55,7 +55,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="SM_Lamina">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Lamina"/>
+                <Property name="text" type="java.lang.String" value="Laminas"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SM_LaminaActionPerformed"/>
@@ -63,7 +63,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="SM_Perfil">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Perfil"/>
+                <Property name="text" type="java.lang.String" value="Perfiles"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SM_PerfilActionPerformed"/>
@@ -71,23 +71,15 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="SM_Usuario">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Usuario"/>
+                <Property name="text" type="java.lang.String" value="Usuarios"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SM_UsuarioActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="SM_Registro">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Registro"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SM_RegistroActionPerformed"/>
-              </Events>
-            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="SM_Grupos">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Grupo"/>
+                <Property name="text" type="java.lang.String" value="Grupos"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SM_GruposActionPerformed"/>
@@ -99,6 +91,22 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SM_RolActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="SM_Registro">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Registros"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SM_RegistroActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="SM_RegistroSinAnalizar">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Registros sin Analizar"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SM_RegistroSinAnalizarActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>

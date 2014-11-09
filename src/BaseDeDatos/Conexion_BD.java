@@ -1,8 +1,5 @@
 package BaseDeDatos;
 
-import Pantallas.D_Conexion;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;

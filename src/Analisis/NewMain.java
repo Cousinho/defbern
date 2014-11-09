@@ -6,7 +6,13 @@
 package Analisis;
 
 import BaseDeDatos.BDRegistros;
+import Entidades.Registro;
 import java.sql.SQLException;
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.core.Point;
+import org.opencv.core.Scalar;
+import org.opencv.highgui.Highgui;
 
 /**
  *
@@ -19,26 +25,22 @@ public class NewMain {
      */
     public static void main(String[] args) throws SQLException {
         System.loadLibrary("opencv_java249");
-        //double ss=0.9999997934462066;
-        //double sss=7.232670718317902E-7;
-        //System.out.println(sss<ss);
-        /*Analisis s = new Analisis();
-        int[] ss = s.Analizar(5);
-        System.out.println(ss[1]);
-        System.out.println(ss[2]);
-        System.out.println(ss[3]);
-        System.out.println(ss[4]);
-    System.out.println(ss[5]);
-        System.out.println(ss[6]);
-        System.out.println(ss[7]);
-        System.out.println(ss[8]);
-        System.out.println(ss[9]);
-        System.out.println(ss[10]);
-        System.out.println(ss[0]);
-        */
-        AnalisisRorschach ro=new AnalisisRorschach();
-        String s=ro.AnalizarRegistro(BDRegistros.buscarId(5));
-        System.out.println(s);
+        Analisis nuevo = new Analisis();
+        int[] ss = nuevo.Analizar(7);
+        for(int x=1;x<ss.length;x++){
+            System.out.println(ss[x]);
+        }
         
+
+        //System.out.println(ss[2]);
+        // System.out.println(ss[3]);
+        // System.out.println(ss[4]);
+        // System.out.println(ss[5]);
+        // System.out.println(ss[6]);
+        //System.out.println(ss[7]);
+        //System.out.println(ss[8]);
+        //System.out.println(ss[9]);
+        //System.out.println(ss[10]);
+
     }
 }

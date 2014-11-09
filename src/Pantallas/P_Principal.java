@@ -14,13 +14,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.net.*;
+
 public class P_Principal extends javax.swing.JFrame {
     Usuario usuario;
     ArrayList<String> permisos = new ArrayList();
     private int CodigoGrupo=0;
     public P_Principal(Usuario parametro_usuario) throws SQLException {
+        System.loadLibrary("opencv_java249");
         this.setTitle("Sistema de Analisis");
+        this.setExtendedState(MAXIMIZED_BOTH);
         usuario=parametro_usuario;
         initComponents();
         BloquearComponentes();
@@ -102,9 +104,10 @@ public class P_Principal extends javax.swing.JFrame {
         SM_Lamina = new javax.swing.JMenuItem();
         SM_Perfil = new javax.swing.JMenuItem();
         SM_Usuario = new javax.swing.JMenuItem();
-        SM_Registro = new javax.swing.JMenuItem();
         SM_Grupos = new javax.swing.JMenuItem();
         SM_Rol = new javax.swing.JMenuItem();
+        SM_Registro = new javax.swing.JMenuItem();
+        SM_RegistroSinAnalizar = new javax.swing.JMenuItem();
         M_Entrevista = new javax.swing.JMenu();
         SM_EntrevistaGrupal = new javax.swing.JMenuItem();
         SM_EntrevistaIndividual = new javax.swing.JMenuItem();
@@ -157,7 +160,7 @@ public class P_Principal extends javax.swing.JFrame {
 
         M_Administrar.setText("Administrar");
 
-        SM_Entrevista.setText("Entrevista");
+        SM_Entrevista.setText("Entrevistas");
         SM_Entrevista.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SM_EntrevistaActionPerformed(evt);
@@ -165,7 +168,7 @@ public class P_Principal extends javax.swing.JFrame {
         });
         M_Administrar.add(SM_Entrevista);
 
-        SM_Lamina.setText("Lamina");
+        SM_Lamina.setText("Laminas");
         SM_Lamina.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SM_LaminaActionPerformed(evt);
@@ -173,7 +176,7 @@ public class P_Principal extends javax.swing.JFrame {
         });
         M_Administrar.add(SM_Lamina);
 
-        SM_Perfil.setText("Perfil");
+        SM_Perfil.setText("Perfiles");
         SM_Perfil.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SM_PerfilActionPerformed(evt);
@@ -181,7 +184,7 @@ public class P_Principal extends javax.swing.JFrame {
         });
         M_Administrar.add(SM_Perfil);
 
-        SM_Usuario.setText("Usuario");
+        SM_Usuario.setText("Usuarios");
         SM_Usuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SM_UsuarioActionPerformed(evt);
@@ -189,15 +192,7 @@ public class P_Principal extends javax.swing.JFrame {
         });
         M_Administrar.add(SM_Usuario);
 
-        SM_Registro.setText("Registro");
-        SM_Registro.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SM_RegistroActionPerformed(evt);
-            }
-        });
-        M_Administrar.add(SM_Registro);
-
-        SM_Grupos.setText("Grupo");
+        SM_Grupos.setText("Grupos");
         SM_Grupos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SM_GruposActionPerformed(evt);
@@ -212,6 +207,22 @@ public class P_Principal extends javax.swing.JFrame {
             }
         });
         M_Administrar.add(SM_Rol);
+
+        SM_Registro.setText("Registros");
+        SM_Registro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SM_RegistroActionPerformed(evt);
+            }
+        });
+        M_Administrar.add(SM_Registro);
+
+        SM_RegistroSinAnalizar.setText("Registros sin Analizar");
+        SM_RegistroSinAnalizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SM_RegistroSinAnalizarActionPerformed(evt);
+            }
+        });
+        M_Administrar.add(SM_RegistroSinAnalizar);
 
         Menu_Principal.add(M_Administrar);
 
@@ -477,13 +488,26 @@ public class P_Principal extends javax.swing.JFrame {
 
     private void SM_AyudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SM_AyudaActionPerformed
         File local= new File("");
-        File principal=new File("file:///"+local.getAbsolutePath()+"/ayuda/Defbern.html");
+        String direccion=local.getAbsolutePath();
+        direccion=direccion.replaceAll(" ", "%20");
+        File principal=new File("file:///"+direccion+"/ayuda/Defbern.html");
         try{
            Desktop.getDesktop().browse(new URL(principal.getPath()).toURI());
        }catch(Exception e){
            e.printStackTrace();
        }
     }//GEN-LAST:event_SM_AyudaActionPerformed
+
+    private void SM_RegistroSinAnalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SM_RegistroSinAnalizarActionPerformed
+        P_RegistroSinAnalizar principal = new P_RegistroSinAnalizar(this);//, permisos);
+        Panel_Principal.add(principal);
+        try {
+            principal.setMaximum(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(P_Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        principal.show();
+    }//GEN-LAST:event_SM_RegistroSinAnalizarActionPerformed
     
     public void CodigoGrupo(int codigo){
         CodigoGrupo=codigo;
@@ -549,6 +573,7 @@ public class P_Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem SM_Lamina;
     private javax.swing.JMenuItem SM_Perfil;
     private javax.swing.JMenuItem SM_Registro;
+    private javax.swing.JMenuItem SM_RegistroSinAnalizar;
     private javax.swing.JMenuItem SM_Rol;
     private javax.swing.JMenuItem SM_Usuario;
     private javax.swing.JMenuItem S_Cerrar;

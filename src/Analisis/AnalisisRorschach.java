@@ -1,6 +1,7 @@
 package Analisis;
 
 import BaseDeDatos.BDPerfiles;
+import BaseDeDatos.BDRegistros;
 import Entidades.Registro;
 import java.sql.SQLException;
 
@@ -52,9 +53,8 @@ public class AnalisisRorschach {
     */
     private double C,M;
     private int G,D,Dd,Fmas,Fmenos,Md,Origmas,Origmenos,Bmas,Bmenos/*,H,Hd,*/,
-                A,Ad,NR,V,T,Td,Anat,Geo,GAbs,Simetria,Abstr,Sex,Obj,Mascara,Sangre,
-                Refl,Fuego,Pinza,Arq,Destr,N,Cara;
-    private int Gp,Dp,Bmasp,Fmasp,Bmenosp,Fp,IR,Tp,Bp,Origp,Objp;
+                A,Ad,NR,V,T,Td,Anat,Geo,GAbs,Simetria,Abstr,Sex,Obj,Mascara,Sangre,Refl,Fuego,Pinza,Arq,Destr,N,Cara,Nada;
+    private int Gp,Dp,Bmasp,Fmasp,Bmenosp,Fp,IR,Tp,Bp,Origp,Objp,Anatp,Mp;
     private int Origd,Origg,Origmenosp;
     private int ChoqueNegro, ChoqueColor,ChoqueRojo,ChoqueKinestesico,ChoqueSexual,ChoqueLVI;
     private String perfil="";
@@ -66,14 +66,36 @@ public class AnalisisRorschach {
     public String AnalizarRegistro(Registro registro) throws SQLException{
         registro_actual = registro;
         for(int i=0;i<registro_actual.getRespuestas().length;i++){
-            respuestas = registro_actual.getRespuestas()[i].split(" ");
+            respuestas = registro_actual.getRespuestas()[i].split(";");
             for(int j=0;j<respuestas.length;j++){
                 nomenclaturas = respuestas[j].split(",");
                 NR++;
-                AnalizarRespuesta(nomenclaturas,i+1);
+                AnalizarRespuesta(nomenclaturas,j);
             }
         }
-        choques = analizar.Analizar(registro_actual.getCodigo());
+        //choques = analizar.Analizar(registro_actual.getCodigo());
+        int b[] = new int[11];
+        b[1]=0;
+        b[2]=0;
+        b[3]=0;
+        b[4]=0;
+        b[5]=0;
+        b[6]=0;
+        b[7]=0;
+        b[8]=0;
+        b[9]=0;
+        b[10]=0;
+        choques=b;
+        String CadenaChoques="";
+        for(int x=1; x<choques.length-1;x++){
+            CadenaChoques=CadenaChoques+choques[x];
+        }
+        if(choques[0]==1){
+          perfil="Muchas imágenes tomadas son de mala calidad esto puede deberse a accesorios inapropiados"+"\n";
+          perfil=perfil+"o a la mala iluminación de lugar donde se realizó la entrevista"+"\n";
+        }
+        registro_actual.setEmociones(CadenaChoques);
+        BDRegistros.actualizar(registro_actual);
         Gp = (G*100)/NR;
         Dp = (D*100)/NR;
         if(Fmas+Fmenos==0){
@@ -82,18 +104,18 @@ public class AnalisisRorschach {
             Fmasp = (Fmas*100)/(Fmas+Fmenos);
         }
         Fp = ((Fmas+Fmenos)*100)/NR;
+        //Hp = ((H+Hd)*100)/NR;
         Bmasp = (Bmas*100)/NR;
         Bmenosp = (Bmenos*100)/NR;
         Tp = ((T+Td)*100)/NR;
         Origp = ((Origmas+Origmenos)*100)/NR;
-        Objp = Obj * 100 / NR;
         if(Origmenos+Origmas==0){
             Origmenosp=0;
         }else{
             Origmenosp = (Origmenos*100)/(Origmenos+Origmas);
         }
-        
-        
+        Anatp=(Anat*100)/NR;
+        Mp=((Mp*100)/NR);
         //Analisis de nomenclaturas
         if(C>0 && M>0){
             if(Math.abs(C-M)<=0.5){
@@ -117,34 +139,37 @@ public class AnalisisRorschach {
         }else if(G>80){
             perfil = perfil + BDPerfiles.buscarId(5).getDescripcion()+"\n";
         }
-        
-        if(Dd>0){
-            perfil = perfil + BDPerfiles.buscarId(7).getDescripcion()+"\n";
+        if(Nada<5){
+            if(Dd>3){
+                 perfil = perfil + BDPerfiles.buscarId(7).getDescripcion()+"\n";
+            }
+            if(Dp<=75&&Dp>0){
+                perfil = perfil + BDPerfiles.buscarId(8).getDescripcion()+"\n";
+            }else if(Dp>75){
+                perfil = perfil + BDPerfiles.buscarId(10).getDescripcion()+"\n";
+            }else if(Dp==0){
+                    perfil = perfil + BDPerfiles.buscarId(9).getDescripcion()+"\n";
+            }   
         }
         
-        if(Dp<=75&&Dp>0){
-            perfil = perfil + BDPerfiles.buscarId(8).getDescripcion()+"\n";
-        }else if(Dp>75){
-            perfil = perfil + BDPerfiles.buscarId(10).getDescripcion()+"\n";
-        }else if(Dp==0){
-                perfil = perfil + BDPerfiles.buscarId(9).getDescripcion()+"\n";
+        if(Nada<5){
+            if(Mp<=40){
+                perfil = perfil + BDPerfiles.buscarId(11).getDescripcion()+"\n";
+            }else if(M==4){
+                perfil = perfil + BDPerfiles.buscarId(12).getDescripcion()+"\n";
+            }    
+        }
+        System.out.println(Tp);
+        if(Nada<5){
+            if(Tp>=30 && Tp<=50){
+                perfil = perfil + BDPerfiles.buscarId(14).getDescripcion()+"\n";
+            }else if(Tp<30 && Tp>=0){
+                perfil = perfil + BDPerfiles.buscarId(15).getDescripcion()+"\n";
+            }else{
+                perfil = perfil + BDPerfiles.buscarId(16).getDescripcion()+"\n";
+            }
         }
         
-        if(M<=3 && M>0){
-            perfil = perfil + BDPerfiles.buscarId(11).getDescripcion()+"\n";
-        }else if(M==4){
-            perfil = perfil + BDPerfiles.buscarId(12).getDescripcion()+"\n";
-        }else{
-            perfil = perfil + BDPerfiles.buscarId(13).getDescripcion()+"\n";
-        }
-        
-        if(Tp>=30 && Tp<=50){
-            perfil = perfil + BDPerfiles.buscarId(14).getDescripcion()+"\n";
-        }else if(Tp<30 && Tp>0){
-            perfil = perfil + BDPerfiles.buscarId(15).getDescripcion()+"\n";
-        }else{
-            perfil = perfil + BDPerfiles.buscarId(16).getDescripcion()+"\n";
-        }
         
         if(Td>T){
             perfil = perfil + BDPerfiles.buscarId(17).getDescripcion()+"\n";
@@ -175,15 +200,16 @@ public class AnalisisRorschach {
         }else{
             perfil = perfil + BDPerfiles.buscarId(25).getDescripcion()+"\n";
         }
-    
-        if(Bmas<=1){
-            perfil = perfil + BDPerfiles.buscarId(26).getDescripcion()+"\n";
-        }else if(Bmas>1 && Bmas<=5){
-            perfil = perfil + BDPerfiles.buscarId(27).getDescripcion()+"\n";
-        }else{
-            perfil = perfil + BDPerfiles.buscarId(28).getDescripcion()+"\n";
-        }
         
+        if(Nada<5){
+            if(Bmas<=1){
+                perfil = perfil + BDPerfiles.buscarId(26).getDescripcion()+"\n";
+            }else if(Bmas>1 && Bmas<=5){
+                perfil = perfil + BDPerfiles.buscarId(27).getDescripcion()+"\n";
+            }else{
+                perfil = perfil + BDPerfiles.buscarId(28).getDescripcion()+"\n";
+            }
+        }
         if(Origp>=40 && Origp<=60){
             perfil = perfil + BDPerfiles.buscarId(29).getDescripcion()+"\n";
         }else if(Origp<40){
@@ -193,9 +219,9 @@ public class AnalisisRorschach {
         }
         
         //Análisis de determinantes
-        if(Anat<=12 && Anat>0){
+        if(Anatp<=12 && Anatp>0){
             perfil = perfil + BDPerfiles.buscarId(32).getDescripcion()+"\n";
-        }else if(Anat>12){
+        }else if(Anatp>12){
             perfil = perfil + BDPerfiles.buscarId(33).getDescripcion()+"\n";
         }
         
@@ -443,6 +469,9 @@ public class AnalisisRorschach {
                 Arq++;
             }
             if(nomenclaturas[i].contains("N")){
+                if(nomenclaturas[i].contains("Nada")){
+                    Nada++;
+                }
                 if(nomenclaturas[i].contains("Nada") && (lamina+1>0 && lamina+1<8)){
                     ChoqueNegro++;
                 }

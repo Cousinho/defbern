@@ -53,7 +53,7 @@ public class Emociones {
         output = enojo.getOutput();
         Double answer1 = output[0];
         Double answer2 = output[1];
-        if(answer1<answer2&&Math.abs(answer1-answer2)>diferencia+0.15&&Math.abs(answer1-answer2)<1){
+        if(answer1<answer2&&Math.abs(answer1-answer2)>diferencia+0.15){
             return 1;
         }else {
             return 0;

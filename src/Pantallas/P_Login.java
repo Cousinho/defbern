@@ -181,8 +181,6 @@ public class P_Login extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(P_Login.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Principal.setSize(600, 600);
-        Principal.setExtendedState(MAXIMIZED_BOTH);
         Principal.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed

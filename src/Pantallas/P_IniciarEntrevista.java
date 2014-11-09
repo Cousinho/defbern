@@ -30,6 +30,7 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
     private java.util.Date fecha_actual = new java.util.Date();
     private String[] Respuestas;
     private boolean movimiento=false;
+    private boolean nuevasrespuestas=false;
     public P_IniciarEntrevista(java.awt.Frame padre,boolean grupal,Usuario usuario) throws SQLException {
         System.loadLibrary("opencv_java249");
         initComponents();
@@ -109,9 +110,10 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
         }
     }
     
-    public void setRespuestas(String[] respuestas,int tiempo_mitad,int tiempo_total,boolean movimiento){
+    public void setRespuestas(String[] respuestas,int tiempo_total,boolean movimiento,boolean nuevo){
         registro_actual.setRespuestas(respuestas);
         registro_actual.setTiempo_total(tiempo_total);
+        nuevasrespuestas=nuevo;
         this.movimiento=movimiento;
         Actualizar();
     }
@@ -144,14 +146,16 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
         Bloqueo.setEnableContainer(panel_principal, false);
         setDefaultCloseOperation(0);
         String perfil = "";
-        AnalisisRorschach analisis=new AnalisisRorschach();
-        try {
-            perfil=analisis.AnalizarRegistro(registro_actual);
-        } catch (SQLException ex) {
-            Logger.getLogger(P_IniciarEntrevista.class.getName()).log(Level.SEVERE, null, ex);  
+        if(!nuevasrespuestas){
+            AnalisisRorschach analisis=new AnalisisRorschach();
+            try {
+                perfil=analisis.AnalizarRegistro(registro_actual);
+            } catch (SQLException ex) {
+                Logger.getLogger(P_IniciarEntrevista.class.getName()).log(Level.SEVERE, null, ex);  
+            }
+            registro_actual.setAnalizado(true);
+            registro_actual.setPerfil(perfil);
         }
-        
-        registro_actual.setPerfil(perfil);
         if(movimiento){
             registro_actual.setPerfil(perfil+"Observación: El entrevistado ha salido mucho del foco de la camara esto podria alterar la calidad del resultado de la entrevista");
         }

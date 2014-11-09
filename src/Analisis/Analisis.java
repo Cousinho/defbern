@@ -15,12 +15,12 @@ public class Analisis  {
     Point ceja2 = new Point();
     Point tamañoceja1 = new Point();
     Point tamañoceja2 = new Point();
-    private double distancia11, distancia12;
-    private double distancia21, distancia22;
-    private double distancia31, distancia32;
-    private double distancia41, distancia42;
-    private double distancia51, distancia52;
-    private double distancia61, distancia62;
+    private double distancia11, distancia12,distancia13;
+    private double distancia21, distancia22,distancia23;
+    private double distancia31, distancia32,distancia33;
+    private double distancia41, distancia42,distancia43;
+    private double distancia51, distancia52,distancia53;
+    private double distancia61, distancia62,distancia63;
     private String DirectorioPrincipal="imagen/Muestras/";
     private String Directorio;
     private String SubDirectorio="";
@@ -49,7 +49,7 @@ public class Analisis  {
                 SubDirectorio=Directorio+x+"/";
                 if(x!=0){
                     Resultados[x]=AnalizarMuestras(SubDirectorio);
-                    LimpiarDistancias();
+                    LimpiarDistancias(false);
 
                 }else{
                     int neutros=AnalizarNeutros(SubDirectorio);
@@ -72,6 +72,8 @@ public class Analisis  {
     
     private int AnalizarMuestras(String DirectorioMuestras) {
         String Archivo;
+        boolean primero=true;
+        int primera=0;
         int emocion=0;
         File lista_imagenes=new File(DirectorioMuestras);
         int numero_imagenes=0;
@@ -83,16 +85,24 @@ public class Analisis  {
                     Archivo=DirectorioMuestras+muestras[y];
                     int s=AnalizarImagen(Archivo);
                     if(s==1){
-                        CalcularDistancia(false);
-                        emocion=Emociones();
-                        LimpiarDistancias();
-                        if(emocion!=0){
-                            return emocion;
+                        if(primero){
+                            CalcularDistancia(false,primero);
+                            primero=false;
+                        }else{
+                            CalcularDistancia(false,primero);
+                            emocion=Emociones();
+                            LimpiarDistancias(false);
+                            primero=true;
+                            if(emocion!=0){
+                                   return emocion;
+                            }
                         }
                     }
                 }
+                LimpiarDistancias(true);
                 return emocion;
             }else{
+                LimpiarDistancias(true);
                 return 0;
                 
             }
@@ -109,12 +119,12 @@ public class Analisis  {
         if(lista_imagenes.exists()){
             numero_imagenes=lista_imagenes.list().length;
             if(numero_imagenes!=0){
-                for(int y=0;y<numero_imagenes;y++){
+                for(int y=0;y<=numero_imagenes;y++){
                     String[] muestras = lista_imagenes.list();
                     Archivo=DirectorioMuestras+muestras[y];
                     int estadoanalisis=AnalizarImagen(Archivo);
                     if(estadoanalisis==1){
-                        CalcularDistancia(true);
+                        CalcularDistancia(true,false);
                         return 1;
                     }
                 }
@@ -159,12 +169,18 @@ public class Analisis  {
     
     private int Emociones(){
        Emociones identificar=new Emociones();
-       return identificar.DeterminarEmocion(distancia11/distancia12,distancia21/distancia22,distancia31/distancia32,
-       distancia41/distancia42,distancia51/distancia52,distancia61/distancia62);
-
+       int emocion1=identificar.DeterminarEmocion(distancia11/distancia13,distancia21/distancia23,distancia31/distancia33,
+       distancia41/distancia43,distancia51/distancia53,distancia61/distancia63);
+       identificar=new Emociones();
+       int emocion2= identificar.DeterminarEmocion(distancia12/distancia13,distancia22/distancia23,distancia32/distancia33,
+       distancia42/distancia43,distancia52/distancia53,distancia62/distancia63);
+       if(emocion1==emocion2){
+           return emocion1;
+       }
+        return 0;
      }
     
-    public void CalcularDistancia(boolean neutro) {
+    public void CalcularDistancia(boolean neutro,boolean primero) {
          if(neutro){
            double P=Distancia(ojo1,ojo2);
            distancia11=P/tamañoboca.x;
@@ -174,13 +190,23 @@ public class Analisis  {
            distancia51=P/((Distancia(ojo1,ceja1)+Distancia(ojo2,ceja2))/2);
            distancia61=P/((Distancia(ceja1,nariz)+Distancia(ceja2,nariz))/2); 
          }else{
-           double P=Distancia(ojo1,ojo2);
-           distancia12=P/tamañoboca.x;
-           distancia22=P/tamañoojo1.x;
-           distancia32=P/((Distancia(ojo1,boca)+Distancia(ojo2,boca))/2);
-           distancia42=P/((Distancia(ceja1,boca)+Distancia(ceja2,boca))/2);
-           distancia52=P/((Distancia(ojo1,ceja1)+Distancia(ojo2,ceja2))/2);
-           distancia62=P/((Distancia(ceja1,nariz)+Distancia(ceja2,nariz))/2);
+           if(primero){
+               double P=Distancia(ojo1,ojo2);
+               distancia12=P/tamañoboca.x;
+               distancia22=P/tamañoojo1.x;
+               distancia32=P/((Distancia(ojo1,boca)+Distancia(ojo2,boca))/2);
+               distancia42=P/((Distancia(ceja1,boca)+Distancia(ceja2,boca))/2);
+               distancia52=P/((Distancia(ojo1,ceja1)+Distancia(ojo2,ceja2))/2);
+               distancia62=P/((Distancia(ceja1,nariz)+Distancia(ceja2,nariz))/2);
+           }else{
+               double P=Distancia(ojo1,ojo2);
+               distancia13=P/tamañoboca.x;
+               distancia23=P/tamañoojo1.x;
+               distancia33=P/((Distancia(ojo1,boca)+Distancia(ojo2,boca))/2);
+               distancia43=P/((Distancia(ceja1,boca)+Distancia(ceja2,boca))/2);
+               distancia53=P/((Distancia(ojo1,ceja1)+Distancia(ojo2,ceja2))/2);
+               distancia63=P/((Distancia(ceja1,nariz)+Distancia(ceja2,nariz))/2);
+           }  
          }
     }
      
@@ -199,12 +225,22 @@ public class Analisis  {
         AnalisisBoca=new Boca();
     }
     
-    private void LimpiarDistancias(){
+    private void LimpiarDistancias(boolean distancia){
         distancia12=0;
         distancia22=0;
         distancia32=0;
         distancia42=0;
         distancia52=0;
         distancia62=0;
+        if(distancia){
+            distancia13=0;
+            distancia23=0;
+            distancia33=0;
+            distancia43=0;
+            distancia53=0;
+            distancia63=0;
+        }
+        
+        
     }
 }

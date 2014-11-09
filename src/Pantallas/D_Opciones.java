@@ -36,7 +36,7 @@ public class D_Opciones extends javax.swing.JDialog {
 
     }
     
-    public D_Opciones(java.awt.Frame parent, boolean modal, Opciones opcion,Lamina lamina){
+    public D_Opciones(java.awt.Frame parent, boolean modal, Opciones opcion,Lamina lamina,boolean estado){
         //bloque la ventana padre de jdialog
         super(parent,modal);
         //varible que se usa para indicar que el es una edición de datos o una inserción
@@ -44,6 +44,8 @@ public class D_Opciones extends javax.swing.JDialog {
         opcion_actual=opcion;
         opcion_actual.setLamina(lamina);
         initComponents();
+        setDefaultCloseOperation(0);
+        b_cancelar.setEnabled(estado);
         CargarBox();
         CargarDatos();
     }
@@ -105,11 +107,14 @@ public class D_Opciones extends javax.swing.JDialog {
     
     //método que carga guardo datos nuevos
     private boolean Guardar() throws SQLException{
-        boolean guardar;
+        int guardar;
         SetBox();
         opcion_actual.setDescripcion(texto_descripcion.getText());
         guardar=BDOpciones.insertar(opcion_actual);
-        return guardar;
+        if(guardar!=0){
+            return true;
+        }
+        return false;
     }
     
     //método que actualiza datos si esto es una edición
@@ -147,7 +152,7 @@ public class D_Opciones extends javax.swing.JDialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         texto_descripcion = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        b_cancelar = new javax.swing.JButton();
         box_1 = new javax.swing.JComboBox();
         box_2 = new javax.swing.JComboBox();
         box_3 = new javax.swing.JComboBox();
@@ -194,10 +199,10 @@ public class D_Opciones extends javax.swing.JDialog {
             }
         });
 
-        jButton2.setText("Cancelar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        b_cancelar.setText("Cancelar");
+        b_cancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                b_cancelarActionPerformed(evt);
             }
         });
 
@@ -224,7 +229,7 @@ public class D_Opciones extends javax.swing.JDialog {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2))
+                        .addComponent(b_cancelar))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(box_1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -255,7 +260,7 @@ public class D_Opciones extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(b_cancelar))
                 .addGap(25, 25, 25))
         );
 
@@ -285,9 +290,9 @@ public class D_Opciones extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void b_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_cancelarActionPerformed
         this.dispose();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_b_cancelarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -333,12 +338,12 @@ public class D_Opciones extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton b_cancelar;
     private javax.swing.JComboBox box_1;
     private javax.swing.JComboBox box_2;
     private javax.swing.JComboBox box_3;
     private javax.swing.JComboBox box_4;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

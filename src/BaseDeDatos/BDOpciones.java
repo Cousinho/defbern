@@ -10,23 +10,23 @@ import java.util.ArrayList;
 
 public class BDOpciones {
     //método que recibe objeto usuario y lo inserta en la base de datos
-    public static boolean insertar(Opciones opciones) throws SQLException  {
-        boolean insertar=true;
+    public static int insertar(Opciones opciones) throws SQLException  {
+        int codigo=mayor(opciones.getLamina())+1;
         Connection conexion = Conexion_BD.getConnection();
         PreparedStatement sentencia_insertar= null;
         sentencia_insertar = conexion.prepareStatement("insert into opciones (id_lamina, codigo, descripcion, nomenclatura) VALUES (?,?,?,?)");
         sentencia_insertar.setInt(1, opciones.getLamina().getCodigo());
-        sentencia_insertar.setInt(2, mayor(opciones.getLamina())+1);
+        sentencia_insertar.setInt(2, codigo);
         sentencia_insertar.setString(3, opciones.getDescripcion());
         sentencia_insertar.setString(4, opciones.getNomenclatura());
         try {
             sentencia_insertar.executeUpdate();
         } catch (SQLException ex) {
-            insertar=false;
+            codigo=0;
         }
         conexion.close();
         sentencia_insertar.close();
-        return insertar;
+        return codigo;
     }
     
     //metodo que recibe le identificador de la usuario a ser eliminado

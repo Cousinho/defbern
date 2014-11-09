@@ -2,26 +2,17 @@ package Pantallas;
 
 import BaseDeDatos.BDOpciones;
 import BaseDeDatos.BDRegistros;
-import BaseDeDatos.Conexion_BD;
 import Entidades.Opciones;
 import Entidades.Registro;
 import Util.Bloqueo;
 import Util.FormatoFecha;
 import Util.TablaModelo;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -31,17 +22,12 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.JasperRunManager;
-import net.sf.jasperreports.engine.util.JRLoader;
-import net.sf.jasperreports.view.JasperViewer;
 
-public class P_Registro extends javax.swing.JInternalFrame {
 
-    public P_Registro() {
+public class P_RegistroSinAnalizar extends javax.swing.JInternalFrame {
+    
+    public P_RegistroSinAnalizar() {
+        System.loadLibrary("opencv_java249");
         initComponents();
     }
     TablaModelo LRegistros = new TablaModelo();
@@ -51,9 +37,9 @@ public class P_Registro extends javax.swing.JInternalFrame {
     java.awt.Frame pantalla_padre;
     private ArrayList<String> permisos_actuales = new ArrayList();
     
-    P_Registro(java.awt.Frame Pantalla_padre, ArrayList<String> permisos) {
-        Pantalla_padre=pantalla_padre;
-        permisos_actuales = permisos;
+    P_RegistroSinAnalizar(java.awt.Frame Pantalla_padre)/*, ArrayList<String> permisos)*/ {
+        pantalla_padre=Pantalla_padre;
+        //permisos_actuales = permisos;
         initComponents();
         BloquearComponentes();
         HabilitarComponentes();
@@ -61,18 +47,12 @@ public class P_Registro extends javax.swing.JInternalFrame {
         actualizartabla();
         Buscar();
     }
-  
-    
     
     private void BloquearComponentes() {
-        b_modificar.setEnabled(false);
         b_eliminar.setEnabled(false);
     }
 
     private void HabilitarComponentes() {
-        if(permisos_actuales.indexOf("modificar registros")!=-1){
-            b_modificar.setEnabled(true);
-        }
         if(permisos_actuales.indexOf("eliminar registros")!=-1){
             b_eliminar.setEnabled(true);
         }
@@ -87,7 +67,7 @@ public class P_Registro extends javax.swing.JInternalFrame {
         FormatoFecha formato=new FormatoFecha();
         m.getColumn(5).setCellRenderer(formato);
         try {
-            for (Iterator<Registro> it = BDRegistros.Lista() .iterator(); it.hasNext();) {
+            for (Iterator<Registro> it = BDRegistros.ListaSinAnalizar().iterator(); it.hasNext();) {
                 Registro registro = it.next();
                 Object Datos[] = {String.valueOf(registro.getCodigo()),
                                   String.valueOf(registro.getCi()),
@@ -147,7 +127,6 @@ public class P_Registro extends javax.swing.JInternalFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         tabla_registros = new javax.swing.JTable();
-        b_modificar = new javax.swing.JButton();
         b_eliminar = new javax.swing.JButton();
         check_mayusculas = new javax.swing.JCheckBox();
         check_fecha = new javax.swing.JCheckBox();
@@ -169,20 +148,13 @@ public class P_Registro extends javax.swing.JInternalFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        b_reportes = new javax.swing.JButton();
+        b_analizar = new javax.swing.JButton();
 
         setClosable(true);
         setTitle("Registro de Entrevistas");
 
         tabla_registros.setModel(LRegistros);
         jScrollPane1.setViewportView(tabla_registros);
-
-        b_modificar.setText("Modificar");
-        b_modificar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                b_modificarActionPerformed(evt);
-            }
-        });
 
         b_eliminar.setText("Eliminar");
         b_eliminar.addActionListener(new java.awt.event.ActionListener() {
@@ -326,10 +298,10 @@ public class P_Registro extends javax.swing.JInternalFrame {
 
         panel_filtroLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {texto_cedula, texto_codigo, texto_nombre});
 
-        b_reportes.setText("Generar Reporte");
-        b_reportes.addActionListener(new java.awt.event.ActionListener() {
+        b_analizar.setText("Analizar");
+        b_analizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                b_reportesActionPerformed(evt);
+                b_analizarActionPerformed(evt);
             }
         });
 
@@ -363,9 +335,8 @@ public class P_Registro extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(b_reportes, javax.swing.GroupLayout.DEFAULT_SIZE, 114, Short.MAX_VALUE)
-                    .addComponent(b_modificar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(b_eliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(b_eliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(b_analizar, javax.swing.GroupLayout.DEFAULT_SIZE, 114, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1176, Short.MAX_VALUE)
                 .addContainerGap())
@@ -396,45 +367,15 @@ public class P_Registro extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(b_eliminar)
-                        .addGap(11, 11, 11)
-                        .addComponent(b_modificar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(b_reportes)
-                        .addGap(0, 122, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(b_analizar)
+                        .addGap(0, 149, Short.MAX_VALUE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
-        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {b_eliminar, b_modificar});
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void b_modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_modificarActionPerformed
-        int columna = tabla_registros.getSelectedRow();
-        if (columna!=-1){
-            try {
-                Registro p_envia=new Registro() {};
-                Object valor =tabla_registros.getValueAt(columna, 0);
-                p_envia=BDRegistros.buscarId(Integer.parseInt(valor.toString()));
-                D_Registro editar= new D_Registro(pantalla_padre,true,p_envia);
-                editar.setLocationRelativeTo(null);
-                editar.setResizable(false);
-                editar.setVisible(true);
-                //Actualiza tabla despues de cerrar ventana modificar
-                editar.addWindowListener(new WindowAdapter() {
-                    public void windowClosed(WindowEvent e) {
-                        actualizartabla();
-                    }
-                });
-            } catch (SQLException ex) {
-                Logger.getLogger(P_Usuario.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        else{
-            JOptionPane.showMessageDialog(null, "Seleccione una fila de la tabla");
-        }
-    }//GEN-LAST:event_b_modificarActionPerformed
 
     private void b_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_eliminarActionPerformed
         //recibe numero de fila seleccionada
@@ -593,34 +534,63 @@ public class P_Registro extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_check_filtroActionPerformed
 
-    private void b_reportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_reportesActionPerformed
-        //recibe numero de fila seleccionada
-        Connection conexion = Conexion_BD.getConnection();
+    private void b_analizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_analizarActionPerformed
         int fila=tabla_registros.getSelectedRow();
-        File archivo=new File("reportes/ReporteIndividual.jasper");
-        JasperReport reporte = null;
+        String respuesta="";
+        Registro RegistroAnalizar=new Registro();
+        Opciones opcion=new Opciones();
         try {
-            reporte = (JasperReport) JRLoader.loadObject(archivo);
-        } catch (JRException ex) {
+            RegistroAnalizar = BDRegistros.buscarId((Integer.parseInt((String) tabla_registros.getValueAt(fila, 0))));
+        } catch (SQLException ex) {
+            Logger.getLogger(P_RegistroSinAnalizar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        String Respuestas[]=RegistroAnalizar.getRespuestas()[10].split(",");
+        for(int x=0;x<Respuestas.length;x++){
+            try {
+                opcion=BDOpciones.buscarId(Integer.parseInt(Respuestas[x]),Integer.parseInt(Respuestas[x+1]));
+                x++;
+            } catch (SQLException ex) {
+                Logger.getLogger(P_RegistroSinAnalizar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            D_Opciones d_opcion=new D_Opciones(pantalla_padre,true,opcion,opcion.getLamina(),false);
+            d_opcion.setLocationRelativeTo(null);
+            d_opcion.setResizable(false);
+            d_opcion.setVisible(true);
+            try {
+                opcion=BDOpciones.buscarId(opcion.getCodigo(),opcion.getLamina().getCodigo());
+            } catch (SQLException ex) {
+                Logger.getLogger(P_RegistroSinAnalizar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            respuesta=respuesta+opcion.getNomenclatura();
+        }
+        if(RegistroAnalizar.getRespuestas()[9].equals("Nada")){
+            RegistroAnalizar.getRespuestas()[9]=respuesta;
+        }else{
+            RegistroAnalizar.getRespuestas()[9]=RegistroAnalizar.getRespuestas()[9]+respuesta;
+        }
+        RegistroAnalizar.getRespuestas()[10]="";
+        RegistroAnalizar.setAnalizado(true);
+        try {
+            BDRegistros.actualizar(RegistroAnalizar);
+        } catch (SQLException ex) {
             Logger.getLogger(P_Registro.class.getName()).log(Level.SEVERE, null, ex);
         }
-        try {
-            Map parametros = new HashMap();
-            parametros.put("id_registro",Integer.valueOf(tabla_registros.getValueAt(fila, 0).toString()));
-            JasperPrint reporte_view = JasperFillManager.fillReport( reporte, parametros, conexion);
-            JasperViewer.viewReport( reporte_view,false);
-            byte[] bytes = JasperRunManager.runReportToPdf(archivo.getPath(), parametros, conexion);
-        } catch (JRException ex) {
-            Logger.getLogger(P_Registro.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-    }//GEN-LAST:event_b_reportesActionPerformed
+        D_Analizando analizando=new D_Analizando(pantalla_padre,true,RegistroAnalizar);
+        analizando.setLocationRelativeTo(null);
+        analizando.setResizable(false);
+        analizando.setVisible(true);
+        
+        analizando.addWindowListener(new WindowAdapter() {
+                public void windowClosed(WindowEvent e) {
+                    actualizartabla();
+                }
+            });
+    }//GEN-LAST:event_b_analizarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton b_analizar;
     private javax.swing.JButton b_eliminar;
-    private javax.swing.JButton b_modificar;
-    private javax.swing.JButton b_reportes;
     private javax.swing.JCheckBox check_fecha;
     private javax.swing.JCheckBox check_filtro;
     private javax.swing.JCheckBox check_mayusculas;

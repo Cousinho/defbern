@@ -15,6 +15,7 @@ public class Registro {
     private int tiempo_total;
     private String perfil;
     private String emociones;
+    private boolean analizado;
     /**
      * @return the ci
      */
@@ -182,5 +183,19 @@ public class Registro {
      */
     public void setEmociones(String emociones) {
         this.emociones = emociones;
+    }
+
+    /**
+     * @return the analizado
+     */
+    public boolean getAnalizado() {
+        return analizado;
+    }
+
+    /**
+     * @param analizado the analizado to set
+     */
+    public void setAnalizado(boolean analizado) {
+        this.analizado = analizado;
     }
 }
