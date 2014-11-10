@@ -14,6 +14,7 @@ public class D_Conexion extends javax.swing.JDialog {
     private static FileInputStream inputStream = null;
     private static OutputStream OutputStream=null;
     private static String archivo="config/Config.properties";
+    
     public D_Conexion(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();

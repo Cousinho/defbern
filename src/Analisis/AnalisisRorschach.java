@@ -49,11 +49,18 @@ public class AnalisisRorschach {
     Simetria->Su nombre lo indica
     Pinza, abismo->Sus nombres lo indican
     Arq->Respuestas que involucren construccion
+    Mapa->Respuestas que involucren cartografía
+    
+    Perfil Mapa: es un signo de superficialidad emocional. El sujeto responde al impacto
+emocional de manera superficial, sin comprometer sus propios sentimientos, resultando poco
+genuino.
+
     
     */
     private double C,M;
     private int G,D,Dd,Fmas,Fmenos,Md,Origmas,Origmenos,Bmas,Bmenos/*,H,Hd,*/,
-                A,Ad,NR,V,T,Td,Anat,Geo,GAbs,Simetria,Abstr,Sex,Obj,Mascara,Sangre,Refl,Fuego,Pinza,Arq,Destr,N,Cara,Nada;
+                A,Ad,NR,V,T,Td,Anat,Geo,GAbs,Simetria,Abstr,Sex,Obj,Mascara,Sangre,
+                Refl,Fuego,Pinza,Arq,Destr,N,Cara,Mapa,Nada;
     private int Gp,Dp,Bmasp,Fmasp,Bmenosp,Fp,IR,Tp,Bp,Origp,Objp,Anatp,Mp;
     private int Origd,Origg,Origmenosp;
     private int ChoqueNegro, ChoqueColor,ChoqueRojo,ChoqueKinestesico,ChoqueSexual,ChoqueLVI;
@@ -151,120 +158,122 @@ public class AnalisisRorschach {
                     perfil = perfil + BDPerfiles.buscarId(9).getDescripcion()+"\n";
             }   
         }
-        
         if(Nada<5){
             if(Mp<=40){
                 perfil = perfil + BDPerfiles.buscarId(11).getDescripcion()+"\n";
-            }else if(M==4){
+            }else if(M>=40){
                 perfil = perfil + BDPerfiles.buscarId(12).getDescripcion()+"\n";
             }    
         }
-        System.out.println(Tp);
         if(Nada<5){
             if(Tp>=30 && Tp<=50){
-                perfil = perfil + BDPerfiles.buscarId(14).getDescripcion()+"\n";
+                perfil = perfil + BDPerfiles.buscarId(13).getDescripcion()+"\n";
             }else if(Tp<30 && Tp>=0){
-                perfil = perfil + BDPerfiles.buscarId(15).getDescripcion()+"\n";
+                perfil = perfil + BDPerfiles.buscarId(14).getDescripcion()+"\n";
             }else{
-                perfil = perfil + BDPerfiles.buscarId(16).getDescripcion()+"\n";
+                perfil = perfil + BDPerfiles.buscarId(15).getDescripcion()+"\n";
             }
         }
         
         
         if(Td>T){
-            perfil = perfil + BDPerfiles.buscarId(17).getDescripcion()+"\n";
+            perfil = perfil + BDPerfiles.buscarId(16).getDescripcion()+"\n";
         }
         
         if(Fmasp>=80 && Fmasp<=90){
-            perfil = perfil + BDPerfiles.buscarId(18).getDescripcion()+"\n";
+            perfil = perfil + BDPerfiles.buscarId(17).getDescripcion()+"\n";
         }else{
             if(Fmasp>70 && Fmasp<80){
-                perfil = perfil + BDPerfiles.buscarId(19).getDescripcion()+"\n";
+                perfil = perfil + BDPerfiles.buscarId(18).getDescripcion()+"\n";
             }else{
                 if(Fmasp>=60 && Fmasp<=70){
-                    perfil = perfil + BDPerfiles.buscarId(20).getDescripcion()+"\n";
+                    perfil = perfil + BDPerfiles.buscarId(19).getDescripcion()+"\n";
                 }else{
                     if(Fmasp<60){
-                        perfil = perfil + BDPerfiles.buscarId(21).getDescripcion()+"\n";
+                        perfil = perfil + BDPerfiles.buscarId(20).getDescripcion()+"\n";
                     }else{
-                        perfil = perfil + BDPerfiles.buscarId(22).getDescripcion()+"\n";
+                        perfil = perfil + BDPerfiles.buscarId(21).getDescripcion()+"\n";
                     }
                 } 
             }
         }
         
         if(IR<=4){
-            perfil = perfil + BDPerfiles.buscarId(23).getDescripcion()+"\n";
+            perfil = perfil + BDPerfiles.buscarId(22).getDescripcion()+"\n";
         }else if(IR>4 && IR<=7){
-            perfil = perfil + BDPerfiles.buscarId(24).getDescripcion()+"\n";
+            perfil = perfil + BDPerfiles.buscarId(23).getDescripcion()+"\n";
         }else{
-            perfil = perfil + BDPerfiles.buscarId(25).getDescripcion()+"\n";
+            perfil = perfil + BDPerfiles.buscarId(24).getDescripcion()+"\n";
         }
         
         if(Nada<5){
             if(Bmas<=1){
-                perfil = perfil + BDPerfiles.buscarId(26).getDescripcion()+"\n";
+                perfil = perfil + BDPerfiles.buscarId(25).getDescripcion()+"\n";
             }else if(Bmas>1 && Bmas<=5){
-                perfil = perfil + BDPerfiles.buscarId(27).getDescripcion()+"\n";
+                perfil = perfil + BDPerfiles.buscarId(26).getDescripcion()+"\n";
             }else{
-                perfil = perfil + BDPerfiles.buscarId(28).getDescripcion()+"\n";
+                perfil = perfil + BDPerfiles.buscarId(27).getDescripcion()+"\n";
             }
         }
+        
         if(Origp>=40 && Origp<=60){
-            perfil = perfil + BDPerfiles.buscarId(29).getDescripcion()+"\n";
+            perfil = perfil + BDPerfiles.buscarId(28).getDescripcion()+"\n";
         }else if(Origp<40){
-            perfil = perfil + BDPerfiles.buscarId(30).getDescripcion()+"\n";
+            perfil = perfil + BDPerfiles.buscarId(29).getDescripcion()+"\n";
         }else{
-            perfil = perfil + BDPerfiles.buscarId(31).getDescripcion()+"\n";
+            perfil = perfil + BDPerfiles.buscarId(30).getDescripcion()+"\n";
         }
         
         //Análisis de determinantes
         if(Anatp<=12 && Anatp>0){
-            perfil = perfil + BDPerfiles.buscarId(32).getDescripcion()+"\n";
+            perfil = perfil + BDPerfiles.buscarId(31).getDescripcion()+"\n";
         }else if(Anatp>12){
-            perfil = perfil + BDPerfiles.buscarId(33).getDescripcion()+"\n";
+            perfil = perfil + BDPerfiles.buscarId(32).getDescripcion()+"\n";
         }
         
         if(Abstr>0){
-            perfil = perfil + BDPerfiles.buscarId(34).getDescripcion()+"\n";
+            perfil = perfil + BDPerfiles.buscarId(33).getDescripcion()+"\n";
         }
         if(Sex>0){
-            perfil = perfil + BDPerfiles.buscarId(35).getDescripcion()+"\n";
+            perfil = perfil + BDPerfiles.buscarId(34).getDescripcion()+"\n";
         }
         if(Geo>0){
-            perfil = perfil + BDPerfiles.buscarId(36).getDescripcion()+"\n";
+            perfil = perfil + BDPerfiles.buscarId(35).getDescripcion()+"\n";
         }
         if(Objp>40){
-            perfil = perfil + BDPerfiles.buscarId(37).getDescripcion()+"\n";
+            perfil = perfil + BDPerfiles.buscarId(36).getDescripcion()+"\n";
         }
         if(Mascara>0){
-            perfil = perfil + BDPerfiles.buscarId(38).getDescripcion()+"\n";
+            perfil = perfil + BDPerfiles.buscarId(37).getDescripcion()+"\n";
         }
         if(Sangre>0){
-            perfil = perfil + BDPerfiles.buscarId(39).getDescripcion()+"\n";
+            perfil = perfil + BDPerfiles.buscarId(38).getDescripcion()+"\n";
         }
         if(Fuego>0){
-            perfil = perfil + BDPerfiles.buscarId(40).getDescripcion()+"\n";
+            perfil = perfil + BDPerfiles.buscarId(39).getDescripcion()+"\n";
         }
         if(Refl>0){
-            perfil = perfil + BDPerfiles.buscarId(41).getDescripcion()+"\n";
+            perfil = perfil + BDPerfiles.buscarId(40).getDescripcion()+"\n";
         }
         if(Simetria>0){
-            perfil = perfil + BDPerfiles.buscarId(42).getDescripcion()+"\n";
+            perfil = perfil + BDPerfiles.buscarId(41).getDescripcion()+"\n";
         }
         if(Pinza>0){
-            perfil = perfil + BDPerfiles.buscarId(43).getDescripcion()+"\n";
+            perfil = perfil + BDPerfiles.buscarId(42).getDescripcion()+"\n";
         }
         if(Arq>0){
-            perfil = perfil + BDPerfiles.buscarId(44).getDescripcion()+"\n";
+            perfil = perfil + BDPerfiles.buscarId(43).getDescripcion()+"\n";
         }
         if(N>2){
-            perfil = perfil + BDPerfiles.buscarId(45).getDescripcion()+"\n";
+            perfil = perfil + BDPerfiles.buscarId(44).getDescripcion()+"\n";
         }
         if(Destr>0){
-            perfil = perfil + BDPerfiles.buscarId(46).getDescripcion()+"\n";
+            perfil = perfil + BDPerfiles.buscarId(45).getDescripcion()+"\n";
         }
         if(Cara>0){
+            perfil = perfil + BDPerfiles.buscarId(46).getDescripcion()+"\n";
+        }
+        if(Mapa>0){
             perfil = perfil + BDPerfiles.buscarId(47).getDescripcion()+"\n";
         }
         //Determinación de los tres tipos verdaderos de inteligencia, según Rorschach
@@ -463,10 +472,13 @@ public class AnalisisRorschach {
                 Arq++;
             }
             if(nomenclaturas[i].contains("Destr")){
-                Arq++;
+                Destr++;
             }
             if(nomenclaturas[i].contains("Cara")){
-                Arq++;
+                Cara++;
+            }
+            if(nomenclaturas[i].contains("Mapa")){
+                Mapa++;
             }
             if(nomenclaturas[i].contains("N")){
                 if(nomenclaturas[i].contains("Nada")){
