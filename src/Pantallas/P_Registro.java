@@ -1,17 +1,11 @@
 package Pantallas;
 
-import BaseDeDatos.BDOpciones;
 import BaseDeDatos.BDRegistros;
 import BaseDeDatos.Conexion_BD;
-import Entidades.Opciones;
 import Entidades.Registro;
 import Util.Bloqueo;
 import Util.FormatoFecha;
 import Util.TablaModelo;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;

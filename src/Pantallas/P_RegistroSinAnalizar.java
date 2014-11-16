@@ -37,9 +37,9 @@ public class P_RegistroSinAnalizar extends javax.swing.JInternalFrame {
     java.awt.Frame pantalla_padre;
     private ArrayList<String> permisos_actuales = new ArrayList();
     
-    P_RegistroSinAnalizar(java.awt.Frame Pantalla_padre)/*, ArrayList<String> permisos)*/ {
+    P_RegistroSinAnalizar(java.awt.Frame Pantalla_padre, ArrayList<String> permisos){
         pantalla_padre=Pantalla_padre;
-        //permisos_actuales = permisos;
+        permisos_actuales = permisos;
         initComponents();
         BloquearComponentes();
         HabilitarComponentes();
@@ -50,11 +50,15 @@ public class P_RegistroSinAnalizar extends javax.swing.JInternalFrame {
     
     private void BloquearComponentes() {
         b_eliminar.setEnabled(false);
+        b_analizar.setEnabled(false);
     }
 
     private void HabilitarComponentes() {
         if(permisos_actuales.indexOf("eliminar registros")!=-1){
             b_eliminar.setEnabled(true);
+        }
+        if(permisos_actuales.indexOf("analizar registros")!=-1){
+            b_analizar.setEnabled(true);
         }
     }
     
@@ -544,7 +548,7 @@ public class P_RegistroSinAnalizar extends javax.swing.JInternalFrame {
         } catch (SQLException ex) {
             Logger.getLogger(P_RegistroSinAnalizar.class.getName()).log(Level.SEVERE, null, ex);
         }
-        String Respuestas[]=RegistroAnalizar.getRespuestas()[10].split(",");
+        String Respuestas[]=RegistroAnalizar.getRespuestas()[10].split(";");
         for(int x=0;x<Respuestas.length;x++){
             try {
                 opcion=BDOpciones.buscarId(Integer.parseInt(Respuestas[x]),Integer.parseInt(Respuestas[x+1]));

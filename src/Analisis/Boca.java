@@ -21,9 +21,9 @@ public class Boca {
     public void Analizar(String Nombre, String Directorio,Point nariz, Point ojo1, Point ojo2,Point tamañoojo){
                     NombreArchivo=Nombre;
                     //Busca las bocas con el xml de y si no encuetra busca con otro
-                    Buscar(ojo1,ojo2,tamañoojo,nariz,"1",Directorio);
+                    Buscar(ojo1,ojo2,tamañoojo,nariz,"2",Directorio);
                     if(tamaño==0){
-                        Buscar(ojo1,ojo2,tamañoojo,nariz,"2",Directorio);
+                        Buscar(ojo1,ojo2,tamañoojo,nariz,"1",Directorio);
                     }
                     SeleccionarBoca(nariz,ojo1,ojo2);
                           
@@ -80,7 +80,12 @@ public class Boca {
                     int nu=1;
                     for (Rect rect : faceDetections.toArray()) {
                             if(ojo1.x<rect.x+(rect.width/2)&&ojo2.x>rect.x+(rect.width/2)&&rect.y+(rect.width/2)>nariz.y){
-                                if(nariz.y<rect.y+(rect.height/2)&&rect.width>tamañoojo.x*1.6&&rect.width<tamañoojo.x*3){
+                                double minimo=2.7;
+                                if(faceDetections.size().height==1){
+                                    minimo=3;
+                                }
+                                if(nariz.y<rect.y+(rect.height/2)&&rect.width>tamañoojo.x*1.6&&rect.width<tamañoojo.x*minimo){
+                                    
                                     listabocas[nu][1]=rect.x+(rect.width/2);
                                     listabocas[nu][2]=rect.y+(rect.height/2);
                                     listabocas[nu][3]=rect.width;

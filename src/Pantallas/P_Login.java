@@ -168,7 +168,7 @@ public class P_Login extends javax.swing.JFrame {
     }//GEN-LAST:event_b_aceptarActionPerformed
 } 
     private void b_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_cancelarActionPerformed
-        dispose();
+        System.exit(0);
     }//GEN-LAST:event_b_cancelarActionPerformed
 
     private void b_aceptarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b_aceptarKeyPressed

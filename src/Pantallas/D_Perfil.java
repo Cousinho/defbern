@@ -11,6 +11,7 @@ import Entidades.Grupo;
 import Entidades.Perfil;
 import Util.Numerico;
 import java.awt.Frame;
+import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
@@ -112,7 +113,13 @@ public class D_Perfil extends javax.swing.JDialog {
         jLabel2.setText("Descripción");
 
         textoa_descripcion.setColumns(20);
+        textoa_descripcion.setLineWrap(true);
         textoa_descripcion.setRows(5);
+        textoa_descripcion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                textoa_descripcionKeyPressed(evt);
+            }
+        });
         jScrollPane1.setViewportView(textoa_descripcion);
 
         b_aceptar.setText("Aceptar");
@@ -214,6 +221,12 @@ public class D_Perfil extends javax.swing.JDialog {
     private void b_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_cancelarActionPerformed
         this.dispose();
     }//GEN-LAST:event_b_cancelarActionPerformed
+
+    private void textoa_descripcionKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textoa_descripcionKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+              b_aceptarActionPerformed(null);
+        }
+    }//GEN-LAST:event_textoa_descripcionKeyPressed
 
     /**
      * @param args the command line arguments

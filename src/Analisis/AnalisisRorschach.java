@@ -80,19 +80,7 @@ genuino.
                 AnalizarRespuesta(nomenclaturas,j);
             }
         }
-        //choques = analizar.Analizar(registro_actual.getCodigo());
-        int b[] = new int[11];
-        b[1]=0;
-        b[2]=0;
-        b[3]=0;
-        b[4]=0;
-        b[5]=0;
-        b[6]=0;
-        b[7]=0;
-        b[8]=0;
-        b[9]=0;
-        b[10]=0;
-        choques=b;
+        choques = analizar.Analizar(registro_actual.getCodigo());
         String CadenaChoques="";
         for(int x=1; x<choques.length-1;x++){
             CadenaChoques=CadenaChoques+choques[x];
@@ -363,8 +351,71 @@ genuino.
         if(ChoqueKinestesico>0 || (choques[1]!=0 || choques[2]!=0 || choques[3]!=0 || choques[9]!=0)){
             perfil = perfil + BDPerfiles.buscarId(59).getDescripcion()+"\n";
         }
-        
         //Resultado del analisis
+        System.out.println(choques[1]);
+        System.out.println(choques[2]);
+        System.out.println(choques[3]);
+        System.out.println(choques[4]);
+        System.out.println(choques[5]);
+        System.out.println(choques[6]);
+        System.out.println(choques[7]);
+        System.out.println(choques[8]);
+        System.out.println(choques[9]);
+        System.out.println(choques[10]);
+        System.out.println("G: "+G);
+        System.out.println("D: "+D);
+        System.out.println("Fmas: "+Fmas);
+        System.out.println("Fmenos: "+Fmenos);
+        System.out.println("Md: "+Md);
+        System.out.println("Origmas: "+Origmas);
+        System.out.println("Origmenos: "+Origmenos);
+        System.out.println("Bmas: "+Bmas);
+        System.out.println("Bmenos: "+Bmenos);
+        System.out.println("A: "+A);
+        System.out.println("Ad: "+Ad);
+        System.out.println("NR: "+NR);
+        System.out.println("V: "+V);
+        System.out.println("T: "+T);
+        System.out.println("Td: "+Td);
+        System.out.println("Anat: "+Anat);
+        System.out.println("Geo: "+Geo);
+        System.out.println("GAbs: "+GAbs);
+        System.out.println("Simetria: "+Simetria);
+        System.out.println("Abstr: "+Abstr);
+        System.out.println("Sex: "+Sex);
+        System.out.println("Obj: "+Obj);
+        System.out.println("Mascara: "+Mascara);
+        System.out.println("Sangre: "+Sangre);
+        System.out.println("Refl: "+Refl);
+        System.out.println("Fuego: "+Fuego);
+        System.out.println("Pinza: "+Pinza);
+        System.out.println("Arq: "+Arq);
+        System.out.println("Destr: "+Destr);
+        System.out.println("N: "+N);
+        System.out.println("Cara: "+Cara);
+        System.out.println("Mapa: "+Mapa);
+        System.out.println("Nada: "+Nada);
+        System.out.println("Gp: "+Gp);
+        System.out.println("Dp: "+Dp);
+        System.out.println("Fmasp: "+Fmasp);
+        System.out.println("Bmenosp: "+Bmenosp);
+        System.out.println("Fp: "+Fp);
+        System.out.println("IR: "+IR);
+        System.out.println("Tp: "+Tp);
+        System.out.println("Bp: "+Bp);
+        System.out.println("Origp: "+Origp);
+        System.out.println("Objp: "+Objp);
+        System.out.println("Anatp: "+Anatp);
+        System.out.println("Mp: "+Mp);
+        System.out.println("Origd: "+Origd);
+        System.out.println("Origg: "+Origg);
+        System.out.println("Origmenosp: "+Origmenosp);
+        System.out.println("ChoqueNegro: "+ChoqueNegro);
+        System.out.println("ChoqueColor: "+ChoqueColor);
+        System.out.println("ChoqueRojo: "+ChoqueRojo);
+        System.out.println("ChoqueKinestesico: "+ChoqueKinestesico);
+        System.out.println("ChoqueSexual: "+ChoqueSexual);
+        System.out.println("ChoqueLVI: "+ChoqueLVI);
         return perfil;
     }
 

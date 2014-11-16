@@ -46,6 +46,7 @@ public class P_Presentacion extends javax.swing.JFrame {
     double ancho;
     int angulo;
     int tiempo_total;
+    int actualizacion=0;
     Entrevista entrevista;
     ArrayList<Lamina> Lista;
     int TamañoLista = 0;
@@ -104,8 +105,12 @@ public class P_Presentacion extends javax.swing.JFrame {
 
     //Metodo que actualiza la tabla
     public void actualizartabla() {
+        actualizacion++;
         Insertar=false;
-        BuscarRespuesta();
+        if(actualizacion>1){
+            BuscarRespuesta();
+        }
+        
         panel_opciones.removeAll();
         try {
             ArrayList<Opciones> ListaResultado = BDOpciones.ListaOpciones(texto_buscar.getText(),  Lista.get(IndiceLista-1).getCodigo());
@@ -137,7 +142,6 @@ public class P_Presentacion extends javax.swing.JFrame {
         texto_buscar.getDocument().addDocumentListener(
                 new DocumentListener() {
                     public void changedUpdate(DocumentEvent e) {
-                        actualizartabla();
                     }
 
                     public void insertUpdate(DocumentEvent e) {
@@ -162,11 +166,8 @@ public class P_Presentacion extends javax.swing.JFrame {
                             } catch (SQLException ex) {
                                 Logger.getLogger(P_Presentacion.class.getName()).log(Level.SEVERE, null, ex);
                             }
-                            System.out.println(Respuestas[IndiceLista-1].equals(""));
                             if(!Respuestas[IndiceLista-1].equals("")){
-                                System.out.println(Respuestas[IndiceLista-1]);
                                 Respuestas[IndiceLista-1]=Respuestas[IndiceLista-1]+";"+Nomenclatura;
-                                System.out.println(Respuestas[IndiceLista-1]);
                                 Insertar=true;
                             }else{
                                 Respuestas[IndiceLista-1]=Nomenclatura;
@@ -217,6 +218,7 @@ public class P_Presentacion extends javax.swing.JFrame {
         panel_respuestas.add(ayuda2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 230, 20));
 
         panel_opciones.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        panel_opciones.setAutoscrolls(true);
         panel_opciones.setMaximumSize(new java.awt.Dimension(300, 500));
         panel_opciones.setMinimumSize(new java.awt.Dimension(300, 500));
         panel_opciones.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -397,14 +399,15 @@ public class P_Presentacion extends javax.swing.JFrame {
             }
             otrarespuesta=false;
             IndiceMuestra = 0;
-            texto_buscar.setText("");
-            actualizartabla();
             Visible(false);
             angulo = 90;
             lamina.setFont(new Font("Monospaced", Font.PLAIN, 24));
             lamina.setBorder(BorderFactory.createEtchedBorder());
             Image img2 = Lista.get(IndiceLista).getImagen();
             IndiceLista++;
+            actualizacion=0;
+            texto_buscar.setText("");
+            actualizartabla();
             if(IndiceLista==TamañoLista){
                 b_finalizar.setVisible(true);
             }
@@ -443,7 +446,6 @@ public class P_Presentacion extends javax.swing.JFrame {
     }//GEN-LAST:event_b_nadaActionPerformed
 
     private void panel_opcionesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel_opcionesMouseClicked
-
     }//GEN-LAST:event_panel_opcionesMouseClicked
 
     private void b_otrarespuestaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_otrarespuestaActionPerformed

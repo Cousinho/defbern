@@ -8,15 +8,14 @@ import Entidades.Entrevista;
 import Entidades.Grupo;
 import Entidades.Registro;
 import Entidades.Usuario;
-import Util.AlfanumericoEspacio;
 import Util.Bloqueo;
 import Util.Caracteres;
 import Util.Directorios;
 import Util.Numerico;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
-import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -41,7 +40,6 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
             Seleccionar();
         }
         FormatoCampos();
-        CargarBox();
     }
     
     
@@ -66,26 +64,13 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
         texto_ci.setDocument(new Numerico(texto_ci,15));
         texto_nombre.setDocument(new Caracteres(texto_nombre, 50));
         texto_apellido.setDocument(new Caracteres(texto_apellido,50));
-        texto_descripcion.setDocument(new AlfanumericoEspacio(texto_descripcion,100));
     }
     
-    private void CargarBox(){
-        lista_entrevistas.removeAllItems();
-        try {
-            for (Iterator<Entrevista> it = BDEntrevistas.Lista().iterator(); it.hasNext();) {
-                Entrevista distrito = it.next();
-                lista_entrevistas.addItem(distrito.getNombre());
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(P_IniciarEntrevista.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
+        
     private void Guardar(){
                 registro_actual.setCi(Integer.valueOf(texto_ci.getText()));
                 registro_actual.setNombre(texto_nombre.getText());
                 registro_actual.setApellido(texto_apellido.getText());
-                registro_actual.setDescripcion(texto_descripcion.getText());
                 registro_actual.setCodigo_grupo(grupo_actual.getCodigo());
                 registro_actual.setUsuario(usuario_actual);
                 registro_actual.setRespuestas(Respuestas);
@@ -99,7 +84,6 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
                 texto_ci.setEnabled(false);
                 texto_nombre.setEnabled(false);
                 texto_apellido.setEnabled(false);
-                texto_descripcion.setEnabled(false);
     }
     
     private void Actualizar(){
@@ -181,11 +165,8 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         texto_apellido = new javax.swing.JTextField();
-        texto_descripcion = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
         b_cancelar = new javax.swing.JButton();
         b_aceptar = new javax.swing.JButton();
-        lista_entrevistas = new javax.swing.JComboBox();
 
         setClosable(true);
         setTitle("Datos Personales Entrevista");
@@ -234,11 +215,11 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
                 texto_apellidoActionPerformed(evt);
             }
         });
-
-        texto_descripcion.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-
-        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel5.setText("Descripción");
+        texto_apellido.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                texto_apellidoKeyPressed(evt);
+            }
+        });
 
         b_cancelar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         b_cancelar.setText("Cancelar");
@@ -255,35 +236,31 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
                 b_aceptarActionPerformed(evt);
             }
         });
-
-        lista_entrevistas.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        b_aceptar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                b_aceptarKeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panel_principalLayout = new javax.swing.GroupLayout(panel_principal);
         panel_principal.setLayout(panel_principalLayout);
         panel_principalLayout.setHorizontalGroup(
             panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_principalLayout.createSequentialGroup()
-                .addContainerGap(36, Short.MAX_VALUE)
+                .addContainerGap(63, Short.MAX_VALUE)
                 .addGroup(panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel3)
                     .addComponent(jLabel2)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5))
-                .addGroup(panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4))
+                .addGap(18, 18, 18)
+                .addGroup(panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(panel_principalLayout.createSequentialGroup()
-                        .addGap(193, 193, 193)
-                        .addComponent(lista_entrevistas, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(panel_principalLayout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(panel_principalLayout.createSequentialGroup()
-                                .addComponent(b_aceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 81, Short.MAX_VALUE)
-                                .addComponent(b_cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(texto_ci)
-                            .addComponent(texto_nombre)
-                            .addComponent(texto_apellido)
-                            .addComponent(texto_descripcion))))
+                        .addComponent(b_aceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 81, Short.MAX_VALUE)
+                        .addComponent(b_cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(texto_ci)
+                    .addComponent(texto_nombre)
+                    .addComponent(texto_apellido))
                 .addContainerGap())
         );
         panel_principalLayout.setVerticalGroup(
@@ -293,27 +270,22 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
                 .addGroup(panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(texto_ci, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
-                .addGap(30, 30, 30)
+                .addGap(40, 40, 40)
                 .addGroup(panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(texto_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
-                .addGap(30, 30, 30)
+                .addGap(40, 40, 40)
                 .addGroup(panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(texto_apellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
-                .addGap(30, 30, 30)
+                .addGap(50, 50, 50)
                 .addGroup(panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(texto_descripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
-                .addGap(30, 30, 30)
-                .addGroup(panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(b_cancelar)
-                    .addComponent(b_aceptar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lista_entrevistas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(b_aceptar)
+                    .addComponent(b_cancelar))
+                .addContainerGap(75, Short.MAX_VALUE))
         );
 
-        panel_principalLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {b_aceptar, b_cancelar, lista_entrevistas});
+        panel_principalLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {b_aceptar, b_cancelar});
 
         panel_principalLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {texto_apellido, texto_ci, texto_nombre});
 
@@ -339,7 +311,7 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
                 .addComponent(panel_principal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(label_analizando)
-                .addContainerGap(56, Short.MAX_VALUE))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
         pack();
@@ -347,16 +319,16 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
 
     private void b_aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_aceptarActionPerformed
         if(texto_nombre.getText().equals("")||texto_apellido.getText().equals("")||
-            texto_ci.getText().equals("")||texto_descripcion.getText().equals("")){
+            texto_ci.getText().equals("")){
             JOptionPane.showMessageDialog(null, "Complete todos los campos necesarios");
         }else{
             VideoCapture cap= new VideoCapture(0);
-            if(cap != null){
+            if(cap.isOpened()){
                 cap.release();
                 Guardar();
                 P_Presentacion entrevista = null;
                 try {
-                    entrevista = new P_Presentacion(BDEntrevistas.buscarNombre((String) lista_entrevistas.getSelectedItem()),registro_actual.getCodigo(),this);
+                    entrevista = new P_Presentacion(BDEntrevistas.buscarId(1),registro_actual.getCodigo(),this);
                 } catch (SQLException ex) {
                     Logger.getLogger(P_IniciarEntrevista.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -385,6 +357,18 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
         this.dispose();
     }//GEN-LAST:event_b_cancelarActionPerformed
 
+    private void texto_apellidoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_texto_apellidoKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+              b_aceptarActionPerformed(null);
+        }
+    }//GEN-LAST:event_texto_apellidoKeyPressed
+
+    private void b_aceptarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b_aceptarKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+              b_aceptarActionPerformed(null);
+        }
+    }//GEN-LAST:event_b_aceptarKeyPressed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton b_aceptar;
@@ -392,15 +376,12 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel label_analizando;
-    private javax.swing.JComboBox lista_entrevistas;
     private javax.swing.JPanel panel_principal;
     private javax.swing.JTextField texto_apellido;
     private javax.swing.JTextField texto_ci;
-    private javax.swing.JTextField texto_descripcion;
     private javax.swing.JTextField texto_nombre;
     // End of variables declaration//GEN-END:variables
 }

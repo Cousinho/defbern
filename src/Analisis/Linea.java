@@ -20,8 +20,7 @@ public class Linea {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-                System.loadLibrary("opencv_java249");
-
+        System.loadLibrary("opencv_java249");
         Point nariz = new Point();
         Point ojo1 = new Point();
         Point tamañoojo1 = new Point();
@@ -34,7 +33,6 @@ public class Linea {
         Point tamañoceja1 = new Point();
         Point tamañoceja2 = new Point();
         Rostro AnalisisRostro=new Rostro();
-        Cejas AnalisisCejas=new Cejas();
         Ojos AnalisisOjos=new Ojos();
         Nariz AnalisisNariz=new Nariz();
         Boca AnalisisBoca=new Boca();
@@ -47,9 +45,6 @@ public class Linea {
         Point tamañoojo = AnalisisOjos.getTamaño1();
         AnalisisNariz.Analizar("D:\\Proyectos\\Reconocedor\\Codigo\\Reconocimiento1\\imagen\\Muestras\\1\\0Rostro.png", "D:\\Proyectos\\Reconocedor\\Codigo\\Reconocimiento1\\imagen\\Muestras\\1\\",ojo1,ojo2);
         nariz=AnalisisNariz.getNariz();
-        AnalisisCejas.Analizar("D:\\Proyectos\\Reconocedor\\Codigo\\Reconocimiento1\\imagen\\Muestras\\1\\0Rostro.png", "D:\\Proyectos\\Reconocedor\\Codigo\\Reconocimiento1\\imagen\\Muestras\\1\\",ojo1,ojo2,tamañoojo);
-        ceja1=AnalisisCejas.getCeja1();
-        ceja2=AnalisisCejas.getCeja2();
         AnalisisBoca.Analizar("D:\\Proyectos\\Reconocedor\\Codigo\\Reconocimiento1\\imagen\\Muestras\\1\\0Rostro.png", "D:\\Proyectos\\Reconocedor\\Codigo\\Reconocimiento1\\imagen\\Muestras\\1\\",nariz,ojo1,ojo2,tamañoojo);
         boca=AnalisisBoca.getBoca();
         tamañoboca=AnalisisBoca.getTamaño();
@@ -72,6 +67,11 @@ public class Linea {
         Highgui.imwrite("imagen/Muestras/1/Linea.png", image);
         System.out.println(tamañoboca.x);
         System.out.println(Distancia(ojo1,ojo2));
+        System.out.println(Distancia(ceja1,ojo1));
+        System.out.println(Distancia(ceja2,ojo2));
+        System.out.println(Distancia(nariz,boca));
+        double x=(ojo1.x+ojo2.x)/2;
+        System.out.println(Distancia(new Point((x),ojo1.y),nariz));
     }
     private static double Distancia(Point x1, Point x2){
         double Distancia = Math.sqrt( Math.pow((x1.x-x2.x),2)+ Math.pow((x1.y-x2.y),2));

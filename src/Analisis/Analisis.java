@@ -13,8 +13,8 @@ public class Analisis  {
     Point tamañoboca = new Point();
     Point ceja1 = new Point();
     Point ceja2 = new Point();
-    Point tamañoceja1 = new Point();
-    Point tamañoceja2 = new Point();
+    int tamañoceja1=0;
+    int tamañoceja2=0; 
     private double distancia11, distancia12,distancia13;
     private double distancia21, distancia22,distancia23;
     private double distancia31, distancia32,distancia33;
@@ -26,13 +26,13 @@ public class Analisis  {
     private String SubDirectorio="";
     private String DirectorioResultados="";
     private int TamanhoMuestras=0;
-    private int TamanhoLista=0;
     private int[] Resultados=new int[6];
     private Rostro AnalisisRostro=new Rostro();
-    private Cejas AnalisisCejas=new Cejas();
     private Ojos AnalisisOjos=new Ojos();
     private Nariz AnalisisNariz=new Nariz();
     private Boca AnalisisBoca=new Boca();
+    private Ceja1 AnalisisCeja1= new Ceja1();
+    private Ceja2 AnalisisCeja2= new Ceja2();
     public int[] Analizar(int codigo_perfil){
         Directorio=DirectorioPrincipal+codigo_perfil+"/";
         File listamuestras = new File(Directorio);
@@ -73,7 +73,6 @@ public class Analisis  {
     private int AnalizarMuestras(String DirectorioMuestras) {
         String Archivo;
         boolean primero=true;
-        int primera=0;
         int emocion=0;
         File lista_imagenes=new File(DirectorioMuestras);
         int numero_imagenes=0;
@@ -85,6 +84,7 @@ public class Analisis  {
                     Archivo=DirectorioMuestras+muestras[y];
                     int s=AnalizarImagen(Archivo);
                     if(s==1){
+                        System.out.println(Archivo);
                         if(primero){
                             CalcularDistancia(false,primero);
                             primero=false;
@@ -92,9 +92,8 @@ public class Analisis  {
                             CalcularDistancia(false,primero);
                             emocion=Emociones();
                             LimpiarDistancias(false);
-                            primero=true;
                             if(emocion!=0){
-                                   return emocion;
+                                return emocion;
                             }
                         }
                     }
@@ -119,7 +118,7 @@ public class Analisis  {
         if(lista_imagenes.exists()){
             numero_imagenes=lista_imagenes.list().length;
             if(numero_imagenes!=0){
-                for(int y=0;y<=numero_imagenes;y++){
+                for(int y=0;y<numero_imagenes;y++){
                     String[] muestras = lista_imagenes.list();
                     Archivo=DirectorioMuestras+muestras[y];
                     int estadoanalisis=AnalizarImagen(Archivo);
@@ -149,11 +148,16 @@ public class Analisis  {
             tamañoojo1=AnalisisOjos.getTamaño1();
             ojo2=AnalisisOjos.getOjo2();
             tamañoojo2=AnalisisOjos.getTamaño2();
-            AnalisisCejas.Analizar(DirectorioResultados+"Rostro.png",DirectorioResultados, ojo1, ojo2, tamañoojo1);
-            ceja1=AnalisisCejas.getCeja1();
-            ceja2=AnalisisCejas.getCeja2();
+            //AnalisisCejas.Analizar(DirectorioResultados+"Rostro.png",DirectorioResultados, ojo1, ojo2, tamañoojo1);
             AnalisisNariz.Analizar(DirectorioResultados+"Rostro.png",DirectorioResultados,ojo1, ojo2);
             nariz=AnalisisNariz.getNariz();
+            AnalisisCeja1.Analizar(DirectorioResultados+"Rostro.png", DirectorioResultados, ojo1,nariz);
+            ceja1=AnalisisCeja1.getCeja1();
+            tamañoceja1=AnalisisCeja1.getTamaño();
+            //System.out.println(tamañoceja1);
+            AnalisisCeja2.Analizar(DirectorioResultados+"Rostro.png", DirectorioResultados, ojo2,nariz);
+            ceja2=AnalisisCeja2.getCeja2();
+            tamañoceja2=AnalisisCeja2.getTamaño();
             AnalisisBoca.Analizar(DirectorioResultados+"Rostro.png", DirectorioResultados, nariz, ojo1, ojo2, tamañoojo1);
             boca=AnalisisBoca.getBoca();
             tamañoboca=AnalisisBoca.getTamaño();
@@ -182,29 +186,29 @@ public class Analisis  {
     
     public void CalcularDistancia(boolean neutro,boolean primero) {
          if(neutro){
-           double P=Distancia(ojo1,ojo2);
+           double P=Distancia(new Point(((ojo1.x+ojo2.x)/2),ojo1.y),ojo2);
            distancia11=P/tamañoboca.x;
            distancia21=P/tamañoojo1.x;
            distancia31=P/((Distancia(ojo1,boca)+Distancia(ojo2,boca))/2);
            distancia41=P/((Distancia(ceja1,boca)+Distancia(ceja2,boca))/2);
-           distancia51=P/((Distancia(ojo1,ceja1)+Distancia(ojo2,ceja2))/2);
+           distancia51=P/((tamañoceja1+tamañoceja2)/2);
            distancia61=P/((Distancia(ceja1,nariz)+Distancia(ceja2,nariz))/2); 
          }else{
            if(primero){
-               double P=Distancia(ojo1,ojo2);
+               double P=Distancia(new Point(((ojo1.x+ojo2.x)/2),ojo1.y),ojo2);
                distancia12=P/tamañoboca.x;
                distancia22=P/tamañoojo1.x;
                distancia32=P/((Distancia(ojo1,boca)+Distancia(ojo2,boca))/2);
                distancia42=P/((Distancia(ceja1,boca)+Distancia(ceja2,boca))/2);
-               distancia52=P/((Distancia(ojo1,ceja1)+Distancia(ojo2,ceja2))/2);
+               distancia52=P/((tamañoceja1+tamañoceja2)/2);
                distancia62=P/((Distancia(ceja1,nariz)+Distancia(ceja2,nariz))/2);
            }else{
-               double P=Distancia(ojo1,ojo2);
+               double P=Distancia(new Point(((ojo1.x+ojo2.x)/2),ojo1.y),ojo2);
                distancia13=P/tamañoboca.x;
                distancia23=P/tamañoojo1.x;
                distancia33=P/((Distancia(ojo1,boca)+Distancia(ojo2,boca))/2);
                distancia43=P/((Distancia(ceja1,boca)+Distancia(ceja2,boca))/2);
-               distancia53=P/((Distancia(ojo1,ceja1)+Distancia(ojo2,ceja2))/2);
+               distancia53=P/((tamañoceja1+tamañoceja2)/2);
                distancia63=P/((Distancia(ceja1,nariz)+Distancia(ceja2,nariz))/2);
            }  
          }
@@ -219,26 +223,27 @@ public class Analisis  {
     
      private void LimpiarAnalisis(){
         AnalisisRostro=new Rostro();
-        AnalisisCejas=new Cejas();
+        AnalisisCeja1=new Ceja1();
+        AnalisisCeja2=new Ceja2();
         AnalisisOjos=new Ojos();
         AnalisisNariz=new Nariz();
         AnalisisBoca=new Boca();
     }
     
     private void LimpiarDistancias(boolean distancia){
-        distancia12=0;
-        distancia22=0;
-        distancia32=0;
-        distancia42=0;
-        distancia52=0;
-        distancia62=0;
+        distancia13=0;
+        distancia23=0;
+        distancia33=0;
+        distancia43=0;
+        distancia53=0;
+        distancia63=0;
         if(distancia){
-            distancia13=0;
-            distancia23=0;
-            distancia33=0;
-            distancia43=0;
-            distancia53=0;
-            distancia63=0;
+            distancia12=0;
+            distancia22=0;
+            distancia32=0;
+            distancia42=0;
+            distancia52=0;
+            distancia62=0;
         }
         
         

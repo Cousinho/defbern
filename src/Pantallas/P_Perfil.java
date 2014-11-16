@@ -43,7 +43,6 @@ public class P_Perfil extends javax.swing.JInternalFrame {
     private void BloquearComponentes() {
         b_nuevo.setEnabled(false);
         b_modificar.setEnabled(false);
-        b_eliminar.setEnabled(false);
     }
 
     private void HabilitarComponentes() {
@@ -52,9 +51,6 @@ public class P_Perfil extends javax.swing.JInternalFrame {
         }
         if(permisos_actuales.indexOf("modificar perfiles")!=-1){
             b_modificar.setEnabled(true);
-        }
-        if(permisos_actuales.indexOf("eliminar perfiles")!=-1){
-            b_eliminar.setEnabled(true);
         }
     }
     
@@ -132,7 +128,6 @@ public class P_Perfil extends javax.swing.JInternalFrame {
         tabla_perfiles = new javax.swing.JTable();
         b_nuevo = new javax.swing.JButton();
         b_modificar = new javax.swing.JButton();
-        b_eliminar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         combo_buscar = new javax.swing.JComboBox();
         texto_buscar = new javax.swing.JTextField();
@@ -143,6 +138,7 @@ public class P_Perfil extends javax.swing.JInternalFrame {
         setTitle("Perfiles Psicológicos");
 
         tabla_perfiles.setModel(LPerfiles);
+        tabla_perfiles.setMaximumSize(new java.awt.Dimension(500, 0));
         jScrollPane1.setViewportView(tabla_perfiles);
 
         b_nuevo.setText("Nuevo");
@@ -156,13 +152,6 @@ public class P_Perfil extends javax.swing.JInternalFrame {
         b_modificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 b_modificarActionPerformed(evt);
-            }
-        });
-
-        b_eliminar.setText("Eliminar");
-        b_eliminar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                b_eliminarActionPerformed(evt);
             }
         });
 
@@ -198,7 +187,6 @@ public class P_Perfil extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(b_modificar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(b_eliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(b_nuevo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -209,9 +197,9 @@ public class P_Perfil extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(texto_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(check_mayusculas)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 638, Short.MAX_VALUE)))
+                        .addComponent(check_mayusculas))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 638, Short.MAX_VALUE))
+                .addGap(0, 0, 0))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -225,15 +213,11 @@ public class P_Perfil extends javax.swing.JInternalFrame {
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE)
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(b_nuevo)
                         .addGap(18, 18, 18)
-                        .addComponent(b_modificar)
-                        .addGap(18, 18, 18)
-                        .addComponent(b_eliminar)
-                        .addGap(0, 330, Short.MAX_VALUE))))
+                        .addComponent(b_modificar))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 527, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30))
         );
 
         pack();
@@ -280,40 +264,6 @@ public class P_Perfil extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_b_modificarActionPerformed
 
-    private void b_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_eliminarActionPerformed
-        //obtiene el número de fila seleccionada
-        int fila=tabla_perfiles.getSelectedRow();
-
-        if (fila!=-1){
-            //solita confirmación de acción
-            int seleccion = JOptionPane.showOptionDialog(
-                this, // Componente padre
-                "¿Desea eliminar este perfil?",
-                "Seleccione una opción",
-                JOptionPane.YES_NO_CANCEL_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null,    // null para icono por defecto.
-                new Object[] { "Si", "No"},    // null para YES, NO y CANCEL
-                "Si");
-            if (seleccion != -1)
-            {
-                if((seleccion + 1)==1)
-                {
-                    Object valor = tabla_perfiles.getValueAt(fila, 0);
-                    try {
-                        BDPerfiles.eliminar(Integer.parseInt(valor.toString()));
-                    } catch (SQLException ex) {
-                        JOptionPane.showMessageDialog(null, "No se puede eliminar categoria");
-                    }
-                actualizartabla();
-                }
-                           }
-        }
-        else{
-            JOptionPane.showMessageDialog(null, "Seleccione una fila de la tabla");
-        }
-    }//GEN-LAST:event_b_eliminarActionPerformed
-
     private void texto_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_texto_buscarActionPerformed
 
     }//GEN-LAST:event_texto_buscarActionPerformed
@@ -327,7 +277,6 @@ public class P_Perfil extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_texto_buscarKeyPressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton b_eliminar;
     private javax.swing.JButton b_modificar;
     private javax.swing.JButton b_nuevo;
     private javax.swing.JCheckBox check_mayusculas;

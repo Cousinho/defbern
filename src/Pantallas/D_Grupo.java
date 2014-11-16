@@ -3,6 +3,7 @@ package Pantallas;
 import BaseDeDatos.BDGrupos;
 import Entidades.Grupo;
 import Util.Numerico;
+import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
@@ -129,6 +130,11 @@ public class D_Grupo extends javax.swing.JDialog {
 
         textoa_descripcion.setColumns(20);
         textoa_descripcion.setRows(5);
+        textoa_descripcion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                textoa_descripcionKeyPressed(evt);
+            }
+        });
         jScrollPane1.setViewportView(textoa_descripcion);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -164,9 +170,9 @@ public class D_Grupo extends javax.swing.JDialog {
                     .addComponent(jLabel2)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(b_aceptar)
-                    .addComponent(b_cancelar))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(b_cancelar)
+                    .addComponent(b_aceptar))
                 .addContainerGap())
         );
 
@@ -192,6 +198,12 @@ public class D_Grupo extends javax.swing.JDialog {
     private void b_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_cancelarActionPerformed
         this.dispose();
     }//GEN-LAST:event_b_cancelarActionPerformed
+
+    private void textoa_descripcionKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textoa_descripcionKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+              b_aceptarActionPerformed(null);
+        }
+    }//GEN-LAST:event_textoa_descripcionKeyPressed
 
     /**
      * @param args the command line arguments

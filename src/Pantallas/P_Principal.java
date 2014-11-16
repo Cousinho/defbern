@@ -58,11 +58,11 @@ public class P_Principal extends javax.swing.JFrame {
         if(permisos.indexOf("agregar roles")!=-1 || permisos.indexOf("modificar roles")!=-1 || permisos.indexOf("eliminar roles")!=-1){
             SM_Rol.setVisible(true);
         }
-        /*if(permisos.indexOf("agregar permisos")!=-1 || permisos.indexOf("modificar permisos")!=-1 || permisos.indexOf("eliminar permisos")!=-1){
-            SM_Permiso.setEnabled(true);
-        }*/
-        if(permisos.indexOf("crear informes")!=-1){
+        if(permisos.indexOf("crear informes individuales")!=-1){
             SM_Informes.setVisible(true);
+        }
+        if(permisos.indexOf("crear informes grupales")!=-1){
+            SM_Grupales.setVisible(true);
         }
         if(permisos.indexOf("realizar entrevista")!=-1){
             SM_EntrevistaIndividual.setVisible(true);
@@ -79,7 +79,7 @@ public class P_Principal extends javax.swing.JFrame {
         SM_Registro.setVisible(false);
         SM_Grupos.setVisible(false);
         SM_Rol.setVisible(false);
-        //SM_Permiso.setEnabled(false);
+        SM_Grupales.setVisible(false);
         SM_Informes.setVisible(false);
         SM_EntrevistaIndividual.setVisible(false);
         SM_EntrevistaGrupal.setVisible(false);
@@ -325,7 +325,6 @@ public class P_Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_S_CerrarActionPerformed
 
     private void Menu_PrincipalAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_Menu_PrincipalAncestorAdded
-        // TODO add your handling code here:
     }//GEN-LAST:event_Menu_PrincipalAncestorAdded
 
     private void SM_LaminaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SM_LaminaActionPerformed
@@ -499,7 +498,7 @@ public class P_Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_SM_AyudaActionPerformed
 
     private void SM_RegistroSinAnalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SM_RegistroSinAnalizarActionPerformed
-        P_RegistroSinAnalizar principal = new P_RegistroSinAnalizar(this);//, permisos);
+        P_RegistroSinAnalizar principal = new P_RegistroSinAnalizar(this, permisos);
         Panel_Principal.add(principal);
         try {
             principal.setMaximum(true);
