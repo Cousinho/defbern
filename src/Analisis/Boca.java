@@ -21,9 +21,10 @@ public class Boca {
     public void Analizar(String Nombre, String Directorio,Point nariz, Point ojo1, Point ojo2,Point tamañoojo){
                     NombreArchivo=Nombre;
                     //Busca las bocas con el xml de y si no encuetra busca con otro
-                    Buscar(ojo1,ojo2,tamañoojo,nariz,"2",Directorio);
+                    Buscar(ojo1,ojo2,tamañoojo,nariz,"1",Directorio);
+                    System.out.println(tamaño);
                     if(tamaño==0){
-                        Buscar(ojo1,ojo2,tamañoojo,nariz,"1",Directorio);
+                        Buscar(ojo1,ojo2,tamañoojo,nariz,"2",Directorio);
                     }
                     SeleccionarBoca(nariz,ojo1,ojo2);
                           
@@ -36,7 +37,6 @@ public class Boca {
             //Busca diferencias entre distancias y de cejas
             for(int x2=1;x2<=tamaño;x2++){
                 diferencias[x2]=(int) Math.abs((listabocas[x2][1]-ojo1.x)-(ojo2.x-listabocas[x2][1]));
-                        
             }
             for(int x=1;x<=tamaño;x++){
                     if(!primero){
@@ -60,7 +60,6 @@ public class Boca {
                             tamañoboca.y = listabocas[x][4];
                             diferenciaactual=(int) Math.abs(boca.y-nariz.y);  
                             diferenciacentro=diferencias[x];
-                       
                         }
                         }
                     }

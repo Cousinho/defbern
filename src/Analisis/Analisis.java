@@ -162,6 +162,7 @@ public class Analisis  {
             boca=AnalisisBoca.getBoca();
             tamañoboca=AnalisisBoca.getTamaño();
             if(ceja1.x==0||ojo1.x==0||nariz.x==0||boca.x==0){
+                System.out.println(ceja1.x+" "+ojo1.x+" "+nariz.x+" "+boca.x);
                 return 0;
             }else{
                 return 1;
