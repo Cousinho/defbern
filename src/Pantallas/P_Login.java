@@ -36,6 +36,12 @@ public class P_Login extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        t_contraseña.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                t_contraseñaKeyPressed(evt);
+            }
+        });
+
         b_cancelar.setText("Cancelar");
         b_cancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -158,12 +164,12 @@ public class P_Login extends javax.swing.JFrame {
                         }
                     }
                     else{
-                        JOptionPane.showMessageDialog(null, "La contraseña ingresada es incorrecta");
+                        JOptionPane.showMessageDialog(null, "El Usuario o la contraseña son incorrectos");
                     }
                 }
             }
             else{
-                JOptionPane.showMessageDialog(null, "El Usuario ingresado es incorrecto");
+                JOptionPane.showMessageDialog(null, "El Usuario o la contraseña son incorrectos");
             }
     }//GEN-LAST:event_b_aceptarActionPerformed
 } 
@@ -172,6 +178,9 @@ public class P_Login extends javax.swing.JFrame {
     }//GEN-LAST:event_b_cancelarActionPerformed
 
     private void b_aceptarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b_aceptarKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+              b_aceptarActionPerformed(null);
+        }
     }//GEN-LAST:event_b_aceptarKeyPressed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -181,9 +190,17 @@ public class P_Login extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(P_Login.class.getName()).log(Level.SEVERE, null, ex);
         }
+        Principal.setExtendedState(MAXIMIZED_BOTH);
         Principal.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void t_contraseñaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_t_contraseñaKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+              b_aceptarActionPerformed(null);
+        }
+
+    }//GEN-LAST:event_t_contraseñaKeyPressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton b_aceptar;

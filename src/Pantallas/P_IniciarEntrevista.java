@@ -4,7 +4,6 @@ import Analisis.AnalisisRorschach;
 import BaseDeDatos.BDEntrevistas;
 import BaseDeDatos.BDGrupos;
 import BaseDeDatos.BDRegistros;
-import Entidades.Entrevista;
 import Entidades.Grupo;
 import Entidades.Registro;
 import Entidades.Usuario;
@@ -147,7 +146,7 @@ public class P_IniciarEntrevista extends javax.swing.JInternalFrame {
         setDefaultCloseOperation(1);
         label_analizando.setVisible(false);
         Directorios directorio=new Directorios();
- //       directorio.Borrar(registro_actual.getCodigo());
+        directorio.Borrar(registro_actual.getCodigo());
         this.dispose();
     }
     

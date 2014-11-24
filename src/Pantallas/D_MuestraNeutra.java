@@ -54,9 +54,9 @@ public class D_MuestraNeutra extends javax.swing.JDialog {
                                 ImageIcon icon = new ImageIcon(img.getScaledInstance(label_webcam.getWidth(), label_webcam.getHeight(), Image.SCALE_SMOOTH));
                                 label_webcam.setIcon(icon);
                                 if(IndiceMuestra!=0){
-                                    if(VerificarPosicion(directorio+archivo, directorio)){
+                                    //if(VerificarPosicion(directorio+archivo, directorio)){
                                          IndiceMuestra++;
-                                    }   
+                                    //}   
                                 }else{
                                     IndiceMuestra++;
                                 }

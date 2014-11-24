@@ -335,9 +335,9 @@ public class P_Presentacion extends javax.swing.JFrame {
                             archivo="imagen/Muestras/" + Id_registro + "/" + (IndiceLista) + "/" + IndiceMuestra + ".png";
                             directorio="imagen/Muestras/" + Id_registro + "/" + (IndiceLista) + "/";
                             if (!imagen.empty()) {
-                                if(VerificarPosicion(archivo,directorio)){
+                                //if(VerificarPosicion(archivo,directorio)){
                                     IndiceMuestra++;
-                                }
+                                //}
                                 
                             }
 

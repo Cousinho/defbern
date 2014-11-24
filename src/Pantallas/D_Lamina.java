@@ -7,13 +7,16 @@ import Entidades.Lamina;
 import Entidades.Opciones;
 import Util.TablaModelo;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -326,7 +329,20 @@ public class D_Lamina extends javax.swing.JDialog {
         String ruta;
         ruta=Seleccion();
         if(ruta!=null){
-            lamina_actual.setRuta(ruta);
+            Image image = null;
+            try {
+                image = ImageIO.read(new File(ruta));
+            } catch (IOException ex) {
+                Logger.getLogger(D_Lamina.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if(image.getWidth(null)!=image.getHeight(null)){
+                 JOptionPane.showMessageDialog(null,"La imagen que selecciona debe tener el mismo ancho y largo");
+            }else{
+                Icon icon = new ImageIcon(image.getScaledInstance(lamina.getWidth(), lamina.getHeight(), Image.SCALE_DEFAULT));
+                lamina.setIcon(icon);
+                lamina_actual.setRuta(ruta);
+            }
+            
         }
 
     }//GEN-LAST:event_b_imagenActionPerformed

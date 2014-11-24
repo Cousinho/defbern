@@ -48,7 +48,7 @@ public class P_PrincipalEntrevista extends javax.swing.JFrame {
             }
         });
         Panel_Principal.add(jButton1);
-        jButton1.setBounds(380, 140, 140, 110);
+        jButton1.setBounds(420, 140, 200, 110);
 
         jButton2.setText("Entrevista Grupal");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -57,7 +57,7 @@ public class P_PrincipalEntrevista extends javax.swing.JFrame {
             }
         });
         Panel_Principal.add(jButton2);
-        jButton2.setBounds(700, 140, 130, 110);
+        jButton2.setBounds(750, 140, 210, 110);
 
         Menu_Principal.addAncestorListener(new javax.swing.event.AncestorListener() {
             public void ancestorMoved(javax.swing.event.AncestorEvent evt) {

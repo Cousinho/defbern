@@ -8,7 +8,6 @@ package Pantallas;
 
 import BaseDeDatos.BDRegistros;
 import Entidades.Registro;
-import Util.Alfanumerico;
 import Util.AlfanumericoEspacio;
 import Util.Numerico;
 import java.sql.SQLException;
@@ -43,9 +42,10 @@ public class D_Registro extends javax.swing.JDialog {
         texto_nombre.setDocument(new AlfanumericoEspacio(texto_nombre,45));
         texto_apellido.setDocument(new AlfanumericoEspacio(texto_apellido,45));
         texto_ci.setDocument(new Numerico(texto_ci,45));
-        texto_descripcion.setDocument(new AlfanumericoEspacio(texto_descripcion,45));
+        texto_choques.setEnabled(false);
         texto_usuario.setEnabled(false);
         texto_respuestas.setEnabled(false);
+        texto_grupo.setEnabled(false);
     }
 
     private void CargarDatos(){
@@ -54,9 +54,24 @@ public class D_Registro extends javax.swing.JDialog {
         texto_nombre.setText(registro_actual.getNombre());
         texto_apellido.setText(registro_actual.getApellido());
         texto_ci.setText(String.valueOf(registro_actual.getCi()));
-        texto_descripcion.setText(registro_actual.getDescripcion());
         texto_usuario.setText(registro_actual.getUsuario().getNombre());
         texto_grupo.setText(String.valueOf(registro_actual.getCodigo_grupo()));
+        String choques="";
+        for(int x=0;x<registro_actual.getEmociones().length();x++){
+            if(registro_actual.getEmociones().charAt(x)!='0'){
+                choques=choques+" "+(x+1);
+            }
+        }
+        if(choques.equals("")){
+            texto_choques.setText("Sin choques");
+        }else{
+            texto_choques.setText("Lamina:"+choques);
+        }
+        String respuestas="";
+        for(int x=0;x<registro_actual.getRespuestas().length;x++){
+            respuestas=respuestas+" "+registro_actual.getRespuestas()[x];
+        }
+        texto_respuestas.setText(respuestas);
     }
     
     
@@ -87,7 +102,6 @@ public class D_Registro extends javax.swing.JDialog {
     private void setDatos(){
         registro_actual.setNombre(texto_nombre.getText());
         registro_actual.setApellido(texto_apellido.getText());
-        registro_actual.setDescripcion(texto_descripcion.getText());
         registro_actual.setCodigo_grupo(Integer.valueOf(texto_grupo.getText()));
     }
     
@@ -105,22 +119,23 @@ public class D_Registro extends javax.swing.JDialog {
         texto_ci = new javax.swing.JTextField();
         texto_nombre = new javax.swing.JTextField();
         texto_apellido = new javax.swing.JTextField();
-        texto_descripcion = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         b_aceptar = new javax.swing.JButton();
         b_cancelar = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         texto_usuario = new javax.swing.JTextField();
-        texto_respuestas = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         texto_grupo = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        texto_choques = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        texto_respuestas = new javax.swing.JTextArea();
 
         texto_apellido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -135,8 +150,6 @@ public class D_Registro extends javax.swing.JDialog {
         jLabel3.setText("Nombre");
 
         jLabel4.setText("Apellido");
-
-        jLabel5.setText("Descripcion");
 
         jLabel6.setText("Usuario");
 
@@ -183,43 +196,60 @@ public class D_Registro extends javax.swing.JDialog {
 
         jLabel9.setText("Código Grupo");
 
+        jLabel5.setText("Choques");
+
+        texto_choques.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                texto_choquesActionPerformed(evt);
+            }
+        });
+
+        texto_respuestas.setEditable(false);
+        texto_respuestas.setColumns(20);
+        texto_respuestas.setLineWrap(true);
+        texto_respuestas.setRows(5);
+        jScrollPane1.setViewportView(texto_respuestas);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(19, 19, 19)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel6)
+                        .addComponent(jLabel4))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel6)
                             .addComponent(jLabel7)
-                            .addComponent(jLabel9))
-                        .addGap(49, 49, 49)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(texto_codigo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
-                            .addComponent(texto_ci, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(texto_nombre, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                            .addComponent(texto_apellido, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(texto_descripcion, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(texto_usuario, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(texto_grupo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(texto_respuestas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(125, 125, 125)
-                        .addComponent(b_aceptar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(b_cancelar)))
-                .addGap(20, 20, 20))
+                            .addComponent(jLabel9)
+                            .addComponent(jLabel5))
+                        .addGap(1, 1, 1)))
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(b_aceptar)
+                            .addGap(27, 27, 27)
+                            .addComponent(b_cancelar))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(texto_codigo, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
+                            .addComponent(texto_ci)
+                            .addComponent(texto_nombre, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                            .addComponent(texto_apellido)
+                            .addComponent(texto_usuario)
+                            .addComponent(texto_grupo)
+                            .addComponent(texto_choques)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(55, Short.MAX_VALUE))
         );
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {texto_apellido, texto_ci, texto_codigo, texto_descripcion, texto_nombre, texto_usuario});
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {texto_apellido, texto_ci, texto_codigo, texto_nombre, texto_usuario});
 
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -243,28 +273,28 @@ public class D_Registro extends javax.swing.JDialog {
                     .addComponent(jLabel4))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(texto_descripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
                     .addComponent(texto_usuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(texto_grupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9))
+                    .addComponent(jLabel9)
+                    .addComponent(texto_grupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(texto_choques, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel7)
-                    .addComponent(texto_respuestas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(b_aceptar)
-                    .addComponent(b_cancelar))
-                .addGap(20, 20, 20))
+                    .addComponent(b_cancelar)
+                    .addComponent(b_aceptar))
+                .addContainerGap())
         );
 
-        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {texto_apellido, texto_ci, texto_codigo, texto_descripcion, texto_nombre, texto_usuario});
+        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {texto_apellido, texto_ci, texto_codigo, texto_nombre, texto_usuario});
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -295,6 +325,10 @@ public class D_Registro extends javax.swing.JDialog {
     private void texto_apellidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_texto_apellidoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_texto_apellidoActionPerformed
+
+    private void texto_choquesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_texto_choquesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_texto_choquesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -346,13 +380,14 @@ public class D_Registro extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField texto_apellido;
+    private javax.swing.JTextField texto_choques;
     private javax.swing.JTextField texto_ci;
     private javax.swing.JTextField texto_codigo;
-    private javax.swing.JTextField texto_descripcion;
     private javax.swing.JTextField texto_grupo;
     private javax.swing.JTextField texto_nombre;
-    private javax.swing.JTextField texto_respuestas;
+    private javax.swing.JTextArea texto_respuestas;
     private javax.swing.JTextField texto_usuario;
     // End of variables declaration//GEN-END:variables
 }
