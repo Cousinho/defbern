@@ -194,7 +194,7 @@
     </Menu>
   </NonVisualComponents>
   <Properties>
-    <Property name="title" type="java.lang.String" value="DEFBERN  "/>
+    <Property name="title" type="java.lang.String" value="DEFBERNYCH  "/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="menuBar" type="java.lang.String" value="Menu_Principal"/>

@@ -123,7 +123,7 @@ public class P_Principal extends javax.swing.JFrame {
 
         jMenuItem2.setText("jMenuItem2");
 
-        setTitle("DEFBERN  ");
+        setTitle("DEFBERNYCH  ");
 
         Panel_Principal.add(Panel_Principal1);
         Panel_Principal1.setBounds(0, 0, 0, 0);
